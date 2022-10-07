@@ -1,39 +1,23 @@
-import React, { useState } from "react";
 import { Editor, EditorState, RichUtils } from "draft-js";
-import { FormatBold } from "@mui/icons-material";
+import React, { useState } from "react";
+import EditorToolbar from "../EditorToolbar";
 
 const ControlledEditor = () => {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty()
     );
 
-    const handleClickMe = () => {
-        setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
-    };
-
-    const handleKeyCommand = (command) => {
-        const newState = RichUtils.handleKeyCommand(editorState, command);
-        console.log(command);
-        if (newState) {
-            setEditorState(newState);
-            return "handled";
-        }
-
-        return "not-handled";
+    const toggleInlineStyle = (inlineStyle) => {
+        setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
     };
 
     return (
         <div>
-            <IconButton onClick={() => console.log("clicked")}>
-                <FormatBold />
-            </IconButton>
-            <button onClick={handleClickMe}>Click Me</button>
-            <Editor
+            <EditorToolbar
+                toggleInlineStyle={toggleInlineStyle}
                 editorState={editorState}
-                onChange={setEditorState}
-                placeholder="Hello World"
-                handleKeyCommand={handleKeyCommand}
             />
+            <Editor editorState={editorState} onChange={setEditorState} />
         </div>
     );
 };
