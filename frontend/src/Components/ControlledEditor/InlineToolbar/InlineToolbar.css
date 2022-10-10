@@ -1,0 +1,74 @@
+.active {
+    color: rgb(35, 131, 226);
+}
+
+.inline-container {
+    display: flex;
+    color: rgb(55, 53, 47);
+    font-size: 16px;
+    font-weight: 400;
+}
+.inline-bold {
+    font-weight: bold;
+}
+
+.inline-italic {
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
+}
+
+.inline-underline {
+    text-decoration: underline;
+}
+
+.inline-strike-through {
+    text-decoration: line-through;
+}
+
+.inline-bold,
+.inline-italic,
+.inline-underline,
+.inline-strike-through {
+    position: relative;
+    padding: 4px 8px;
+    border-radius: 2px;
+    transition: 0.5s;
+}
+
+.inline-bold:hover,
+.inline-italic:hover,
+.inline-underline:hover,
+.inline-strike-through:hover {
+    cursor: pointer;
+    background-color: rgba(55, 53, 47, 0.2);
+}
+.inline-bold .tooltip,
+.inline-italic .tooltip,
+.inline-underline .tooltip,
+.inline-strike-through .tooltip {
+    position: absolute;
+    font-style: normal;
+    font-weight: normal;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    white-space: nowrap;
+    padding: 4px 12px;
+    border-radius: 4px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    line-height: 16px;
+    font-size: 12px;
+}
+
+.inline-bold:hover .tooltip,
+.inline-italic:hover .tooltip,
+.inline-underline:hover .tooltip,
+.inline-strike-through:hover .tooltip {
+    top: -200%;
+    visibility: visible;
+    opacity: 1;
+}
