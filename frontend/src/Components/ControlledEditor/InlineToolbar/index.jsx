@@ -60,6 +60,8 @@ const InlineToolbar = (props) => {
         onChange(style);
     };
 
+    console.log(onChange);
+
     return (
         <div className="inline-container">
             {INLINE_STYLES.map((item) => (

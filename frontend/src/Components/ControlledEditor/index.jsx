@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { EditorState, RichUtils } from "draft-js";
+import { convertToRaw, EditorState, RichUtils } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./ControlledEditor.css";
 import InlineToolbar from "./InlineToolbar";
 import BlockToolbar from "./BlockToolbar";
+import ListToolbar from "./ListToolbar";
+import ColorPickerToolbar from "./ColorPickerToolbar";
 
 // const getSelectedText = (editorState) => {
 //     var selectionState = editorState.getSelection();
@@ -24,7 +26,9 @@ const ControlledEditor = () => {
     // const [isShown, setIsShown] = useState(false);
 
     const handleClickMe = () => {
-        setEditorState(RichUtils.toggleBlockType(editorState, "header-one"));
+        setEditorState(
+            RichUtils.toggleBlockType(editorState, "rgb(97,189,109)")
+        );
     };
 
     return (
@@ -47,9 +51,11 @@ const ControlledEditor = () => {
                 editorClassName="editor-class"
                 toolbarClassName="toolbar-class"
                 toolbar={{
-                    options: ["inline", "blockType"],
-                    inline: { component: InlineToolbar },
+                    options: ["blockType", "list", "inline", "colorPicker"],
                     blockType: { component: BlockToolbar },
+                    list: { component: ListToolbar },
+                    inline: { component: InlineToolbar },
+                    colorPicker: { component: ColorPickerToolbar },
                 }}
             />
         </div>

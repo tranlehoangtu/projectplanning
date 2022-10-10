@@ -12,12 +12,12 @@
 }
 
 .wrapper-class {
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     padding: 1rem;
     border: 1px solid #ccc;
 }
 .editor-class {
-    background-color: lightgray;
+    /* background-color: lightgray; */
     border: 1px solid #ccc;
     padding: 0 16px;
 }
