@@ -20,6 +20,7 @@
 }
 
 .block-dropdown:hover {
+    background-color: rgba(55, 53, 47, 0.2);
     cursor: pointer;
 }
 
@@ -79,6 +80,14 @@
     border-radius: 2px;
 }
 
+.block-item-head img {
+    width: 22px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: 4px;
+    opacity: 0.6;
+}
+
 .block-item-foot svg {
     font-size: 18px;
 }
@@ -86,10 +95,4 @@
 .block-item:hover {
     cursor: pointer;
     background: #efefef;
-}
-
-.block-item img {
-    width: 26px;
-    border: 1px solid grey;
-    border-radius: 4px;
 }

@@ -7,6 +7,7 @@
     color: rgb(55, 53, 47);
     font-size: 16px;
     font-weight: 400;
+    border-right: 0.2px solid rgba(55, 53, 47, 0.1);
 }
 .inline-bold {
     font-weight: bold;

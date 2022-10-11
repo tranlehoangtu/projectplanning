@@ -1,0 +1,126 @@
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #d3d1cb;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.colorpicker-container {
+    position: relative;
+    color: #37352f;
+    border-right: 0.2px solid rgba(55, 53, 47, 0.1);
+}
+
+.colorpicker-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px 2px 12px;
+    white-space: nowrap;
+}
+
+.colorpicker-dropdown svg {
+    color: rgba(55, 53, 47, 0.4);
+}
+
+.colorpicker-dropdown:hover {
+    background-color: rgba(55, 53, 47, 0.2);
+    cursor: pointer;
+}
+
+.colorpicker-dropdown span {
+    display: inline;
+    padding: 0 4px;
+}
+
+.colorpicker-item-container {
+    position: absolute;
+    color: red;
+    background-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transform: translateY(4px);
+    white-space: nowrap;
+    padding: 10px 4px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 1s ease;
+    color: rgb(55, 53, 47);
+    z-index: 1000;
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.colorpicker-item-sub {
+    color: rgba(55, 53, 47, 0.65);
+    color: rgba(55, 53, 47, 0.65);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 120%;
+    user-select: none;
+    padding: 0 12px;
+    text-transform: uppercase;
+}
+
+.colorpicker-item-data {
+    margin-top: 6px;
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.colorpicker-item {
+    padding: 2px 10px;
+    fill: rgb(55, 53, 47);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 2px;
+    min-width: 200px;
+}
+
+.colorpicker-item-head {
+    /* fill: rgb(55, 53, 47); */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 2px;
+}
+
+.colorpicker-item-head span {
+    padding: 4px 8px;
+    border: 1px solid grey;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+.colorpicker-item-foot {
+    font-size: 18px;
+}
+
+.colorpicker-item:hover {
+    cursor: pointer;
+    background: #efefef;
+}
+
+.colorpicker-item img {
+    width: 26px;
+    border: 1px solid grey;
+    border-radius: 4px;
+}

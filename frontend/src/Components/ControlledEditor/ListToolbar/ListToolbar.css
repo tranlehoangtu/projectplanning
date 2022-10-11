@@ -1,8 +1,5 @@
 .list-container {
     position: relative;
-    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
-        "Segoe UI Symbol";
     color: #37352f;
     border-right: 0.2px solid rgba(55, 53, 47, 0.1);
 }
@@ -20,6 +17,7 @@
 }
 
 .list-dropdown:hover {
+    background-color: rgba(55, 53, 47, 0.2);
     cursor: pointer;
 }
 
@@ -80,6 +78,14 @@
     border-radius: 2px;
 }
 
+.list-item-head img {
+    width: 22px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: 4px;
+    opacity: 0.6;
+}
+
 .list-item-foot {
     font-size: 18px;
 }
@@ -87,10 +93,4 @@
 .list-item:hover {
     cursor: pointer;
     background: #efefef;
-}
-
-.list-item img {
-    width: 26px;
-    border: 1px solid grey;
-    border-radius: 4px;
 }

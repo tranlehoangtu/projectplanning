@@ -13,8 +13,16 @@ const LIST_STYLES = [
         style: "unordered",
         url: "/Images/Bulleted-List.png",
     },
-    // { label: "Indent", style: "Indent" },
-    // { label: "Outdent", style: "Outdent" },
+    {
+        label: "Indent",
+        style: "indent",
+        url: "/Images/Indent.png",
+    },
+    {
+        label: "Outdent",
+        style: "outdent",
+        url: "/Images/Outdent.png",
+    },
 ];
 
 const ListToolbar = (props) => {
