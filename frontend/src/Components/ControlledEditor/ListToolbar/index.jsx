@@ -32,6 +32,8 @@ const ListToolbar = (props) => {
         return LIST_STYLES.find((list) => list.style === currentState.listType);
     };
 
+    console.log(props);
+
     return (
         <div
             aria-haspopup="true"
@@ -39,6 +41,7 @@ const ListToolbar = (props) => {
             aria-label="list-container"
             className="list-container"
         >
+            <button onClick={() => onChange("outdent")}>Click Me</button>
             <div className="list-dropdown" onClick={onExpandEvent}>
                 <span>
                     {getCurrentListStyle()

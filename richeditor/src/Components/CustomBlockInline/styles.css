@@ -1,0 +1,36 @@
+.dropdown-button-wrapper,
+.button-wrapper {
+    display: inline-block;
+    color: #37352f;
+}
+
+.dropdown-button,
+.button {
+    border: none;
+    padding: 8px 14px;
+    font-size: 16px;
+    background-color: inherit;
+    border-left: 0.2px solid rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.active {
+    color: rgb(35, 131, 226);
+}
+
+.dropdown-button:hover,
+.button:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.public-DraftStyleDefault-ul,
+.public-DraftStyleDefault-ol {
+    padding-inline-start: 26px;
+}
