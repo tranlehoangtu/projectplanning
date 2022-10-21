@@ -85,3 +85,12 @@
     transform: translateX(4px) rotate(-45deg);
     transform-origin: left bottom;
 }
+
+.editor-wrap {
+    margin-left: 30px;
+}
+
+.strike {
+    text-decoration: line-through;
+    color: rgba(55, 53, 47, 0.4);
+}

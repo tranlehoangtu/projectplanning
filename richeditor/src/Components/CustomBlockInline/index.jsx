@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Editor, { createEditorStateWithText } from "@draft-js-plugins/editor";
+import React, { useMemo, useRef, useState } from "react";
+import Editor from "@draft-js-plugins/editor";
 import createInlineToolbarPlugin from "@draft-js-plugins/inline-toolbar";
 
 // import {
@@ -24,33 +24,32 @@ import editorStyles from "./editorStyles.module.css";
 import "../../../node_modules/@draft-js-plugins/inline-toolbar/lib/plugin.css";
 import "./styles.css";
 import blockStyles from "./blockStyles.module.css";
-import { RichUtils } from "draft-js";
+import { EditorState } from "draft-js";
+import StyledTodoBlock from "./StyledButtons/BlockStyle/StyledTodoBlock";
 
 const BLOCK_STYLE = [
     { name: "blockquote", style: blockStyles.styleBlockQuote },
     { name: "header-three", style: "style-header-three" },
     { name: "unordered-list-item", style: blockStyles.styleUnorderedListItem },
     { name: "ordered-list-item", style: "style-ordered-list-item" },
+    { name: "todo", style: "todo-block" },
+    { name: "unstyled", style: "style-unstyle" },
 ];
 
-const MediaComponent = (props) => {
-    console.log(props);
-    return <div>asd</div>;
-};
-
-const myBlockRenderer = (contentBlock) => {
+const myBlockRenderer = (contentBlock, editorState, setEditorState) => {
     const type = contentBlock.getType();
-    if (type === "atomic") {
+    console.log("type: " + type);
+    if (type === "todo") {
         return {
-            component: MediaComponent,
-            editable: false,
+            component: StyledTodoBlock,
+            // editable: false,
             props: {
-                foo: "bar",
+                editorState,
+                setEditorState,
             },
         };
     }
 };
-
 const myBlockStyleFn = (contentBlock) => {
     const type = contentBlock.getType();
 
@@ -59,9 +58,6 @@ const myBlockStyleFn = (contentBlock) => {
     if (blockType) return blockType.style;
 };
 
-const text =
-    "In this editor a toolbar shows up once you select part of the text …";
-
 const CustomBlockInline = () => {
     const [plugins, InlineToolbar] = useMemo(() => {
         const inlineToolbarPlugin = createInlineToolbarPlugin();
@@ -69,21 +65,17 @@ const CustomBlockInline = () => {
     }, []);
 
     const [editorState, setEditorState] = useState(() =>
-        createEditorStateWithText("")
+        EditorState.createEmpty()
     );
 
-    useEffect(() => {
-        setEditorState(createEditorStateWithText(text));
-    }, []);
+    // useEffect(() => {
+    //     setEditorState(createEditorStateWithText(text));
+    // }, []);
 
     const editor = useRef(null);
 
     const onChange = (value) => {
         setEditorState(value);
-    };
-
-    const focus = () => {
-        editor.current?.focus();
     };
 
     // const getCurrentBlockType = () => {
@@ -103,25 +95,24 @@ const CustomBlockInline = () => {
     //     blockMap.map((item) => console.log(item));
     // };
 
-    const handleClick = () => {
-        setEditorState(RichUtils.toggleBlockType(editorState, "atomic"));
-    };
-
     return (
-        <div className={editorStyles.editor} onClick={focus}>
-            <button onClick={handleClick}>Click Me</button>
+        <div className={editorStyles.editor}>
             <Editor
                 editorKey="CustomBlockInline"
                 editorState={editorState}
                 onChange={onChange}
                 blockStyleFn={myBlockStyleFn}
-                blockRendererFn={myBlockRenderer}
+                blockRendererFn={(contentBlock) =>
+                    myBlockRenderer(contentBlock, editorState, setEditorState)
+                }
                 plugins={plugins}
                 ref={(element) => {
                     editor.current = element;
                 }}
             />
-            <InlineToolbar style={{ padding: 0, margin: 0 }}>
+            <InlineToolbar
+                style={{ padding: 0, margin: 0, whiteSpace: "nowrap" }}
+            >
                 {(externalProps) => (
                     <>
                         <StyledText {...externalProps} />

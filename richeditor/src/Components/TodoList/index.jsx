@@ -28,14 +28,15 @@ const blockStyleFn = (block) => {
     }
 };
 
-const myBlockRenderer = (contentBlock) => {
+const myBlockRenderer = (contentBlock, editorState, setEditorState) => {
     const type = contentBlock.getType();
     if (type === TODO_BLOCK) {
         return {
             component: TodoBlock,
             // editable: false,
             props: {
-                foo: "bar",
+                editorState,
+                setEditorState,
             },
         };
     }
@@ -86,19 +87,12 @@ const TodoList = () => {
         const currentContentBlock = currentContent.getBlockForKey(anchorKey);
 
         const selection = editorState.getSelection().merge({
-            // anchorKey,
-            // anchorOffset: 0,
+            anchorKey: anchorKey,
+            anchorOffset: 0,
 
-            // focusOffset: currentContentBlock.getText().length,
-            focusKey: "7b8up",
+            focusKey: anchorKey,
+            focusOffset: currentContentBlock.getText().length,
         });
-
-        const newState = EditorState.forceSelection(editorState, selection);
-
-        // setEditorState(RichUtils.toggleInlineStyle(newState, "BOLD"));
-
-        setEditorState(newState);
-
         const obj = {
             currentContent,
             selectionState,
@@ -106,7 +100,7 @@ const TodoList = () => {
             currentContentBlock,
         };
 
-        console.log(obj.selectionState.getAnchorKey());
+        console.log(anchorKey);
     };
 
     const handleKeyCommand = (command) => {
@@ -141,7 +135,9 @@ const TodoList = () => {
                 onChange={setEditorState}
                 blockRenderMap={blockRenderMap}
                 blockStyleFn={blockStyleFn}
-                blockRendererFn={myBlockRenderer}
+                blockRendererFn={(contentBlock) =>
+                    myBlockRenderer(contentBlock, editorState, setEditorState)
+                }
                 handleKeyCommand={handleKeyCommand}
             />
         </div>

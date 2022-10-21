@@ -38,7 +38,7 @@ const BLOCK_STYLES = [
     {
         label: "Todo list",
         img: "Todo-List.png",
-        style: "ordered-list-item",
+        style: "todo",
     },
 ];
 
