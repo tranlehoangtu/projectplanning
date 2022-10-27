@@ -1,0 +1,270 @@
+#doubleRightIcon {
+    display: none;
+}
+
+.sidebarContainer:hover .sidebar {
+    transform: translateX(0);
+}
+
+.sidebarContainer:hover #barIcon {
+    display: none;
+}
+
+.sidebarContainer:hover #doubleRightIcon {
+    display: block;
+}
+
+.expandedSidebar:hover .userInfo {
+    width: 80%;
+}
+
+.expandedSidebar:hover .userInfo h4 {
+    width: 80px;
+}
+
+.expandedSidebar:hover #doubleLeftIcon {
+    opacity: 1;
+}
+
+#doubleLeftIcon {
+    transition: all 1s ease;
+    opacity: 0;
+}
+
+.bar {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 2px;
+    top: 2px;
+    font-size: 18px;
+    padding: 8px 8px;
+    transition: all 0.5s;
+    color: rgb(55, 53, 47);
+    height: 26px;
+}
+
+.icon {
+    color: rgba(55, 53, 47, 0.37);
+    padding: 4px 8px;
+}
+
+.icon:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+.bar .title {
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: all 0.5s ease;
+}
+
+.bar .title:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+.sidebar {
+    /* position: fixed; */
+    margin-top: 42px;
+    transform: translateX(-440px);
+    width: 220px;
+    height: 100vh !important;
+    min-width: 220px;
+    max-width: 440px;
+    background: #fbfbfa;
+    /* transition: all 0.5s ease; */
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    color: #504f49;
+    font-size: 14;
+}
+
+.sidebarHead .sidebarHeadInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+}
+
+.sidebarHead .sidebarHeadInfo:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+    cursor: pointer;
+}
+
+.sidebarHeadInfo .userInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.sidebarHeadInfo .expandedUserInfo:hover {
+    width: 80%;
+}
+
+.sidebarHeadInfo .expand {
+    display: none;
+}
+
+.userInfo h4 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 120px;
+    font-weight: 450;
+}
+
+.userInfo span {
+    display: inline-block;
+    padding: 4px 7px;
+    border-radius: 2px;
+    background: #00897b;
+    color: rgb(172, 172, 172);
+    font-weight: 300;
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+.sidebarUnorder {
+    padding: 2px 6px;
+    font-size: 14px;
+}
+
+.sidebarUnorder .sidebarUnorderItem {
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+}
+
+.sidebarUnorderItem svg {
+    font-size: 18px;
+    width: 10%;
+}
+
+.sidebarUnorderItem span {
+    width: 90%;
+    white-space: nowrap;
+    min-width: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sidebarUnorderItem:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+.subjects {
+    padding: 2px 6px;
+    margin-top: 4px;
+}
+
+.subjects .subject {
+    margin-top: 16px;
+}
+
+.subject .subjectTitle {
+    display: inline;
+    padding: 2px 10px;
+    border-radius: 2px;
+}
+
+.subject .subjectTitle:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+.subject .subjectContent {
+    margin-top: 4px;
+    padding: 0;
+}
+
+.subjectContent ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+.subjectContent .subjectItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 3px;
+}
+
+.subjectContent .subjectItem:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+.sidebarContainer .subjectItem:hover .subjectOptions {
+    display: flex;
+}
+
+.sidebarContainer .subjectItem:hover .subjectSubTitle span {
+    width: 110px;
+}
+
+.subjectItem .subjectSubTitle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.subjectDropdown {
+    font-size: 18px;
+}
+
+.active {
+    color: red;
+}
+
+.subjectItem .subjectOptions {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    color: rgba(55, 53, 47, 0.6);
+}
+
+.subjectSubTitle span {
+    white-space: nowrap;
+    min-width: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 130px;
+}
+
+/* .subjectOptions .subjectOption,
+.subjectOptions .subjectMore {
+    padding: 1px;
+    border-radius: 2px;
+}
+
+.subjectOptions .subjectOption:hover,
+.subjectOptions .subjectMore:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+    cursor: pointer;
+}
+
+.subjectOptions .subjectMore:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+    cursor: pointer;
+} */
+
+.subjectIcon {
+    padding: 1px;
+    border-radius: 2px;
+}
+
+.subjectIcon:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+    cursor: pointer;
+}

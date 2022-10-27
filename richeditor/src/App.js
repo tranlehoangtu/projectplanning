@@ -12,12 +12,12 @@ const App = () => {
 export default App;
 
 // import React from "react";
-// import TodoList from "./Components/TodoList";
+// import SimpleDiv from "./Components/SimpleDiv";
 
 // const App = () => {
 //     return (
 //         <div>
-//             <TodoList />
+//             <SimpleDiv />
 //         </div>
 //     );
 // };

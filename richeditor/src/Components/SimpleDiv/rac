@@ -1,0 +1,10 @@
+<div className="toggle-button-container">
+                        {/* <div className="fabar-icon">
+                        </div>
+                        <div className="right-icon">
+                            <FaAngleDoubleRight className="icon" />
+                        </div> */}
+                    </div>
+                    <div>Getting Started</div>
+                    <div className="test">asdasd</div>
+                    <div>dhasmd</div>
