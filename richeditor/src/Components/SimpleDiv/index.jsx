@@ -3,8 +3,10 @@ import Subject from "./Subject";
 
 import {
     AiFillBug,
+    AiFillStar,
     AiOutlineClockCircle,
     AiOutlineDownload,
+    AiOutlineMessage,
     AiOutlineNotification,
     AiOutlineSearch,
     AiOutlineSetting,
@@ -16,9 +18,10 @@ import {
     FaExpand,
 } from "react-icons/fa";
 import { HiOutlineTemplate } from "react-icons/hi";
-import { BsTrash } from "react-icons/bs";
+import { BsThreeDots, BsTrash } from "react-icons/bs";
 
 import "./styles.css";
+import Modal from "./Modal";
 
 const favorites = [
     {
@@ -78,6 +81,7 @@ const SimpleDiv = () => {
     const [expand, setExpand] = useState(false);
     const [show, setShow] = useState(false);
     const [temp, setTemp] = useState(false);
+    const [modal, setModal] = useState(false);
 
     const changeBackground = () => {
         if (show && !expand) {
@@ -114,6 +118,8 @@ const SimpleDiv = () => {
         }
     };
 
+    console.log(modal);
+
     return (
         <div className="container" onMouseMove={handleMouseMove}>
             <div
@@ -135,20 +141,37 @@ const SimpleDiv = () => {
                         >
                             <div>
                                 <div className="user-info">
-                                    <div className="user-icon">T</div>
-                                    <div className="user-name">
-                                        Tran Le Hoang Tu Tran Le Hoang Tu
-                                    </div>
-                                    <div>
-                                        <FaExpand className="icon" />
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            gap: "8px",
+                                            padding: "8px 0px 8px 12px",
+                                            alignItems: "center",
+                                            fontSize: "14px",
+                                        }}
+                                        onClick={() => setModal(!modal)}
+                                    >
+                                        <div className="user-icon">T</div>
+                                        <div className="user-name">
+                                            <div style={{ color: "black" }}>
+                                                Tran Le Hoang Tu
+                                            </div>
+                                            <div style={{ fontSize: "11px" }}>
+                                                tub1805831@student.ctu.edu.vn
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <FaExpand className="icon" />
+                                        </div>
                                     </div>
                                     <div className="space-div"></div>
                                     <div className="fa-double-left-container">
                                         <FaAngleDoubleLeft
                                             onClick={handleClose}
-                                            className="icon fa-double-left"
+                                            className="icon"
                                         />
                                     </div>
+                                    {modal && <Modal setModal={setModal} />}
                                 </div>
                                 <div className="sidebar-settings">
                                     <div className="icon-container">
@@ -239,16 +262,33 @@ const SimpleDiv = () => {
                             <FaAngleDoubleRight className="fa-double-right" />
                         </div>
                     )}
-                    <div>Getting Started</div>
+                    <div className="button">Getting Started</div>
                     <div className="space-div"></div>
-                    <div>Share</div>
-                    <div>Message</div>
-                    <div>Clock</div>
-                    <div>Star</div>
-                    <div>Three Dot</div>
+                    <div className="button">Share</div>
+                    <div>
+                        <AiOutlineMessage className="icon" />
+                    </div>
+                    <div>
+                        <AiOutlineClockCircle className="icon" />
+                    </div>
+                    <div>
+                        <AiFillStar
+                            className="icon"
+                            style={{ color: "yellow" }}
+                        />
+                    </div>
+                    <div>
+                        <BsThreeDots className="icon" />
+                    </div>
                 </div>
                 <div className="editor-container">
-                    <h1>Editor</h1>
+                    <div
+                        style={{
+                            background: "red",
+                            height: "100%",
+                            width: "100%",
+                        }}
+                    ></div>
                 </div>
             </div>
         </div>

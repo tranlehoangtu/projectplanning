@@ -1,206 +1,293 @@
 import React, { useState } from "react";
-import {
-    FaBars,
-    FaAngleDoubleRight,
-    FaExpandAlt,
-    FaAngleDoubleLeft,
-    FaEllipsisH,
-    FaPlus,
-} from "react-icons/fa";
+import Subject from "./Subject";
 
 import {
+    AiFillBug,
+    AiFillStar,
     AiOutlineClockCircle,
+    AiOutlineDownload,
+    AiOutlineMessage,
+    AiOutlineNotification,
     AiOutlineSearch,
     AiOutlineSetting,
-    AiOutlineFileDone,
-    AiOutlineNotification,
-    AiFillBug,
 } from "react-icons/ai";
+import {
+    FaAngleDoubleLeft,
+    FaAngleDoubleRight,
+    FaBars,
+    FaExpand,
+} from "react-icons/fa";
+import { HiOutlineTemplate } from "react-icons/hi";
+import { BsThreeDots, BsTrash } from "react-icons/bs";
 
-import { MdKeyboardArrowRight } from "react-icons/md";
-import SubjectRender from "./SubjectRender";
-// import CustomBlockInline from "../CustomBlockInline";
-
-import styles from "./styles.module.css";
 import "./styles.css";
-import { ResizableBox } from "react-resizable";
 
 const favorites = [
     {
         id: 1,
-        name: "Getting Started",
-        mainIcon: <AiFillBug className={styles.subjectMainIcon} />,
+        name: "Getting StartedGetting",
+        mainIcon: <AiFillBug className="icon" />,
         childrens: [
             {
                 id: 1,
                 name: "Getting First",
-                mainIcon: (
-                    <AiOutlineNotification className={styles.subjectMainIcon} />
-                ),
+                mainIcon: <AiOutlineNotification className="icon" />,
                 childrens: [],
             },
             {
                 id: 2,
                 name: "Getting Second",
-                mainIcon: <AiFillBug className={styles.subjectMainIcon} />,
+                mainIcon: <AiFillBug className="icon" />,
                 childrens: [
                     {
                         id: 1,
                         name: "Getting Child First",
-                        mainIcon: (
-                            <AiOutlineNotification
-                                className={styles.subjectMainIcon}
-                            />
-                        ),
+                        mainIcon: <AiOutlineNotification className="icon" />,
                         childrens: [],
                     },
                     {
                         id: 2,
                         name: "Getting Child Second",
-                        mainIcon: (
-                            <AiFillBug className={styles.subjectMainIcon} />
-                        ),
+                        mainIcon: <AiFillBug className="icon" />,
                         childrens: [],
                     },
                 ],
             },
         ],
     },
+    {
+        id: 2,
+        name: "Getting Second",
+        mainIcon: <AiFillBug className="icon" />,
+        childrens: [
+            {
+                id: 1,
+                name: "Getting Child First",
+                mainIcon: <AiOutlineNotification className="icon" />,
+                childrens: [],
+            },
+            {
+                id: 2,
+                name: "Getting Child Second",
+                mainIcon: <AiFillBug className="icon" />,
+                childrens: [],
+            },
+        ],
+    },
 ];
 
 const Sidebar = () => {
-    const [expanded, setExpanded] = useState(false);
-    const [resizing, setResizing] = useState(false);
+    const [expand, setExpand] = useState(false);
+    const [show, setShow] = useState(false);
+    const [temp, setTemp] = useState(false);
+    const [modal, setModal] = useState(false);
+
+    const changeBackground = () => {
+        if (show && !expand) {
+            return {
+                transform: "translate(0, 40px)",
+                height: "calc(100vh - 40px)",
+            };
+        } else if (expand) {
+            return {
+                transform: "translate(0,0)",
+            };
+        }
+
+        return {
+            transform: "translate(-220px, 40px)",
+            height: "calc(100vh - 40px)",
+        };
+    };
+
+    const handleOpen = () => {
+        setExpand(true);
+        setTemp(true);
+    };
+
+    const handleClose = () => {
+        setShow(true);
+        setExpand(false);
+    };
+
+    const handleMouseMove = (props) => {
+        if (temp && !expand) {
+            setShow(false);
+            setTemp(false);
+        }
+    };
 
     return (
-        <>
-            <div className={styles.sidebarContainer}>
-                <div style={{ display: "flex" }}>
-                    <div className={styles.bar}>
-                        <div>
-                            <FaBars
-                                className={styles.icon}
-                                id={styles.barIcon}
-                            />
-                            <FaAngleDoubleRight
-                                className={styles.icon}
-                                id={styles.doubleRightIcon}
-                                onClick={() => setExpanded(true)}
-                            />
-                        </div>
-                        {/* <div
-                        className={styles.title}
-                        style={{
-                            marginLeft: expanded && `${width}px`,
-                        }}
-                    >
-                        Untitled
-                    </div> */}
-                    </div>
-                    {/* Working Here */}
-                    <ResizableBox
-                        width={220}
-                        height={200}
-                        axis="x"
-                        className={`${styles.sidebar} ${
-                            expanded ? styles.expandedSidebar : ""
-                        }`}
-                        onResizeStart={() => setResizing(true)}
-                        onResizeStop={() => setResizing(false)}
-                        // style={{ left: 0, top: 0 }}
-                        style={{
-                            marginTop: expanded && 0,
-                            transform: expanded && "translateX(0)",
-                            transition: resizing ? "" : "all 0.5s ease",
-                        }}
-                    >
-                        <div>
-                            <div className={styles.sidebarHead}>
-                                <div className={styles.sidebarHeadInfo}>
+        <div className="container" onMouseMove={handleMouseMove}>
+            <div
+                className="sidebar-container"
+                style={{
+                    width: expand ? "220px" : "0",
+                }}
+            >
+                <div
+                    style={{
+                        overflow: "hidden",
+                        height: expand ? "100vh" : "calc(100vh - 40px)",
+                    }}
+                >
+                    <div className="sidebar-absolute-container">
+                        <div
+                            className="sidebar"
+                            style={changeBackground(expand, show)}
+                        >
+                            <div>
+                                <div className="user-info">
                                     <div
-                                        className={`${styles.userInfo} ${
-                                            expanded
-                                                ? styles.expandedUserInfo
-                                                : ""
-                                        }`}
+                                        style={{
+                                            display: "flex",
+                                            gap: "8px",
+                                            padding: "8px 0px 8px 12px",
+                                            alignItems: "center",
+                                            fontSize: "14px",
+                                        }}
+                                        onClick={() => setModal(!modal)}
                                     >
-                                        <span>T</span>
-                                        <h4>Tran Le Hoang Tu</h4>
-                                        <FaExpandAlt className={styles.icon} />
+                                        <div className="user-icon">T</div>
+                                        <div className="user-name">
+                                            <div style={{ color: "black" }}>
+                                                Tran Le Hoang Tu
+                                            </div>
+                                            <div style={{ fontSize: "11px" }}>
+                                                tub1805831@student.ctu.edu.vn
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <FaExpand className="icon" />
+                                        </div>
                                     </div>
-                                    <FaAngleDoubleLeft
-                                        className={styles.icon}
-                                        id={styles.doubleLeftIcon}
-                                        onClick={() => setExpanded(false)}
-                                    />
+                                    <div className="space-div"></div>
+                                    <div className="fa-double-left-container">
+                                        <FaAngleDoubleLeft
+                                            onClick={handleClose}
+                                            className="icon"
+                                        />
+                                    </div>
                                 </div>
-                                <div className={styles.sidebarUnorder}>
-                                    <div className={styles.sidebarUnorderItem}>
-                                        <AiOutlineSearch />
+                                <div className="sidebar-settings">
+                                    <div className="icon-container">
+                                        <AiOutlineSearch className="icon" />
                                         <span>Search</span>
                                     </div>
-                                    <div className={styles.sidebarUnorderItem}>
-                                        <AiOutlineClockCircle />
+                                    <div className="icon-container">
+                                        <AiOutlineClockCircle className="icon" />
                                         <span>Updates</span>
                                     </div>
-                                    <div className={styles.sidebarUnorderItem}>
-                                        <AiOutlineSetting />
+                                    <div className="icon-container">
+                                        <AiOutlineSetting className="icon" />
                                         <span>Settings & Members Settings</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className={styles.subjects}>
-                                <div className={styles.subject}>
-                                    <h5 className={styles.subjectTitle}>
+                            <div className="subject-container">
+                                <div className="subject">
+                                    <div className="subject-title">
                                         Favorites
-                                    </h5>
-                                    <div className={styles.subjectContent}>
-                                        {favorites.map((favor) => (
-                                            <SubjectRender
-                                                favor={favor}
+                                    </div>
+                                    {favorites.map((favor) => {
+                                        return (
+                                            <Subject
                                                 key={favor.id}
+                                                favor={favor}
                                             />
-                                        ))}
-                                        <div className={styles.subjectItem}>
-                                            <div
-                                                className={
-                                                    styles.subjectSubTitle
-                                                }
-                                            >
-                                                <MdKeyboardArrowRight
-                                                    className={`${styles.subjectIcon} ${styles.subjectDropdown}`}
-                                                />
-                                                <AiOutlineFileDone
-                                                    className={
-                                                        styles.subjectMainIcon
-                                                    }
-                                                />
-                                                <span>Reading List</span>
-                                            </div>
-                                            <div
-                                                className={
-                                                    styles.subjectOptions
-                                                }
-                                            >
-                                                <FaEllipsisH
-                                                    className={`${styles.subjectIcon} ${styles.subjectOption}`}
-                                                />
-                                                <FaPlus
-                                                    className={`${styles.subjectIcon} ${styles.subjectMore}`}
-                                                />
-                                            </div>
-                                        </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                            <div className="subject-container">
+                                <div className="subject">
+                                    <div className="subject-title">Private</div>
+                                    {favorites.map((favor) => {
+                                        return (
+                                            <Subject
+                                                key={favor.id}
+                                                favor={favor}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                            <div style={{ marginTop: "20px" }}>
+                                <div className="sidebar-settings">
+                                    <div className="icon-container">
+                                        <HiOutlineTemplate className="icon" />
+                                        <span>Search</span>
+                                    </div>
+                                    <div className="icon-container">
+                                        <AiOutlineDownload className="icon" />
+                                        <span>Updates</span>
+                                    </div>
+                                    <div className="icon-container">
+                                        <BsTrash className="icon" />
+                                        <span>Settings & Members Settings</span>
                                     </div>
                                 </div>
                             </div>
+
+                            <div style={{ color: "red", marginTop: "40px" }}>
+                                Side left
+                            </div>
                         </div>
-                    </ResizableBox>
-                    <div>
-                        <h1>Untitled</h1>
                     </div>
                 </div>
             </div>
-        </>
+            <div className="content-container">
+                <div className="topbar-container" onClick={handleOpen}>
+                    {!expand && (
+                        <div
+                            className="toggle-button-container"
+                            onMouseEnter={() => {
+                                if (temp) {
+                                    return;
+                                }
+                                setShow(true);
+                            }}
+                            onMouseLeave={() => {
+                                if (temp) {
+                                    return;
+                                }
+                                setShow(false);
+                            }}
+                        >
+                            <FaBars className="fa-bar-icon" />
+                            <FaAngleDoubleRight className="fa-double-right" />
+                        </div>
+                    )}
+                    <div className="button">Getting Started</div>
+                    <div className="space-div"></div>
+                    <div className="button">Share</div>
+                    <div>
+                        <AiOutlineMessage className="icon" />
+                    </div>
+                    <div>
+                        <AiOutlineClockCircle className="icon" />
+                    </div>
+                    <div>
+                        <AiFillStar
+                            className="icon"
+                            style={{ color: "yellow" }}
+                        />
+                    </div>
+                    <div>
+                        <BsThreeDots className="icon" />
+                    </div>
+                </div>
+                <div className="editor-container">
+                    <div
+                        style={{
+                            background: "red",
+                            height: "100%",
+                            width: "100%",
+                        }}
+                    ></div>
+                </div>
+            </div>
+        </div>
     );
 };
 

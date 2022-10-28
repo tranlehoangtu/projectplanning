@@ -1,15 +1,315 @@
-.react-resizable-handle {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    top: 0;
-    right: 0;
-    box-sizing: border-box;
-    cursor: col-resize;
-    background-color: #ccc;
-    transition: all 0.5s;
+.button {
+    padding: 4px;
+    border-radius: 2px;
 }
 
-.react-resizable-handle:hover {
-    background-color: rgb(70, 70, 70, 0.6);
+.button:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+    display: block;
+    padding: 4px;
+    border-radius: 2px;
+}
+
+.icon:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.space-div {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar-container {
+    /* border-right: 3px solid grey; */
+    width: 220px;
+    height: 100vh;
+    max-height: 100vh;
+    color: rgba(25, 23, 17, 0.6);
+    font-weight: 500;
+    transition: all 0.5s ease;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.sidebar-absolute-container {
+    position: absolute;
+    width: 0;
+}
+
+.sidebar {
+    font-size: 14px;
+    transition: all 0.5s ease;
+    width: 220px;
+    height: 100vh;
+    max-height: 100vh;
+    background-color: #fbfbfa;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.content-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.content-container .topbar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    height: 45px;
+    font-size: 14px;
+}
+
+.toggle-button-container {
+    padding: 12px;
+    margin-left: -12px;
+    cursor: pointer;
+}
+
+.toggle-button-container:hover .fa-bar-icon {
+    display: none;
+}
+
+.toggle-button-container:hover .fa-double-right {
+    display: block;
+}
+
+.fa-bar-icon {
+    display: block;
+}
+
+.fa-double-right {
+    display: none;
+}
+
+.test {
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+.editor-container {
+    background-color: lavenderblush;
+    flex: 1;
+    padding: 0 300px;
+}
+
+.user-info {
+    position: relative;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 14px;
+    padding-right: 12px;
+    border-radius: 2px;
+}
+
+.user-info:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.user-info .user-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px;
+    font-size: 12px;
+    border-radius: 2px;
+    color: #ccc;
+    background-color: #00897b;
+}
+.sidebar:hover .fa-double-left {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar:hover .fa-double-left-container {
+    width: 22px;
+    z-index: 10000;
+}
+
+.user-info .user-name {
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 110px;
+    font-weight: 450;
+}
+
+.user-info .fa-double-left {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.2s;
+}
+
+.fa-double-left-container {
+    width: 0;
+    transition: all 0.2s;
+    overflow: hidden;
+}
+
+.sidebar-settings {
+    padding: 0 4px;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 2px;
+}
+
+.icon-container:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.icon-container svg {
+    font-size: 16px;
+}
+
+.icon-container span {
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.subject-container {
+    margin-top: 20px;
+    align-items: center;
+    padding: 0 4px;
+    font-size: 13px;
+}
+
+.subject ul {
+    list-style: none;
+    margin-left: -32px;
+}
+
+.subject-title {
+    font-size: 11px;
+    display: inline-block;
+    padding: 1px 3px;
+    border-radius: 2px;
+    margin-left: 8px;
+    margin-bottom: 6px;
+}
+
+.subject-title:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.subject-item {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    border-radius: 2px;
+}
+
+.subject-item:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.subject-item span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 70%;
+}
+
+.options-container {
+    display: none;
+    align-items: center;
+}
+
+.subject-item:hover span {
+    width: 50%;
+}
+
+.subject-item:hover .options-container {
+    display: flex;
+}
+
+.user-info-absolute {
+    position: absolute;
+    background-color: white;
+    top: 0;
+    left: 0;
+    transform: translate(12px, 42px);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    z-index: 100;
+    white-space: nowrap;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
+}
+
+.user-info-absolute-name {
+    color: rgba(25, 23, 17, 0.6);
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.user-info-absolute-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 4px 12px;
+}
+
+.user-info-absolute-detail:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.user-info-absolute-icon {
+    padding: 4px 10px;
+    background-color: #00897b;
+    color: #ccc;
+    font-size: 16px;
+    border-radius: 2px;
+}
+
+.divider {
+    padding-top: 10px;
+}
+
+.divider span {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.user-info-absolute-options {
+    background-color: #fbfbfa;
+    padding: 4px 4px;
+}
+
+.option {
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 2px;
+}
+
+.option:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }

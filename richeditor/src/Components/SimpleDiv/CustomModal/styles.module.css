@@ -1,0 +1,75 @@
+/* color: #b9b8b6; */
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    color: #b9b8b6;
+}
+
+.inputContainer input[type="text"] {
+    flex: 1;
+    border: none;
+    font-size: 16px;
+}
+
+.inputContainer input[type="text"]:focus {
+    outline: none;
+}
+
+.customButton {
+    display: block;
+    font-size: 26px;
+    padding: 4px;
+}
+
+.customButtonHover:hover {
+    color: rgba(25, 23, 17, 0.6);
+    cursor: pointer;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+}
+
+.divider span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+}
+
+.searchOptions {
+    display: flex;
+    align-items: center;
+    color: #b9b8b6;
+    font-size: 14px;
+    padding: 8px 10px;
+    gap: 6px;
+}
+
+.searchOptions .option {
+    display: flex;
+    align-content: center;
+    padding: 4px 8px;
+    border: 1px solid grey;
+    border-radius: 32px;
+    gap: 4px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.option:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.searchOptions .active {
+    color: #2383e2;
+    border: 1px solid #2383e2;
+}
+
+.button {
+    display: block;
+}
