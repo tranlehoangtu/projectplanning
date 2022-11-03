@@ -1,6 +1,8 @@
 import { RichUtils } from "draft-js";
 import React from "react";
 
+import inlineStyles from "../InlineStyle/inlineStyles.module.css";
+
 const StyledBlockQuote = (props) => {
     const { getEditorState, setEditorState } = props;
 
@@ -14,10 +16,10 @@ const StyledBlockQuote = (props) => {
         <div onMouseDown={onMouseDown} className="button-wrapper">
             <button
                 onClick={onClick}
-                className={`button ${
+                className={`${inlineStyles.button} ${
                     getEditorState()
                         .getCurrentInlineStyle()
-                        .has("blockquote") && "active"
+                        .has("blockquote") && inlineStyles.active
                 }`}
             >
                 {`<>`}

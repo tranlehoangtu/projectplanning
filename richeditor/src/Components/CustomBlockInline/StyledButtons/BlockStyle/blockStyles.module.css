@@ -3,6 +3,8 @@
     display: inline-block;
     background: inherit;
     padding: none;
+    outline: none;
+    border: none;
 }
 
 .container .containerTitle {
@@ -10,7 +12,7 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 4px 10px;
+    padding: 1px 10px;
     height: 100%;
     border-right: 0.2px;
     box-shadow: rgba(55, 53, 47, 0.09);

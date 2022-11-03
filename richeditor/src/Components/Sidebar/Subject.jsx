@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaEllipsisH, FaPlus } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
+import sidebar from "./sidebar.module.css";
+
 const Subject = (props) => {
     const { favor } = props;
     const [dropdown, setDropdown] = useState(false);
@@ -12,7 +14,7 @@ const Subject = (props) => {
 
     return (
         <>
-            <div className="subject-item">
+            <div className={sidebar.subjectItem}>
                 <MdKeyboardArrowRight
                     className="icon"
                     onClick={handleDropDownClick}
@@ -22,7 +24,7 @@ const Subject = (props) => {
                 {/* <AiOutlineFileDone className="icon" /> */}
                 <span>{favor.name}</span>
                 <div className="space-div"></div>
-                <div className="options-container">
+                <div className={sidebar.optionsContainer}>
                     <FaEllipsisH className="icon" />
                     <FaPlus className="icon" />
                 </div>

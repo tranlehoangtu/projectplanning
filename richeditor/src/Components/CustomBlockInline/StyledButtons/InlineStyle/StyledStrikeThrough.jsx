@@ -1,5 +1,7 @@
 import { RichUtils } from "draft-js";
 
+import inlineStyles from "./inlineStyles.module.css";
+
 const StyledStrikeThrough = (props) => {
     const { getEditorState, setEditorState } = props;
 
@@ -12,13 +14,13 @@ const StyledStrikeThrough = (props) => {
     };
 
     return (
-        <div onMouseDown={onMouseDown} className="button-wrapper">
+        <div onMouseDown={onMouseDown} className={inlineStyles.buttonWrapper}>
             <button
                 onClick={onClick}
-                className={`button ${
+                className={`${inlineStyles.button} ${
                     getEditorState()
                         .getCurrentInlineStyle()
-                        .has("STRIKETHROUGH") && "active"
+                        .has("STRIKETHROUGH") && inlineStyles.active
                 }`}
                 style={{ textDecoration: "line-through" }}
             >

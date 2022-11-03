@@ -1,5 +1,7 @@
 import { RichUtils } from "draft-js";
 
+import inlineStyles from "./inlineStyles.module.css";
+
 const StyledItalic = (props) => {
     const { getEditorState, setEditorState } = props;
 
@@ -10,12 +12,12 @@ const StyledItalic = (props) => {
     };
 
     return (
-        <div onMouseDown={onMouseDown} className="button-wrapper">
+        <div onMouseDown={onMouseDown} className={inlineStyles.buttonWrapper}>
             <button
                 onClick={onClick}
-                className={`button ${
+                className={`${inlineStyles.button} ${
                     getEditorState().getCurrentInlineStyle().has("ITALIC") &&
-                    "active"
+                    inlineStyles.active
                 }`}
                 style={{
                     fontStyle: "italic",

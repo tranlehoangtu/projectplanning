@@ -1,0 +1,15 @@
+.button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    padding: 4px 10px;
+}
+
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.active {
+    color: rgb(35, 131, 226);
+}

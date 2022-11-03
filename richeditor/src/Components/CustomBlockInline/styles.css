@@ -19,3 +19,12 @@
     position: sticky;
     position: -webkit-sticky;
 }
+
+.tukdd6b {
+    display: flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    font-size: 14px;
+}

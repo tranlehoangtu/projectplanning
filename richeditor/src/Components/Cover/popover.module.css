@@ -1,0 +1,92 @@
+/*     color: rgba(25, 23, 17, 0.6); */
+
+.popoverContainer {
+    color: rgba(25, 23, 17, 0.6);
+    font-size: 12px;
+    position: relative;
+    background-color: #fff;
+    border-radius: 2px;
+    z-index: 10000;
+}
+
+.popoverContainer .popoverName {
+    padding: 4px 6px;
+    border-radius: 2px;
+}
+
+.popoverContainer .popoverName:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.popoverContainer .popoverContent {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border-radius: 2px;
+    width: 524px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.popoverContainer .options {
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    padding: 4px 6px;
+    border-bottom: 1px solid grey;
+}
+
+.options .option {
+    padding: 4px 6px;
+    position: relative;
+}
+
+.options .option:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.options .active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 5px);
+    width: 80%;
+    height: 2px;
+    background-color: black;
+}
+
+.popoverContentOption {
+    padding: 10px;
+}
+
+.popoverImageContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.popoverImageContainer .popoverImage {
+    /* display: block;
+    object-fit: cover;
+    border-radius: 3px;
+    width: 100%;
+    height: 64px;
+    object-position: center 60%; */
+    margin-bottom: -4px;
+    width: 120px;
+    height: 64px;
+    border-radius: 4px;
+}
+
+.popoverImage:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.popoverContentTitle {
+    padding: 0px 0px 10px 0;
+}
