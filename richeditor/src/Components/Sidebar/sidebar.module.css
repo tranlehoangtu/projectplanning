@@ -387,3 +387,29 @@
     height: 100%;
     /* background: url(/public/Images/Icon/icons.png) 0% 1.6949% / 5900% 5900%; */
 }
+
+.ellipsis {
+    position: relative;
+}
+
+.ellipsisA {
+    position: absolute;
+    bottom: 0;
+    background-color: #fff;
+    min-width: 240px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transform: translateY(100%);
+    border-radius: 4px;
+    padding: 4px 6px;
+}
+.ellipsisAOption {
+    padding: 6px 4px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ellipsisAOption:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}

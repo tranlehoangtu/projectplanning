@@ -1,0 +1,165 @@
+/* #f7f7f7 */
+/* #fc00ff */
+/* rgba(25, 23, 17, 0.4); */
+
+.container {
+    width: 100vw;
+    height: 100vh;
+
+    background: url(/public/Images/background/bg-01.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .formContainer {
+    min-width: 400px;
+    min-height: 600px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 30px;
+    border-radius: 4px;
+}
+
+.formContainer .title {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 36px;
+    font-weight: 600;
+    color: rgba(25, 23, 17, 0.6);
+}
+
+.title .message {
+    font-size: 14px;
+    text-align: center;
+    color: red;
+    transition: all 0.5s ease;
+}
+
+.formContainer .textfield {
+    width: 100%;
+    margin-bottom: 14px;
+}
+
+.textfield .textfieldLabel {
+    position: relative;
+    margin-bottom: 6px;
+    transition: all 0.2s ease;
+}
+
+.textfield .textfieldLabel span {
+    transition: all 0.5s ease;
+    display: block;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: 600;
+}
+
+.textfieldLabel .error {
+    color: red;
+    position: absolute;
+    top: 24px;
+    transition: all 0.5s ease;
+    pointer-events: none;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.textfield .textfieldInput {
+    position: relative;
+}
+
+.textfield .textfieldInput input {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: #f7f7f7;
+    width: 100%;
+    padding: 10px 20px;
+    line-height: 30px;
+}
+
+.textfield .textfieldInput span {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
+    border: 1px solid #fc00ff;
+    border-radius: 2px;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.textfield .textfieldInput input:focus ~ span {
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 1;
+}
+
+.textfieldInput .visibility {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.textfieldInput .visibility svg {
+    display: block;
+    transition: all 0.5s ease;
+}
+
+.textfieldInput .visibility svg:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.formContainer .button {
+    width: 100%;
+    border-radius: 2px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.formContainer .button button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 100%;
+    padding: 10px;
+    border-radius: 2px;
+    background-color: #333333;
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.formContainer .button button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.formContainer .notify {
+    color: #999;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+.formContainer .notify a {
+    color: #999;
+    transition: all 0.5s;
+    margin-left: 4px;
+}
+
+.formContainer .notify a:hover {
+    color: #fc00ff;
+}

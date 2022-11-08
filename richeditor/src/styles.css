@@ -1,26 +1,32 @@
-.image-container {
-    display: flex;
-}
-/* 54.2373% 88.1356% / 6000% 6000%; */
-/* 54.2373% 89.8305% / 6000% 6000%; */
-/* 1.6949 */
-
-.image-div-container {
+.focus-container {
+    background-color: lavenderblush;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: red;
 }
 
-.image {
-    width: 50px;
-    height: 50px;
-    background: url(/public/Images/logos/icons.jpg) 0% 7.1% / 1500%;
+.focus-div {
+    position: relative;
+}
+.focus-div .focus-span {
+    display: block;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
+    opacity: 0;
+    transition: all 0.2s ease;
+    border: 1px solid red;
+    pointer-events: none;
 }
 
-.temp {
-    width: 30px;
-    height: 30px;
-    /* background: url(http://localhost:3000/static/media/twitter-emoji-spritesheet-64.d3a69865.8a29d4aa5e2a360dfa84.png); */
-    background-color: red;
+.focus-input:focus ~ .focus-span {
+    opacity: 1;
+    top: -4px;
+    right: -4px;
+    bottom: -4px;
+    left: -4px;
 }

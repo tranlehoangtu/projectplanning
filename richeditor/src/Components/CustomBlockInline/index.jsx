@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Editor from "@draft-js-plugins/editor";
 import createInlineToolbarPlugin from "@draft-js-plugins/inline-toolbar";
 import {
@@ -13,7 +13,7 @@ import {
 import "../../../node_modules/@draft-js-plugins/inline-toolbar/lib/plugin.css";
 import "./styles.css";
 import blockStyles from "./blockStyles.module.css";
-import { EditorState } from "draft-js";
+import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import StyledTodoBlock from "./StyledButtons/BlockStyle/StyledTodoBlock";
 
 import styled from "./styled.module.css";
@@ -47,7 +47,9 @@ const myBlockStyleFn = (contentBlock) => {
     if (blockType) return blockType.style;
 };
 
-const CustomBlockInline = () => {
+const CustomBlockInline = (props) => {
+    const { state, handleSaveClicked } = props;
+
     const [plugins, InlineToolbar] = useMemo(() => {
         const inlineToolbarPlugin = createInlineToolbarPlugin();
         return [[inlineToolbarPlugin], inlineToolbarPlugin.InlineToolbar];
@@ -59,52 +61,69 @@ const CustomBlockInline = () => {
 
     const editorRef = useRef(null);
 
+    useEffect(() => {
+        if (state)
+            setEditorState(
+                EditorState.createWithContent(convertFromRaw(state))
+            );
+    }, [state]);
+
     const onChange = (value) => {
         setEditorState(value);
     };
 
     return (
-        <div
-            className={styled.container}
-            onClick={() => {
-                console.log("click");
-                editorRef.current.focus();
-            }}
-        >
-            <div className={styled.editor}>
-                <Editor
-                    editorKey="CustomBlockInline"
-                    editorState={editorState}
-                    onChange={onChange}
-                    blockStyleFn={myBlockStyleFn}
-                    blockRendererFn={(contentBlock) =>
-                        myBlockRenderer(
-                            contentBlock,
-                            editorState,
-                            setEditorState
-                        )
-                    }
-                    plugins={plugins}
-                    ref={(element) => {
-                        editorRef.current = element;
-                    }}
-                />
-                <InlineToolbar
-                    style={{ padding: 0, margin: 0, whiteSpace: "nowrap" }}
-                >
-                    {(externalProps) => (
-                        <>
-                            <StyledText {...externalProps} />
-                            <StyledBold {...externalProps} />
-                            <StyledItalic {...externalProps} />
-                            <StyledUnderline {...externalProps} />
-                            <StyledStrikeThrough {...externalProps} />
-                            <StyledBlockQuote {...externalProps} />
-                        </>
-                    )}
-                </InlineToolbar>
+        <>
+            <button
+                onClick={() =>
+                    handleSaveClicked(
+                        convertToRaw(editorState.getCurrentContent())
+                    )
+                }
+            >
+                Save
+            </button>
+            <div
+                className={styled.container}
+                onClick={() => {
+                    editorRef.current.focus();
+                }}
+            >
+                <div className={styled.editor}>
+                    <Editor
+                        editorKey="CustomBlockInline"
+                        editorState={editorState}
+                        onChange={onChange}
+                        blockStyleFn={myBlockStyleFn}
+                        blockRendererFn={(contentBlock) =>
+                            myBlockRenderer(
+                                contentBlock,
+                                editorState,
+                                setEditorState
+                            )
+                        }
+                        plugins={plugins}
+                        ref={(element) => {
+                            editorRef.current = element;
+                        }}
+                    />
+                    <InlineToolbar
+                        style={{ padding: 0, margin: 0, whiteSpace: "nowrap" }}
+                    >
+                        {(externalProps) => (
+                            <>
+                                <StyledText {...externalProps} />
+                                <StyledBold {...externalProps} />
+                                <StyledItalic {...externalProps} />
+                                <StyledUnderline {...externalProps} />
+                                <StyledStrikeThrough {...externalProps} />
+                                <StyledBlockQuote {...externalProps} />
+                            </>
+                        )}
+                    </InlineToolbar>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

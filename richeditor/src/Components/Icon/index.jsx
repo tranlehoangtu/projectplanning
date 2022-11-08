@@ -60,9 +60,6 @@ const Icon = (props) => {
         }));
     };
 
-    console.log(values.icons);
-    console.log(values.emojis);
-
     return (
         <div className={icon.iconAbsoluteWrapper} ref={ref}>
             <div
@@ -134,7 +131,7 @@ const Icon = (props) => {
                             </span>
                         </div>
                     </div>
-                    {values.selected === 1 && (
+                    {values.selected === "6369372c983b686842790c12" && (
                         <div className={icon.logoContainer}>
                             {values.emojis.content.map((emoji) => {
                                 if (emoji.content.length > 0) {
@@ -193,7 +190,7 @@ const Icon = (props) => {
                             })}
                         </div>
                     )}
-                    {values.selected === 2 && (
+                    {values.selected === "636938db983b686842790c18" && (
                         <div className={icon.logoContainer}>
                             {values.icons.content.map((iconItem) => {
                                 if (iconItem.content.length > 0) {
