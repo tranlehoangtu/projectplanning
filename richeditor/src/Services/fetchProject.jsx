@@ -16,4 +16,10 @@ const saveProject = async (project) => {
     });
 };
 
-export { getProjectsByUserId, createProject, saveProject };
+const deleteProject = async (projectId) => {
+    return await axios.delete(
+        `http://localhost:8080/api/v1/project/delete/${projectId}`
+    );
+};
+
+export { getProjectsByUserId, createProject, saveProject, deleteProject };

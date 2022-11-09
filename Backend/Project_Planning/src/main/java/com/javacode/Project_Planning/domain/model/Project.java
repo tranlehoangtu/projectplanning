@@ -22,5 +22,5 @@ public class Project {
 	
 	private State state;
 	
-	
+	private boolean trashed = false;
 }

@@ -10,4 +10,5 @@ import com.javacode.Project_Planning.domain.model.Project;
 @Repository
 public interface ProjectRepository extends MongoRepository<Project, String> {
 	List<Project> findByUserId(String userId);
+	List<Project> findByParrent(String parrent);
 }

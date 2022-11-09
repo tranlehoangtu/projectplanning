@@ -34,4 +34,13 @@ public class ProjectService {
 	public List<Project> findByUserId(String userId) {
 		return projectRepository.findByUserId(userId);
 	}
+
+	public List<Project> findByParent(String parent) {
+		return projectRepository.findByParrent(parent);
+	}
+
+	public void delete(Project entity) {
+		projectRepository.delete(entity);
+	}
+
 }

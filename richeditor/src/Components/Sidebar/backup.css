@@ -1,34 +1,8 @@
-.button {
-    padding: 4px;
-    border-radius: 2px;
-}
-
-.button:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.icon {
-    display: block;
-    padding: 4px;
-    border-radius: 2px;
-}
-
-.icon:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.space-div {
-    flex-grow: 1;
-    flex-shrink: 1;
-}
-
 .container {
     display: flex;
 }
 
-.sidebar-container {
+.sidebarContainer {
     /* border-right: 3px solid grey; */
     width: 220px;
     height: 100vh;
@@ -39,7 +13,7 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-.sidebar-absolute-container {
+.sidebarAbsoluteContainer {
     position: absolute;
     width: 0;
 }
@@ -54,14 +28,14 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-.content-container {
+.contentContainer {
     flex: 1;
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
-.content-container .topbar-container {
+.contentContainer .topbarContainer {
     position: relative;
     display: flex;
     align-items: center;
@@ -70,40 +44,29 @@
     font-size: 14px;
 }
 
-.toggle-button-container {
+.toggleButtonContainer {
     padding: 12px;
     margin-left: -12px;
     cursor: pointer;
 }
 
-.toggle-button-container:hover .fa-bar-icon {
+.toggleButtonContainer:hover .faBarIcon {
     display: none;
 }
 
-.toggle-button-container:hover .fa-double-right {
+.toggleButtonContainer:hover .faDoubleRight {
     display: block;
 }
 
-.fa-bar-icon {
+.faBarIcon {
     display: block;
 }
 
-.fa-double-right {
+.faDoubleRight {
     display: none;
 }
 
-.test {
-    flex-shrink: 1;
-    flex-grow: 1;
-}
-
-.editor-container {
-    background-color: lavenderblush;
-    flex: 1;
-    padding: 0 300px;
-}
-
-.user-info {
+.userInfo {
     position: relative;
     display: flex;
     gap: 4px;
@@ -113,12 +76,12 @@
     border-radius: 2px;
 }
 
-.user-info:hover {
+.userInfo:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.user-info .user-icon {
+.userInfo .userIcon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,17 +91,17 @@
     color: #ccc;
     background-color: #00897b;
 }
-.sidebar:hover .fa-double-left {
+.sidebar:hover .faDoubleLeft {
     opacity: 1;
     transform: translateX(0);
 }
 
-.sidebar:hover .fa-double-left-container {
+.sidebar:hover .faDoubleLeftContainer {
     width: 22px;
     z-index: 10000;
 }
 
-.user-info .user-name {
+.userInfo .username {
     font-size: 12px;
     overflow: hidden;
     white-space: nowrap;
@@ -147,46 +110,46 @@
     font-weight: 450;
 }
 
-.user-info .fa-double-left {
+.userInfo .faDoubleLeft {
     opacity: 0;
     transform: translateX(20px);
     transition: all 0.2s;
 }
 
-.fa-double-left-container {
+.faDoubleLeftContainer {
     width: 0;
     transition: all 0.2s;
     overflow: hidden;
 }
 
-.sidebar-settings {
+.sidebarSettings {
     padding: 0 4px;
 }
 
-.icon-container {
+.iconContainer {
     display: flex;
     align-items: center;
     padding: 2px 8px;
     border-radius: 2px;
 }
 
-.icon-container:hover {
+.iconContainer:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.icon-container svg {
-    font-size: 16px;
+.iconContainer svg {
+    font-size: 22px;
 }
 
-.icon-container span {
+.iconContainer span {
     font-size: 12px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-.subject-container {
+.subjectContainer {
     margin-top: 20px;
     align-items: center;
     padding: 0 4px;
@@ -198,7 +161,7 @@
     margin-left: -32px;
 }
 
-.subject-title {
+.subjectTitle {
     font-size: 11px;
     display: inline-block;
     padding: 1px 3px;
@@ -207,44 +170,44 @@
     margin-bottom: 6px;
 }
 
-.subject-title:hover {
+.subjectTitle:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.subject-item {
+.subjectItem {
     display: flex;
     align-items: center;
     padding: 0 8px;
     border-radius: 2px;
 }
 
-.subject-item:hover {
+.subjectItem:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.subject-item span {
+.subjectItem span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 70%;
 }
 
-.options-container {
+.optionsContainer {
     display: none;
     align-items: center;
 }
 
-.subject-item:hover span {
+.subjectItem:hover span {
     width: 50%;
 }
 
-.subject-item:hover .options-container {
+.subjectItem:hover .optionsContainer {
     display: flex;
 }
 
-.user-info-absolute {
+.userInfoAbsolute {
     position: absolute;
     background-color: white;
     top: 0;
@@ -259,7 +222,7 @@
     min-width: 280px;
 }
 
-.user-info-absolute-name {
+.userInfoAbsoluteName {
     color: rgba(25, 23, 17, 0.6);
     display: flex;
     align-items: center;
@@ -268,7 +231,7 @@
     font-weight: 500;
 }
 
-.user-info-absolute-detail {
+.userInfoAbsoluteDetail {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -276,11 +239,11 @@
     padding: 4px 12px;
 }
 
-.user-info-absolute-detail:hover {
+.userInfoAbsoluteDetail:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.user-info-absolute-icon {
+.userInfoAbsoluteIcon {
     padding: 4px 10px;
     background-color: #00897b;
     color: #ccc;
@@ -288,18 +251,7 @@
     border-radius: 2px;
 }
 
-.divider {
-    padding-top: 10px;
-}
-
-.divider span {
-    display: block;
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
-}
-
-.user-info-absolute-options {
+.userInfoAbsoluteOptions {
     background-color: #fbfbfa;
     padding: 4px 4px;
 }
@@ -311,5 +263,153 @@
 }
 
 .option:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.editorContainer {
+    flex: 1;
+    transition: all 0.5s ease;
+    overflow-y: scroll;
+}
+
+.editorContainer .editorCoverContainer {
+    width: 100%;
+    position: relative;
+}
+
+.editorCoverContainer .sidebarImage {
+    display: block;
+    object-fit: cover;
+    border-radius: 0px;
+    width: 100%;
+    height: 20vh;
+    opacity: 0;
+    object-position: center 40%;
+    transition: all 0.5s ease;
+}
+
+.editorCoverOptions {
+    opacity: 0;
+    position: absolute;
+    right: 30%;
+    bottom: 10%;
+}
+
+.editorCoverContainer .sidebarImage:hover ~ .editorCoverOptions {
+    opacity: 1;
+}
+
+.editorCoverOptions:hover {
+    opacity: 1;
+}
+
+.editorWrapper {
+    transition: all 0.5s ease;
+}
+
+.editorCover {
+    width: 100%;
+    height: 220px;
+    position: relative;
+}
+
+.editorInput {
+    outline: none;
+    border: none;
+    background: transparent;
+    font-size: 40px;
+}
+
+.editorTitle {
+    width: 100%;
+    margin-top: 30px;
+    margin-left: 300px;
+    position: relative;
+}
+
+.editorTitleOptions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(-110%);
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    transition: all 0.2s ease;
+    width: 100%;
+    color: rgba(25, 23, 17, 0.6);
+    font-size: 14px;
+}
+
+.editorTitleOptions:hover {
+    opacity: 1;
+}
+
+.iconWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    border-radius: 4px;
+    gap: 4px;
+}
+
+.iconWrapper:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.editorIconContainer {
+    margin-left: 300px;
+    position: relative;
+    width: 78px;
+    height: 20px;
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.activateAb:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.editorIconAb {
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+    width: 78px;
+    height: 78px;
+    /* background-color: black; */
+}
+
+.editorIcon {
+    width: 100%;
+    height: 100%;
+    /* background: url(/public/Images/Icon/icons.png) 0% 1.6949% / 5900% 5900%; */
+}
+
+.ellipsis {
+    position: relative;
+}
+
+.ellipsisA {
+    position: absolute;
+    bottom: 0;
+    background-color: #fff;
+    min-width: 240px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transform: translateY(100%);
+    border-radius: 4px;
+    padding: 4px 6px;
+}
+.ellipsisAOption {
+    padding: 6px 4px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ellipsisAOption:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }

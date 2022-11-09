@@ -1,9 +1,12 @@
 package com.javacode.Project_Planning.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +31,10 @@ public class ProjectController {
 	@GetMapping("/project/{id}")
 	public List<Project> getProjectsByUserId(@PathVariable(value = "id") String userId) {
 
-		return service.findByUserId(userId);
+		List<Project> projects = service.findByUserId(userId).stream().filter(project -> !project.isTrashed())
+				.collect(Collectors.toList());
+
+		return projects;
 	}
 
 	@PostMapping("/project/create")
@@ -52,9 +58,25 @@ public class ProjectController {
 		return null;
 	}
 
-//	@GetMapping("/project/{id}")
-//	public Project getProjectById(@PathVariable(value = "id") String projectId) {
-//		return service.findById(projectId).get();
-//	}
+	@DeleteMapping("/project/delete/{id}")
+	public ResponseEntity<List<Project>> deleteProject(@PathVariable(value = "id") String projectId) {
 
+		List<Project> deletedProjects = new ArrayList<>();
+		
+		service.findByParent(projectId).forEach(project -> {
+			project.setTrashed(true);
+			service.save(project);
+			
+			deletedProjects.add(project);
+		});
+
+		Project project = service.findById(projectId).get();
+		project.setTrashed(true);
+		
+		deletedProjects.add(project);
+
+		service.save(project);
+
+		return ResponseEntity.ok(deletedProjects);
+	}
 }
