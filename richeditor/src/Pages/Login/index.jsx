@@ -16,11 +16,13 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         loginFunction({
             email: values.email,
             password: values.password,
         }).then((res) => {
             const data = res.data;
+
             if (data) {
                 localStorage.setItem(
                     "currentUser",

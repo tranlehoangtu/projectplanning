@@ -4,7 +4,8 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { AiFillBug, AiOutlineFileDone, AiOutlineStar } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
-import sidebar from "./sidebar.module.css";
+import sidebar from "../sidebar.module.css";
+
 import { useRef } from "react";
 
 const templates = [

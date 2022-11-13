@@ -1,32 +1,18 @@
-.focus-container {
-    background-color: lavenderblush;
-    width: 100vw;
-    height: 100vh;
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.focus-div {
-    position: relative;
-}
-.focus-div .focus-span {
-    display: block;
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    bottom: -10px;
-    left: -10px;
-    opacity: 0;
-    transition: all 0.2s ease;
-    border: 1px solid red;
-    pointer-events: none;
+.container-a {
+    display: flex;
 }
 
-.focus-input:focus ~ .focus-span {
-    opacity: 1;
-    top: -4px;
-    right: -4px;
-    bottom: -4px;
-    left: -4px;
+.tet-container {
+    flex: 1;
+    background: khaki;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

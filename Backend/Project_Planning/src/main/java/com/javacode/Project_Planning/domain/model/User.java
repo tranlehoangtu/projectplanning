@@ -1,5 +1,8 @@
 package com.javacode.Project_Planning.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,6 +21,9 @@ public class User {
 	private String email;
 	private String password;
 	private String fullname;
-	
-	private String lastProject;
+
+	private String lastProject = "";
+
+	private List<String> favorites = new ArrayList<>();
+	private List<String> privates = new ArrayList<>();
 }

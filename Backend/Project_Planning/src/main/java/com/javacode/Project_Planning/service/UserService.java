@@ -54,19 +54,14 @@ public class UserService {
 		return USER_VALIDATION.USER_DUPLICATED;
 	}
 
-	public User authenticate(String email, String password) {
-		Optional<User> userOptional = userRepository.findByEmail(email);
-		
-		if (userOptional.isPresent()) {
-			User currentUser = userOptional.get();
-			if (passwordEncoder.matches(password, currentUser.getPassword())) {
-				return currentUser;
-			}
+	public Optional<User> login(String email, String password) {
 
-			return null;
-		}
+		Optional<User> optUser = userRepository.findByEmail(email);
 
-		return null;
+		if (optUser.isPresent() && passwordEncoder.matches(password, optUser.get().getPassword())) 
+			return optUser;
+
+		return Optional.empty();
 	}
 
 }

@@ -1,0 +1,92 @@
+.divider {
+    width: 100%;
+    padding: 10px 0 1px 0;
+}
+
+.divider div {
+    width: 100%;
+    background-color: #000;
+    height: 0.4px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    background-color: #fff;
+    border-radius: 4px;
+    min-width: 300px;
+}
+
+.container .emailContainer {
+    padding: 4px 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emailContainer .email {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(55, 53, 47, 0.65);
+}
+
+.container .accountContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    gap: 8px;
+    color: rgba(55, 53, 47, 0.65);
+}
+
+.container .accountContainer:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.accountContainer .account {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+
+.accountContainer .avatar {
+    padding: 7px 11px;
+    border-radius: 4px;
+
+    color: #fff;
+    background-color: #00897b;
+}
+
+.account .name {
+    font-weight: 300;
+    color: #000;
+}
+
+.account .type {
+    font-size: 12px;
+}
+
+.container .settings {
+    width: 100%;
+    padding: 6px;
+    color: rgba(55, 53, 47, 0.65);
+    background-color: #fbfbfa;
+    font-size: 12px;
+}
+
+.settings .setting {
+    padding: 4px 8px;
+    border-radius: 2px;
+}
+
+.settings .setting:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}

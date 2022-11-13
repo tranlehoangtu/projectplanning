@@ -1,0 +1,91 @@
+/* .container {
+    
+} */
+
+.options {
+    display: flex;
+    align-items: center;
+
+    padding: 6px;
+    border-bottom: 1px solid grey;
+}
+
+.options .option {
+    padding: 6px 8px;
+    border-radius: 2px;
+
+    position: relative;
+}
+
+.option .optionBar {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+
+    transform: translate(-50%, 100%);
+
+    width: 90%;
+    height: 2px;
+    background-color: black;
+}
+
+.options .option:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.container .updates {
+    color: rgb(55, 53, 47);
+}
+
+.updates .update {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+    padding: 10px 14px;
+}
+
+.update .avatar {
+    padding: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: #00897b;
+    color: #fff;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.update .infoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.infoContainer .time {
+    font-size: 12px;
+    color: #37352f80;
+}
+
+.update .type {
+    font-size: 12px;
+
+    color: red;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+}
+
+.container .inboxContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

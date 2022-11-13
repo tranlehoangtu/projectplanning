@@ -1,13 +1,18 @@
 import React, { useEffect, useRef } from "react";
 
+import popover from "./popover.module.css";
+
 const Popover = (props) => {
-    const { onClickOutside, children } = props;
+    const { onClickOutside, children, styled, currentRef } = props;
 
     let ref = useRef(null);
 
     useEffect(() => {
         const handler = (event) => {
-            if (!ref.current.contains(event.target)) {
+            if (
+                !ref.current.contains(event.target) &&
+                !currentRef.contains(event.target)
+            ) {
                 onClickOutside();
             }
         };
@@ -17,9 +22,13 @@ const Popover = (props) => {
         return () => {
             document.removeEventListener("click", handler);
         };
-    }, [onClickOutside]);
+    }, [onClickOutside, currentRef]);
 
-    return <div ref={ref}>{children}</div>;
+    return (
+        <div ref={ref} className={`${popover.containerA}`} style={styled}>
+            {children}
+        </div>
+    );
 };
 
 export default Popover;

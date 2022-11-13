@@ -10,7 +10,7 @@ const routes = [
         path: "/",
         element: (
             <ProtectedRoute>
-                <Safe />
+                <Home />
             </ProtectedRoute>
         ),
     },
