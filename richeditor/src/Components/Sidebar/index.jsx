@@ -21,6 +21,28 @@ import sidebar from "./sidebar.module.css";
 import Search from "./Modal/Search";
 import Update from "./Popover/Update";
 import Cover from "./Cover";
+import { getProjectsByUserId, saveProject } from "../../Services/fetchProject";
+
+const getCurrentTime = (end) => {
+    const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
+
+    let eDate = new Date(end);
+
+    return `${monthNames[eDate.getMonth()]} ${eDate.getDate()}`;
+};
 
 const Sidebar = () => {
     const [expand, setExpand] = useState(false);
@@ -35,26 +57,39 @@ const Sidebar = () => {
         search: false,
     }));
 
+    const [projects, setProjects] = useState(() => ({
+        currentProject: null,
+        projects: [],
+    }));
+
     const personalRef = useRef(null);
 
     useEffect(() => {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const loading = async () => {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-        const loadLastProject = async () => {
-            const lastProject = currentUser.lastProject;
+            const projects = await getProjectsByUserId(currentUser.id);
+            const currentProject = projects.data.find(
+                (item) => item.id === currentUser.lastProject
+            );
 
-            if (lastProject) {
-                console.log("hel");
-            }
+            setProjects((prev) => ({
+                ...prev,
+                projects: [...projects.data],
+                currentProject: currentProject,
+            }));
+
+            setDatas((prev) => ({
+                ...prev,
+                currentUser: { ...currentUser },
+            }));
+
+            setLoading(true);
+
+            document.title = currentProject.name;
         };
 
-        loadLastProject();
-
-        // setDatas((prev) => ({
-        //     ...prev,
-        //     currentUser: { ...currentUser },
-        // }));
-        // setLoading(true);
+        loading();
     }, []);
 
     const onClickOutside = () => {
@@ -84,6 +119,18 @@ const Sidebar = () => {
         }));
     };
 
+    const handleSave = () => {
+        saveProject({ ...projects.currentProject });
+    };
+
+    const handleCoverChanged = (image) => {
+        setProjects((prev) => ({
+            ...prev,
+            currentProject: { ...prev.currentProject, background: image },
+        }));
+    };
+
+    // currentWork
     return (
         <>
             {loading && (
@@ -172,7 +219,7 @@ const Sidebar = () => {
                             <div>
                                 <div className={sidebar.projects}>
                                     <div className={sidebar.project}>
-                                        <div className={sidebar.projectTitle}>
+                                        <div className={sidebar.projectType}>
                                             Favorites
                                         </div>
                                     </div>
@@ -208,8 +255,21 @@ const Sidebar = () => {
                                 />
                             </div>
                             <div className={sidebar.represent}>
-                                <div className={sidebar.miniIcon}></div>
-                                <div className={sidebar.title}>Untiled</div>
+                                <div
+                                    className={sidebar.miniIcon}
+                                    style={{
+                                        background: `url(/Images/logos/emojis.png) ${
+                                            1.6949 *
+                                            projects.currentProject.avatar[0]
+                                        }% ${
+                                            1.6949 *
+                                            projects.currentProject.avatar[1]
+                                        }% / 5900% 5900%`,
+                                    }}
+                                ></div>
+                                <div className={sidebar.title}>
+                                    {projects.currentProject.name}
+                                </div>
                             </div>
                             <div className="space-div"></div>
                             <div className={sidebar.options}>
@@ -220,7 +280,9 @@ const Sidebar = () => {
                                         fontSize: "14px",
                                     }}
                                 >
-                                    Edited Nov 3
+                                    {getCurrentTime(
+                                        projects.currentProject.editAt
+                                    )}
                                 </div>
                                 <div className={`button ${sidebar.option}`}>
                                     Share
@@ -244,9 +306,34 @@ const Sidebar = () => {
                             </div>
                         </div>
                         <div className={sidebar.editor}>
-                            <Cover />
-                            <div>Avatar</div>
+                            <Cover
+                                projectId={projects.currentProject.id}
+                                handleCoverChanged={handleCoverChanged}
+                            />
+                            <div
+                                style={{
+                                    padding: expand ? "0 180px" : "0 100px",
+                                }}
+                                className={sidebar.projectTitle}
+                            >
+                                <input
+                                    type="text"
+                                    value={projects.currentProject.name}
+                                    onChange={(e) => {
+                                        setProjects((prev) => ({
+                                            ...prev,
+                                            currentProject: {
+                                                ...prev.currentProject,
+                                                name: e.target.value,
+                                            },
+                                        }));
+                                        document.title = e.target.value;
+                                    }}
+                                    spellCheck={false}
+                                />
+                            </div>
                             <div>Editor</div>
+                            <button onClick={handleSave}>Save</button>
                         </div>
                     </div>
                 </div>

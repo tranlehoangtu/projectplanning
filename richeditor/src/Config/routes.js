@@ -1,7 +1,7 @@
 import Login from "../Pages/Login";
 import SignUp from "../Pages/SignUp";
 import Home from "../Pages/Home";
-import Safe from "../Pages/Safe";
+import Sidebar from "../Components/Sidebar";
 
 import ProtectedRoute from "../Pages/ProtectedRoute";
 
@@ -26,7 +26,7 @@ const routes = [
         path: "/:id",
         element: (
             <ProtectedRoute>
-                <Home />
+                <Sidebar />
             </ProtectedRoute>
         ),
     },

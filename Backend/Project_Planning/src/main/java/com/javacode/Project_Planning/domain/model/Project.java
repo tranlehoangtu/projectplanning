@@ -1,5 +1,6 @@
 package com.javacode.Project_Planning.domain.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,6 +24,9 @@ public class Project {
 	private String background;
 
 	private State state;
+	
+	private Date createdAt;
+	private Date editAt;
 
 	private boolean trashed = false;
 }

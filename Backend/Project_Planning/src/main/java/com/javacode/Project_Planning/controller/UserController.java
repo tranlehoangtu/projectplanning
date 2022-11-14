@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,4 +41,14 @@ public class UserController {
 
 		return ResponseEntity.ok().body(response);
 	}
+
+	@PutMapping("/update")
+	public void updateUser(@RequestBody User user) {
+		User foundUser = service.findById(user.getId()).get();
+		String password = foundUser.getPassword();
+
+		user.setPassword(password);
+		service.save(user);
+	}
+
 }

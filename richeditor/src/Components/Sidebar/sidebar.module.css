@@ -155,7 +155,6 @@
 .represent .miniIcon {
     width: 12px;
     height: 12px;
-    background: url(/public/Images/logos/emojis.png) 0% 1.6949% / 5900% 5900%;
 }
 
 .topbar .options {
@@ -201,13 +200,29 @@
     font-size: 12px;
 }
 
-.project .projectTitle {
+.project .projectType {
     display: inline-block;
     padding: 0 2px;
     border-radius: 2px;
 }
 
-.project .projectTitle:hover {
+.project .projectType:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+.projectTitle {
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+.projectTitle input[type="text"] {
+    width: 100%;
+
+    font-size: 48px;
+    font-weight: 600;
+
+    background-color: red;
+    outline: none;
+    border: none;
 }

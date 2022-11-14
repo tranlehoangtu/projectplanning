@@ -1,46 +1,47 @@
 import { EditorState } from "draft-js";
-import React, { useEffect, useState } from "react";
-import Sidebar from "../../Components/Sidebar";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { createProject } from "../../Services/fetchProject";
+import { updateUser } from "../../Services/fetchUser";
 
 const Home = () => {
-    const [values, setValues] = useState(() => ({
-        currentUser: null,
-    }));
+    const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = "Home Page";
+
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
         const loadLastProject = async () => {
             const lastProject = currentUser.lastProject;
 
-            if (lastProject)
-                setValues((prev) => ({
-                    ...prev,
-                    currentUser,
-                }));
+            if (lastProject) navigate(`/${lastProject}`);
             else {
                 const createdProject = await createProject({
                     parent: 0,
                     userId: currentUser.id,
                     state: EditorState.createEmpty(),
                 });
-            }
 
-            // const updatedUser = await currentUser.setItem(
-            //     "currentUser",
-            //     JSON.stringify({
-            //         ...currentUser,
-            //         lastProject: createProject.id,
-            //     })
-            // );
+                await updateUser({
+                    ...currentUser,
+                    lastProject: createdProject.data.id,
+                });
+
+                localStorage.setItem(
+                    "currentUser",
+                    JSON.stringify({
+                        ...currentUser,
+                        lastProject: createdProject.data.id,
+                    })
+                );
+
+                navigate(`/${createdProject.data.id}`);
+            }
         };
 
         loadLastProject();
-    }, []);
-
-    // return <>{values.currentUser ? <Sidebar /> : "loading"}</>;
-    return <h1>Hello World</h1>;
+    }, [navigate]);
 };
 
 export default Home;

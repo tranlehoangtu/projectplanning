@@ -1,6 +1,12 @@
 import axios from "axios";
 
 const getProjectsByUserId = async (id) => {
+    return await axios.get(
+        `http://localhost:8080/api/v1/project?user-id=${id}`
+    );
+};
+
+const getProjectById = async (id) => {
     return await axios.get(`http://localhost:8080/api/v1/project/${id}`);
 };
 
@@ -22,4 +28,17 @@ const deleteProject = async (projectId) => {
     );
 };
 
-export { getProjectsByUserId, createProject, saveProject, deleteProject };
+const modifyProjectProps = async (id, project) => {
+    return await axios.put(`http://localhost:8080/api/v1/project/${id}`, {
+        ...project,
+    });
+};
+
+export {
+    getProjectsByUserId,
+    createProject,
+    saveProject,
+    deleteProject,
+    getProjectById,
+    modifyProjectProps,
+};
