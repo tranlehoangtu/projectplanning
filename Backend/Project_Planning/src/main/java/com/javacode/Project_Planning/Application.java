@@ -10,6 +10,28 @@ public class Application {
 	}
 
 //	@Bean
+//	CommandLineRunner run(ProjectService service) {
+//		return args -> {
+//
+//			Project project = service.findById("63711211dc839545009bf0c7").get();
+//			
+//			List<Comment> comments = project.getComments();
+//
+//			Comment fComment = new Comment();
+//			
+//			fComment.setId(String.valueOf(comments.size()));
+//			fComment.setUsername("Tran Le Hoang Tu");    
+//			fComment.setContent("This is Third Comment");
+//			fComment.setResolved(true);
+//			
+//			comments.add(fComment);
+//			
+//			project.setComments(comments);
+//			service.save(project);
+//		};
+//	}
+
+//	@Bean
 //	CommandLineRunner run(UserService service) {
 //		return args -> {
 //			User user = new User();

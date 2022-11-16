@@ -4,15 +4,14 @@
     justify-content: center;
 }
 
-.container-a {
-    display: flex;
+.container .hidden {
+    opacity: 0;
 }
 
-.tet-container {
-    flex: 1;
-    background: khaki;
+.container:hover .hidden {
+    opacity: 1;
+}
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.container .show {
+    opacity: 1;
 }

@@ -34,6 +34,7 @@ public class ProjectController {
 		Project project = new Project();
 
 		project.setName("Untitled");
+		
 		project.setState(projectCreate.getState());
 		project.setParrent(projectCreate.getParent());
 		project.setUserId(projectCreate.getUserId());

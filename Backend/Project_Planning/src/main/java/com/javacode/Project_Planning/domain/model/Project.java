@@ -1,5 +1,6 @@
 package com.javacode.Project_Planning.domain.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,10 @@ public class Project {
 
 	private List<Integer> avatar = List.of(0, 0);
 	private String background;
+	private List<Comment> comments = new ArrayList<>();
 
 	private State state;
-	
+
 	private Date createdAt;
 	private Date editAt;
 

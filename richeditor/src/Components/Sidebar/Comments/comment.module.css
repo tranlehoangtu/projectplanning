@@ -1,0 +1,181 @@
+.comments .comment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.comments .comment:hover .options {
+    opacity: 1;
+}
+
+.comment .show {
+    opacity: 1 !important;
+}
+
+.comment .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: greenyellow;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.comment .info {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    color: rgba(55, 53, 47, 0.65);
+}
+
+.comment .options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 4px;
+    padding: 2px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    opacity: 0;
+
+    transition: all 0.2s;
+}
+
+.options .option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+    color: rgba(55, 53, 47, 0.65);
+}
+
+.info .content {
+    font-size: 14px;
+    color: #000;
+
+    outline: none;
+    border: none;
+}
+
+.info .usernameWrapper {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.usernameWrapper .username {
+    color: #000;
+    font-weight: 600;
+}
+
+.usernameWrapper .time {
+    font-size: 14px;
+}
+
+.edits {
+    min-width: 220px;
+    padding: 4px;
+}
+
+.edits .edit {
+    display: flex;
+    align-items: center;
+
+    font-size: 15px;
+
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.edits .edit:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.comments .textfield {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-bottom: 10px;
+    border-bottom: 1px solid grey;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.textfield .inputWrapper {
+    flex: 1;
+}
+
+.textfield .input {
+    width: 100%;
+
+    outline: none;
+    border: none;
+
+    line-height: 30px;
+}
+
+.textfield .name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    background-color: lightgreen;
+}
+
+.comments .resolves {
+    display: inline-flex;
+    align-items: center;
+
+    margin-top: 10px;
+    padding: 4px;
+
+    border-radius: 4px;
+
+    color: rgba(55, 53, 47, 0.65);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.comments .resolves:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.resolvedComments {
+    padding: 12px 10px;
+    min-width: 492px;
+}
+
+.changes {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.changes .cancel {
+    color: rgba(55, 53, 47, 0.65);
+    font-size: 34px;
+}
+
+.changes .check {
+    color: #2383e2;
+    font-size: 34px;
+}

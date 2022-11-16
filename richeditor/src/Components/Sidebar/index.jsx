@@ -14,14 +14,22 @@ import {
     AiOutlineStar,
 } from "react-icons/ai";
 
-import { BiDotsHorizontalRounded, BiTime } from "react-icons/bi";
+import {
+    BiDotsHorizontalRounded,
+    BiMessageAltDetail,
+    BiTime,
+} from "react-icons/bi";
+
+import { BsEmojiSmile } from "react-icons/bs";
+import { getProjectsByUserId, saveProject } from "../../Services/fetchProject";
 
 import "./styles.css";
 import sidebar from "./sidebar.module.css";
 import Search from "./Modal/Search";
 import Update from "./Popover/Update";
 import Cover from "./Cover";
-import { getProjectsByUserId, saveProject } from "../../Services/fetchProject";
+import AvatarComp from "./AvatarComp";
+import Comments from "./Comments";
 
 const getCurrentTime = (end) => {
     const monthNames = [
@@ -55,12 +63,15 @@ const Sidebar = () => {
     const [loading, setLoading] = useState(false);
     const [modals, setModals] = useState(() => ({
         search: false,
+        avatar: false,
     }));
 
     const [projects, setProjects] = useState(() => ({
         currentProject: null,
         projects: [],
     }));
+
+    const [visible, setVisible] = useState(false);
 
     const personalRef = useRef(null);
 
@@ -127,6 +138,32 @@ const Sidebar = () => {
         setProjects((prev) => ({
             ...prev,
             currentProject: { ...prev.currentProject, background: image },
+        }));
+    };
+
+    const handleAvatarAdd = () => {
+        setModals((prev) => ({
+            ...prev,
+            avatar: true,
+        }));
+
+        setProjects((prev) => ({
+            ...prev,
+            currentProject: { ...prev.currentProject, avatar: [0, 0] },
+        }));
+    };
+
+    const handleAvatarChange = (avatars) => {
+        setProjects((prev) => ({
+            ...prev,
+            currentProject: { ...prev.currentProject, avatar: [...avatars] },
+        }));
+    };
+
+    const updateComments = (comments) => {
+        setProjects((prev) => ({
+            ...prev,
+            currentProject: { ...prev.currentProject, comments: [] },
         }));
     };
 
@@ -255,18 +292,22 @@ const Sidebar = () => {
                                 />
                             </div>
                             <div className={sidebar.represent}>
-                                <div
-                                    className={sidebar.miniIcon}
-                                    style={{
-                                        background: `url(/Images/logos/emojis.png) ${
-                                            1.6949 *
-                                            projects.currentProject.avatar[0]
-                                        }% ${
-                                            1.6949 *
-                                            projects.currentProject.avatar[1]
-                                        }% / 5900% 5900%`,
-                                    }}
-                                ></div>
+                                {projects.currentProject.avatar.length > 0 && (
+                                    <div
+                                        className={sidebar.miniIcon}
+                                        style={{
+                                            background: `url(/Images/logos/emojis.png) ${
+                                                1.6949 *
+                                                projects.currentProject
+                                                    .avatar[0]
+                                            }% ${
+                                                1.6949 *
+                                                projects.currentProject
+                                                    .avatar[1]
+                                            }% / 5900% 5900%`,
+                                        }}
+                                    ></div>
+                                )}
                                 <div className={sidebar.title}>
                                     {projects.currentProject.name}
                                 </div>
@@ -312,11 +353,51 @@ const Sidebar = () => {
                             />
                             <div
                                 style={{
-                                    padding: expand ? "0 180px" : "0 100px",
+                                    padding: expand ? "0 340px" : "0 380px",
                                 }}
                                 className={sidebar.projectTitle}
                             >
+                                <AvatarComp
+                                    visible={
+                                        projects.currentProject.avatar.length >
+                                        0
+                                    }
+                                    projectId={projects.currentProject.id}
+                                    handleAvatarChange={handleAvatarChange}
+                                />
+                                <div className={sidebar.changes}>
+                                    {projects.currentProject.avatar.length ===
+                                        0 && (
+                                        <div
+                                            className={sidebar.change}
+                                            onClick={handleAvatarAdd}
+                                        >
+                                            <div>
+                                                <BsEmojiSmile
+                                                    className="icon"
+                                                    style={{ fontSize: "26px" }}
+                                                />
+                                            </div>
+                                            <div>Add Icon</div>
+                                        </div>
+                                    )}
+                                    {!visible && (
+                                        <div
+                                            className={sidebar.change}
+                                            onClick={() => setVisible(true)}
+                                        >
+                                            <div>
+                                                <BiMessageAltDetail
+                                                    className="icon"
+                                                    style={{ fontSize: "26px" }}
+                                                />
+                                            </div>
+                                            <div>Add Comment</div>
+                                        </div>
+                                    )}
+                                </div>
                                 <input
+                                    className={sidebar.input}
                                     type="text"
                                     value={projects.currentProject.name}
                                     onChange={(e) => {
@@ -330,6 +411,12 @@ const Sidebar = () => {
                                         document.title = e.target.value;
                                     }}
                                     spellCheck={false}
+                                />
+                                <Comments
+                                    projectId={projects.currentProject.id}
+                                    username={datas.currentUser.fullname}
+                                    updateComments={updateComments}
+                                    visible={visible}
                                 />
                             </div>
                             <div>Editor</div>
