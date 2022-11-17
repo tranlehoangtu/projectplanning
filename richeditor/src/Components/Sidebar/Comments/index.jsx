@@ -106,8 +106,13 @@ const style = {
 };
 
 const Comment = (props) => {
-    const { comment, resolved, handleCommentChecked, handleCommentDelete } =
-        props;
+    const {
+        comment,
+        resolved,
+        handleCommentChecked,
+        handleCommentDelete,
+        modifyComment,
+    } = props;
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [edit, setEdit] = useState(false);
@@ -214,7 +219,10 @@ const Comment = (props) => {
                     />
                     <AiFillCheckCircle
                         className={`icon ${commentModule.check}`}
-                        onClick={() => {}}
+                        onClick={() => {
+                            setEdit(false);
+                            modifyComment({ ...comment, content: content });
+                        }}
                     />
                 </div>
             )}
@@ -334,6 +342,7 @@ const Comments = (props) => {
         modifyProjectProps(projectId, nProject).then(() => {
             setProject(nProject);
             setInput("");
+            updateComments(nProject);
         });
     };
 
@@ -356,6 +365,7 @@ const Comments = (props) => {
 
         modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
+            updateComments(nProject);
         });
     };
 
@@ -372,6 +382,7 @@ const Comments = (props) => {
 
         modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
+            updateComments(nProject);
         });
 
         setAnchorEl(null);
@@ -393,8 +404,22 @@ const Comments = (props) => {
 
         modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
+            updateComments(nProject);
+        });
+    };
 
-            if (nProject.comments.length === 0) updateComments();
+    const modifyComment = (comment) => {
+        const nProject = {
+            ...project,
+            comments: project.comments.map((item) => {
+                if (item.id === comment.id) return comment;
+                return item;
+            }),
+        };
+
+        modifyProjectProps(project.id, nProject).then(() => {
+            setProject(nProject);
+            updateComments(nProject);
         });
     };
 
@@ -422,12 +447,15 @@ const Comments = (props) => {
                                         handleCommentDelete={
                                             handleCommentDelete
                                         }
+                                        modifyComment={modifyComment}
                                     />
                                 );
                             })}
                         {visible && (
                             <div className={commentModule.textfield}>
-                                <div className={commentModule.name}>T</div>
+                                <div className={commentModule.name}>
+                                    {username.substring(0, 1)}
+                                </div>
                                 <div className={commentModule.inputWrapper}>
                                     <input
                                         type="text"

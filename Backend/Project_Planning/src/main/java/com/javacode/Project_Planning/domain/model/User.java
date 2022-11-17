@@ -21,9 +21,10 @@ public class User {
 	private String email;
 	private String password;
 	private String fullname;
-
-	private String lastProject = "";
+	
+	private String lastProject;
 
 	private List<String> favorites = new ArrayList<>();
 	private List<String> privates = new ArrayList<>();
+	private List<String> publics = new ArrayList<>();
 }

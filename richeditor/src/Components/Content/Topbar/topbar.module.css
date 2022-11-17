@@ -1,0 +1,62 @@
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 45px;
+    padding: 10px;
+    border-bottom: 3px solid red;
+}
+
+.topbar .options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-weight: 300;
+}
+
+.topbar .expand {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    transition: all 0.5s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: -6px;
+}
+
+.topbar .expand .faAngleDoubleRight {
+    display: none;
+}
+
+.topbar .expand:hover .faAngleDoubleRight {
+    display: block;
+}
+
+.topbar .represent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 2px;
+    padding: 4px 8px;
+    transition: all 0.5s ease;
+}
+
+.topbar .represent:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.represent .miniIcon {
+    width: 12px;
+    height: 12px;
+}
+
+.topbar .expand:hover .fabar {
+    display: none;
+}

@@ -18,8 +18,8 @@ public class Project {
 	private String id;
 	private String name;
 
-	private String parrent;
 	private String userId;
+	private String parrent;
 
 	private List<Integer> avatar = List.of(0, 0);
 	private String background;
@@ -31,4 +31,5 @@ public class Project {
 	private Date editAt;
 
 	private boolean trashed = false;
+	private boolean isPrivate = true;
 }

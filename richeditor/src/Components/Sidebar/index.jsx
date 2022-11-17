@@ -30,6 +30,7 @@ import Update from "./Popover/Update";
 import Cover from "./Cover";
 import AvatarComp from "./AvatarComp";
 import Comments from "./Comments";
+import SidebarComment from "./SidebarComment";
 
 const getCurrentTime = (end) => {
     const monthNames = [
@@ -95,6 +96,8 @@ const Sidebar = () => {
                 currentUser: { ...currentUser },
             }));
 
+            console.log(currentProject.comments.length);
+            // setVisible( > 0);
             setLoading(true);
 
             document.title = currentProject.name;
@@ -134,6 +137,7 @@ const Sidebar = () => {
         saveProject({ ...projects.currentProject });
     };
 
+    // cover section
     const handleCoverChanged = (image) => {
         setProjects((prev) => ({
             ...prev,
@@ -141,6 +145,7 @@ const Sidebar = () => {
         }));
     };
 
+    // avatar section
     const handleAvatarAdd = () => {
         setModals((prev) => ({
             ...prev,
@@ -160,10 +165,11 @@ const Sidebar = () => {
         }));
     };
 
-    const updateComments = (comments) => {
+    // comments section
+    const updateComments = (project) => {
         setProjects((prev) => ({
             ...prev,
-            currentProject: { ...prev.currentProject, comments: [] },
+            currentProject: project,
         }));
     };
 
@@ -411,6 +417,7 @@ const Sidebar = () => {
                                         document.title = e.target.value;
                                     }}
                                     spellCheck={false}
+                                    placeholder="Untitled"
                                 />
                                 <Comments
                                     projectId={projects.currentProject.id}
@@ -422,6 +429,12 @@ const Sidebar = () => {
                             <div>Editor</div>
                             <button onClick={handleSave}>Save</button>
                         </div>
+                    </div>
+                    <div
+                        className={sidebar.commentsContainer}
+                        style={{ width: "300px" }}
+                    >
+                        <SidebarComment />
                     </div>
                 </div>
             )}

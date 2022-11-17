@@ -18,4 +18,8 @@ const changeLastProject = async (id, lastProjectId) => {
     );
 };
 
-export { login, signup, changeLastProject, updateUser };
+const getUserById = async (id) => {
+    return await axios.get(`http://localhost:8080/api/v1/${id}`);
+};
+
+export { login, signup, changeLastProject, updateUser, getUserById };

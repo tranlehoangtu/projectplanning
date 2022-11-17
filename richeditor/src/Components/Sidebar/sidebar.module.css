@@ -1,7 +1,15 @@
 .container {
     width: 100vw;
     height: 100vh;
+
     display: flex;
+}
+
+.container .commentsContainer {
+    height: 100vh;
+
+    border-left: 3px solid red;
+    background-color: #fbfbfa;
 }
 
 .container .sidebarContainer {
