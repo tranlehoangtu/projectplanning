@@ -12,7 +12,7 @@ import { ProjectContext } from "../../../Context/ProjectContext";
 import { UserContext } from "../../../Context/UserContext";
 
 // Services
-import { getAllChildsByParentId } from "../../../Services/fetchProject";
+import { getAllTreeByParentId } from "../../../Services/fetchProject";
 import { updateUser } from "../../../Services/fetchUser";
 
 // Styles
@@ -51,7 +51,7 @@ const Topbar = (props) => {
 
     const moveToFavorite = () => {
         const processing = async () => {
-            const projectsData = await getAllChildsByParentId(project.id);
+            const projectsData = await getAllTreeByParentId(project.id);
 
             const flist = user.privates.filter(
                 (item) => !projectsData.data.find((child) => child.id === item)
@@ -79,7 +79,7 @@ const Topbar = (props) => {
 
     const removeFromFavorite = () => {
         const processing = async () => {
-            const projectsData = await getAllChildsByParentId(project.id);
+            const projectsData = await getAllTreeByParentId(project.id);
 
             const flist = user.favorites.filter(
                 (item) => !projectsData.data.find((child) => child.id === item)

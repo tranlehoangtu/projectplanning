@@ -215,7 +215,7 @@ const Sidebar = (props) => {
                                 onClose={handleSearchClose}
                             >
                                 <Box sx={style}>
-                                    <Search />
+                                    <Search user={user} />
                                 </Box>
                             </Modal>
                             <div

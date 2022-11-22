@@ -45,18 +45,24 @@ public class ProjectController {
 	public ResponseEntity<List<Project>> getProjectsByParentId(@RequestParam("type") String type,
 			@RequestParam("parent-id") String id) {
 		if (type.equals("single")) {
-			List<Project> childProjects = service.findByParent(id);
-			return ResponseEntity.ok().body(childProjects);
+			List<Project> result = service.findByParent(id);
+			return ResponseEntity.ok().body(result);
 		}
+		
+		if(type.equals("tree")) {
+			List<Project> result = new ArrayList<>();
 
-//		Type === "all"
+			getChilds(getRoot(id), result);
+			Project project = service.findById(getRoot(id)).get();
+			result.add(project);
+
+			return ResponseEntity.ok().body(result);
+		}
+		
+		// all
 		List<Project> result = new ArrayList<>();
-
-		getChilds(getRoot(id), result);
-		Project project = service.findById(getRoot(id)).get();
-		result.add(project);
-
-		return ResponseEntity.ok().body(result);
+		
+		return ResponseEntity.ok().body(getChilds(id, result));
 	}
 
 //	@GetMapping("/project/name")

@@ -4,21 +4,24 @@ const getProjectById = async (id) => {
     return await axios.get(`http://localhost:8080/api/v1/project/${id}`);
 };
 
+// get childs
 const getProjectsByParentId = async (parentId) => {
     return await axios.get(
         `http://localhost:8080/api/v1/project?type=single&parent-id=${parentId}`
     );
 };
 
-// const getProjectsByNameContaining = async (name) => {
-//     return await axios.get(
-
-//     )
-// }
-
-const getAllChildsByParentId = async (parentId) => {
+// get all childs and childs of child's
+const getAllChilds = async (parentId) => {
     return await axios.get(
         `http://localhost:8080/api/v1/project?type=all&parent-id=${parentId}`
+    );
+};
+
+// get all tree project
+const getAllTreeByParentId = async (parentId) => {
+    return await axios.get(
+        `http://localhost:8080/api/v1/project?type=tree&parent-id=${parentId}`
     );
 };
 
@@ -49,7 +52,8 @@ const modifyProjectProps = async (id, project) => {
 export {
     getProjectById,
     getProjectsByParentId,
-    getAllChildsByParentId,
+    getAllTreeByParentId,
+    getAllChilds,
     createProject,
     saveProject,
     deleteProject,

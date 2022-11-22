@@ -4,15 +4,40 @@ import { BiSearch } from "react-icons/bi";
 import { FaRegTimesCircle } from "react-icons/fa";
 
 import search from "./search.module.css";
-import ProjectSearch from "./ProjectSearch";
+import { getProjectById } from "../../../../Services/fetchProject";
 
-const Search = () => {
+const Search = (props) => {
+    const { user } = props;
+    const [loading, setLoading] = useState(true);
     const [values, setValues] = useState(() => ({
         text: "",
         active: false,
+        projects: [],
     }));
 
-    ProjectSearch(values.text, setValues, values);
+    useState(() => {
+        const loading = async () => {
+            const projectsId = [
+                ...user.privates,
+                ...user.publics,
+                ...user.favorites,
+            ];
+            let tempProjects = [];
+            for (var i = 0; i < projectsId.length; i++) {
+                const fetchProject = await getProjectById(projectsId[i]);
+                tempProjects = [...tempProjects, fetchProject.data];
+            }
+
+            setValues((prev) => ({
+                ...prev,
+                projects: tempProjects,
+            }));
+
+            setLoading(false);
+        };
+
+        loading();
+    }, []);
 
     return (
         <div className={search.container}>
@@ -190,7 +215,37 @@ const Search = () => {
                 </div>
             </div> */}
 
-            <ProjectSearch text={values.text} />
+            {/* <ProjectSearch text={values.text} /> */}
+            {!loading && (
+                <div className={search.options}>
+                    <div className={search.option}>
+                        <div className={search.optionName}>Best Match</div>
+                        {values.projects
+                            .filter((item) => {
+                                return (
+                                    item.name
+                                        .toLowerCase()
+                                        .includes(values.text.toLowerCase()) &&
+                                    values.text.length > 0
+                                );
+                            })
+                            .map((item) => (
+                                <div key={item.id}>
+                                    <div className={search.project}>
+                                        <div className={search.avatar}></div>
+                                        <div className={search.projectName}>
+                                            {item.name}
+                                        </div>
+                                        <div className="space-div"></div>
+                                        {/* <div className={search.editTime}>
+                                            2d ago
+                                        </div> */}
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

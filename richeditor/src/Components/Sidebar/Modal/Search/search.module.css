@@ -38,6 +38,7 @@
 }
 
 .container .options {
+    min-height: 460px;
     max-height: 460px;
     overflow-y: scroll;
     margin-top: 10px;
@@ -58,7 +59,7 @@
     padding: 0 4px;
 }
 
-.projects .project {
+.project {
     width: 100%;
     display: flex;
     align-items: center;
@@ -69,7 +70,7 @@
     border-radius: 4px;
 }
 
-.projects .project:hover {
+.project:hover {
     cursor: pointer;
     background-color: rgba(55, 53, 47, 0.08);
 }

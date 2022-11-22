@@ -8,6 +8,14 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
+	
+//	@Bean
+//	CommandLineRunner run(ProjectService service) {
+//		return args -> {
+//			service.findByNameContaining("privates").forEach(item -> System.out.println(item.toString()));
+//			
+//		};
+//	}
 
 //	@Bean
 //	CommandLineRunner run(UserService service) {

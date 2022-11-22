@@ -13,7 +13,8 @@ import { Box } from "@mui/system";
 import {
     createProject,
     deleteProject,
-    getAllChildsByParentId,
+    getAllChilds,
+    getAllTreeByParentId,
     getProjectById,
     getProjectsByParentId,
 } from "../../../Services/fetchProject";
@@ -367,7 +368,7 @@ const Projects = (props) => {
         const processing = async () => {
             let nUser = null;
 
-            const childs = await getAllChildsByParentId(cProject.id);
+            const childs = await getAllTreeByParentId(cProject.id);
 
             const nlist = user[type].filter(
                 (item) =>
@@ -446,8 +447,7 @@ const Projects = (props) => {
         const processing = async () => {
             let nUser = null;
 
-            const childs = await getAllChildsByParentId(cProject.id);
-
+            const childs = await getAllChilds(cProject.id);
             const nlist = user[type].filter(
                 (item) =>
                     !childs.data.find((child) => item === child.id) &&
@@ -537,7 +537,7 @@ const Projects = (props) => {
 
     const handleRemoveFrom = (cProject) => {
         const processing = async () => {
-            const projectsData = await getAllChildsByParentId(cProject.id);
+            const projectsData = await getAllTreeByParentId(cProject.id);
 
             const flist = user.favorites.filter(
                 (item) => !projectsData.data.find((child) => child.id === item)
@@ -565,7 +565,7 @@ const Projects = (props) => {
 
     const handleMoveTo = (cProject) => {
         const processing = async () => {
-            const projectsData = await getAllChildsByParentId(cProject.id);
+            const projectsData = await getAllTreeByParentId(cProject.id);
 
             const flist = user.privates.filter(
                 (item) => !projectsData.data.find((child) => child.id === item)
