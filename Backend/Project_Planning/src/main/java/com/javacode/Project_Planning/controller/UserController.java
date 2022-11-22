@@ -26,13 +26,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
-	private final UserService service;
+	private final UserService userService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable(value = "id") String id) {
-		User user = service.findById(id).get();
+		User user = userService.findById(id).get();
 		user.setPassword("");
-		
+
 		return ResponseEntity.ok().body(user);
 	}
 
@@ -41,7 +41,7 @@ public class UserController {
 		String email = userLoginRequest.getEmail();
 		String password = userLoginRequest.getPassword();
 
-		Optional<User> authenticatedUser = service.login(email, password);
+		Optional<User> authenticatedUser = userService.login(email, password);
 
 		if (authenticatedUser.isEmpty())
 			return null;
@@ -54,11 +54,12 @@ public class UserController {
 
 	@PutMapping("/update")
 	public void updateUser(@RequestBody User user) {
-		User foundUser = service.findById(user.getId()).get();
+		User foundUser = userService.findById(user.getId()).get();
 		String password = foundUser.getPassword();
 
 		user.setPassword(password);
-		service.save(user);
+		
+		userService.save(user);
 	}
 
 }

@@ -1,13 +1,25 @@
 import axios from "axios";
 
-const getProjectsByUserId = async (id) => {
+const getProjectById = async (id) => {
+    return await axios.get(`http://localhost:8080/api/v1/project/${id}`);
+};
+
+const getProjectsByParentId = async (parentId) => {
     return await axios.get(
-        `http://localhost:8080/api/v1/project?user-id=${id}`
+        `http://localhost:8080/api/v1/project?type=single&parent-id=${parentId}`
     );
 };
 
-const getProjectById = async (id) => {
-    return await axios.get(`http://localhost:8080/api/v1/project/${id}`);
+// const getProjectsByNameContaining = async (name) => {
+//     return await axios.get(
+
+//     )
+// }
+
+const getAllChildsByParentId = async (parentId) => {
+    return await axios.get(
+        `http://localhost:8080/api/v1/project?type=all&parent-id=${parentId}`
+    );
 };
 
 const createProject = async (project) => {
@@ -35,10 +47,11 @@ const modifyProjectProps = async (id, project) => {
 };
 
 export {
-    getProjectsByUserId,
+    getProjectById,
+    getProjectsByParentId,
+    getAllChildsByParentId,
     createProject,
     saveProject,
     deleteProject,
-    getProjectById,
     modifyProjectProps,
 };

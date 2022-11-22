@@ -18,6 +18,7 @@ public class UserResponse {
 	
 	private List<String> favorites;
 	private List<String> privates;
+	private List<String> publics;
 	
 	private String message;
 }

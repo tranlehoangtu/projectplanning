@@ -1,197 +1,139 @@
-.container {
-    width: 100vw;
+/* color:rgba(55, 53, 47, 0.5);
+color: rgba(55, 53, 47, 0.65); */
+
+.sidebarContainer {
+    position: relative;
+
     height: 100vh;
+
+    font-size: 14px;
+
+    background-color: #fbfbfa;
+    color: rgb(55, 53, 47);
+
+    border-right: 3px solid red;
+    transition: all 0.5s ease;
+
+    overflow: hidden;
+}
+
+.sidebarContainer .sidebarContainerA {
+    position: absolute;
 
     display: flex;
-}
+    flex-direction: column;
 
-.container .commentsContainer {
-    height: 100vh;
-
-    border-left: 3px solid red;
-    background-color: #fbfbfa;
-}
-
-.container .sidebarContainer {
+    width: 100%;
     height: 100%;
-    transition: all 0.5s ease;
-    border-right: 3px solid red;
-    font-size: 14px;
-    position: relative;
-    background-color: #fbfbfa;
-}
 
-.sidebarContainer:hover .faAngleDoubleLeft {
-    display: block;
-}
-
-.sidebarContainer:hover .info {
-    width: 140px;
-}
-
-.faAngleDoubleLeft {
-    display: none;
-}
-
-.sidebarContainerA {
-    position: absolute;
-    width: 240px;
-    height: 100%;
-    max-width: 100%;
     transition: all 0.5s ease;
 }
 
-.sidebarContainer .personal {
+.sidebarContainerA .types {
+    width: 100%;
+    overflow: hidden auto;
+
+    margin-top: 10px;
+}
+
+.types .type {
+    margin-bottom: 10px;
+}
+
+.type .typeName {
+    display: inline-block;
+    padding: 2px 4px;
+    font-size: 12px;
+
+    border-radius: 2px;
+}
+
+.type .typeName:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.sidebarContainerA .personal {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
 
-    position: relative;
+    gap: 10px;
+
+    padding: 8px 12px;
 }
 
-.sidebarContainer .personal:hover {
+.sidebarContainerA .personal:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
 .personal .avatar {
-    padding: 2px 6px;
-    background-color: #00897b;
-    color: #8ecbc4;
-    border-radius: 2px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.personal .infoOptions {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    width: 22px;
+    height: 22px;
+
+    font-size: 12px;
+    color: #fff;
+
+    background-color: #00897b;
+    border-radius: 4px;
 }
 
-.infoOptions .info {
+.personal .info {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    width: 154px;
-    margin-right: 6px;
-    margin-top: 0px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+    justify-content: center;
 }
 
 .info .username {
-    color: rgb(55, 53, 47);
-    font-weight: 500;
+    width: 110px;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    color: rgb(55, 53, 47);
+    font-weight: 500;
 }
 
 .info .email {
+    width: 110px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     color: rgba(55, 53, 47, 0.65);
     font-size: 11px;
     line-height: 12px;
     font-weight: 400;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.container .contentContainer {
-    flex: 1;
-}
-
-.contentContainer .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 45px;
-    padding: 10px;
-    border-bottom: 3px solid red;
-}
-
-.topbar .expand {
-    position: relative;
-    width: 44px;
-    height: 44px;
-    transition: all 0.5s ease;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-left: -6px;
-}
-
-.topbar .expand .faAngleDoubleRight {
-    display: none;
-}
-
-.topbar .expand:hover .fabar {
-    display: none;
-}
-
-.topbar .expand:hover .faAngleDoubleRight {
-    display: block;
-}
-
-.expand .expandA:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.topbar .represent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    border-radius: 2px;
-    padding: 4px 8px;
-    transition: all 0.5s ease;
-}
-
-.topbar .represent:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.represent .miniIcon {
-    width: 12px;
-    height: 12px;
-}
-
-.topbar .options {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    font-weight: 300;
 }
 
 .sidebarContainerA .settings {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 4px 6px;
-    color: rgba(55, 53, 47, 0.65);
+
+    padding: 4px;
 }
 
 .settings .setting {
-    width: 100%;
+    flex: 1;
+
     display: flex;
     align-items: center;
-    border-radius: 2px;
+    justify-content: center;
 
-    font-size: 14px;
-    font-weight: 600;
+    gap: 4px;
 
-    padding: 2px 10px;
+    color: rgba(55, 53, 47, 0.65);
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
 .settings .setting:hover {
@@ -199,65 +141,11 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.sidebarContainerA .projects {
-    color: rgba(55, 53, 47, 0.5);
-}
+.setting .name {
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-.projects .project {
-    padding: 10px;
-    font-size: 12px;
-}
-
-.project .projectType {
-    display: inline-block;
-    padding: 0 2px;
-    border-radius: 2px;
-}
-
-.project .projectType:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.projectTitle {
-    width: 100%;
-    transition: all 0.5s ease;
-}
-
-.projectTitle:hover .changes {
-    opacity: 1;
-}
-
-.projectTitle .input {
-    width: 100%;
-
-    font-size: 48px;
-    font-weight: 600;
-
-    outline: none;
-    border: none;
-}
-
-.projectTitle .changes {
-    display: flex;
-    gap: 10px;
-
-    color: rgba(55, 53, 47, 0.65);
-    font-size: 14px;
-    transition: all 0.4s;
-    opacity: 0;
-}
-
-.changes .change {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 4px 6px;
-    border-radius: 2px;
-}
-
-.changes .change:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
+    font-weight: 500;
 }

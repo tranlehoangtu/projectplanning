@@ -1,11 +1,12 @@
 package com.javacode.Project_Planning.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,19 +30,46 @@ public class ProjectController {
 
 	private final ProjectService service;
 
-	@GetMapping("/project")
-	public List<Project> getProjectsByUserId(@RequestParam(value = "user-id") String userId) {
-
-		List<Project> projects = service.findByUserId(userId).stream().filter(project -> !project.isTrashed())
-				.collect(Collectors.toList());
-
-		return projects;
-	}
-
 	@GetMapping("/project/{id}")
 	public ResponseEntity<Project> getProjectById(@PathVariable("id") String id) {
 
+		if (service.findById(id).isEmpty()) {
+			System.out.println("empty");
+			return ResponseEntity.ok().body(null);
+		}
+
 		return ResponseEntity.ok().body(service.findById(id).get());
+	}
+
+	@GetMapping("/project")
+	public ResponseEntity<List<Project>> getProjectsByParentId(@RequestParam("type") String type,
+			@RequestParam("parent-id") String id) {
+		if (type.equals("single")) {
+			List<Project> childProjects = service.findByParent(id);
+			return ResponseEntity.ok().body(childProjects);
+		}
+
+//		Type === "all"
+		List<Project> result = new ArrayList<>();
+
+		getChilds(getRoot(id), result);
+		Project project = service.findById(getRoot(id)).get();
+		result.add(project);
+
+		return ResponseEntity.ok().body(result);
+	}
+
+//	@GetMapping("/project/name")
+//	public ResponseEntity<List<Project>> getProjectsByNameContaining(@RequestParam("name") String name) {
+//		return ResponseEntity.ok().body(service.findByNameContaining(name));
+//	}
+
+	@GetMapping("/project/name")
+	public ResponseEntity<List<Project>> getProjectsByNameContaining(@RequestParam("name") String name) {
+		if (name.isEmpty()) {
+			return null;
+		}
+		return ResponseEntity.ok().body(service.findByNameContaining(name));
 	}
 
 	@PostMapping("/project/create")
@@ -52,7 +80,7 @@ public class ProjectController {
 		project.setUserId(projectCreate.getUserId());
 
 		project.setState(projectCreate.getState());
-		project.setParrent(projectCreate.getParent());
+		project.setParent(projectCreate.getParent());
 
 		project.setCreatedAt(new Date());
 		project.setEditAt(new Date());
@@ -71,6 +99,36 @@ public class ProjectController {
 		service.save(project);
 
 		return "Success";
+	}
+
+	@DeleteMapping("/project/delete/{id}")
+	public void deleteProjectById(@PathVariable(value = "id") String id) {
+		Project deletedProject = service.findById(id.trim()).get();
+		service.delete(deletedProject);
+	}
+
+	private List<Project> getChilds(String id, List<Project> result) {
+		List<Project> projects = service.findByParent(id);
+
+		if (projects.size() > 0) {
+			projects.forEach(item -> result.add(item));
+			projects.forEach(item -> getChilds(item.getId(), result));
+		}
+
+		return result;
+	}
+
+	private String getRoot(String id) {
+		String result = "";
+		Project project = service.findById(id).get();
+
+		result = project.getId();
+
+		if (!project.getParent().equals("0")) {
+			result = getRoot(project.getParent());
+		}
+
+		return result;
 	}
 
 }

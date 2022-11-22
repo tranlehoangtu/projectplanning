@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Components
 import Topbar from "./Topbar";
@@ -8,20 +8,12 @@ import Editor from "./Editor";
 import styledContent from "./content.module.css";
 
 const Content = (props) => {
-    const [expand, setExpand] = useState(false);
-    const { project, handleCoverChanged, handleAvatarChange, handleAvatarAdd } =
-        props;
+    const { expand, setExpand } = props;
 
     return (
         <div className={styledContent.contentContainer}>
-            <Topbar expand={expand} setExpand={setExpand} project={project} />
-            <Editor
-                expand={expand}
-                project={project}
-                handleCoverChanged={handleCoverChanged}
-                handleAvatarChange={handleAvatarChange}
-                handleAvatarAdd={handleAvatarAdd}
-            />
+            <Topbar expand={expand} setExpand={setExpand} />
+            <Editor expand={expand} />
         </div>
     );
 };

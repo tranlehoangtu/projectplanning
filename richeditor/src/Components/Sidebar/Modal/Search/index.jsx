@@ -4,12 +4,15 @@ import { BiSearch } from "react-icons/bi";
 import { FaRegTimesCircle } from "react-icons/fa";
 
 import search from "./search.module.css";
+import ProjectSearch from "./ProjectSearch";
 
 const Search = () => {
     const [values, setValues] = useState(() => ({
         text: "",
         active: false,
     }));
+
+    ProjectSearch(values.text, setValues, values);
 
     return (
         <div className={search.container}>
@@ -35,10 +38,18 @@ const Search = () => {
                     className={search.times}
                     style={{ opacity: values.text.length > 0 ? 1 : 0 }}
                 >
-                    <FaRegTimesCircle className={`icon`} />
+                    <FaRegTimesCircle
+                        className={`icon`}
+                        onClick={() =>
+                            setValues((prev) => ({
+                                ...prev,
+                                text: "",
+                            }))
+                        }
+                    />
                 </div>
             </div>
-            <div className={search.options}>
+            {/* <div className={search.options}>
                 <div className={search.option}>
                     <div className={search.optionName}>Today</div>
                     <div className={search.projects}>
@@ -177,7 +188,9 @@ const Search = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
+
+            <ProjectSearch text={values.text} />
         </div>
     );
 };

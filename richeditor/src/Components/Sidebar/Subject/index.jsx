@@ -133,7 +133,7 @@ const RenderSubject = (props) => {
             </div>
             {getChild(currentProject, projects).length > 0 && dropdown && (
                 <ul>
-                    <ul>
+                    <li>
                         {getChild(currentProject, projects).map((child) => (
                             <RenderSubject
                                 key={child.id}
@@ -148,7 +148,7 @@ const RenderSubject = (props) => {
                                 }
                             />
                         ))}
-                    </ul>
+                    </li>
                 </ul>
             )}
             {getChild(currentProject, projects).length === 0 && dropdown && (

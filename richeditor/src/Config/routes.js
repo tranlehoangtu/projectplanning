@@ -1,9 +1,9 @@
 import Login from "../Pages/Login";
 import SignUp from "../Pages/SignUp";
 import Home from "../Pages/Home";
-import Sidebar from "../Components/Sidebar";
 
 import ProtectedRoute from "../Pages/ProtectedRoute";
+import Error from "../Pages/Error";
 
 const routes = [
     {
@@ -13,6 +13,10 @@ const routes = [
                 <Home />
             </ProtectedRoute>
         ),
+    },
+    {
+        path: "/error",
+        element: <Error />,
     },
     {
         path: "/home",
@@ -26,7 +30,7 @@ const routes = [
         path: "/:id",
         element: (
             <ProtectedRoute>
-                <Sidebar />
+                <Home />
             </ProtectedRoute>
         ),
     },

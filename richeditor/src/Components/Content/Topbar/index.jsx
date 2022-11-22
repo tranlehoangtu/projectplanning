@@ -1,9 +1,20 @@
-import React from "react";
+// Reacts
+import React, { useContext } from "react";
+import { useMemo } from "react";
 
 //Icons
-import { AiOutlineMessage, AiOutlineStar } from "react-icons/ai";
+import { AiFillStar, AiOutlineMessage, AiOutlineStar } from "react-icons/ai";
 import { BiTime, BiDotsHorizontalRounded } from "react-icons/bi";
 import { FaBars, FaAngleDoubleRight } from "react-icons/fa";
+
+// Contexts
+import { ProjectContext } from "../../../Context/ProjectContext";
+import { UserContext } from "../../../Context/UserContext";
+
+// Services
+import { getAllChildsByParentId } from "../../../Services/fetchProject";
+import { updateUser } from "../../../Services/fetchUser";
+
 // Styles
 import styledTopbar from "./topbar.module.css";
 
@@ -29,7 +40,71 @@ const getCurrentTime = (end) => {
 };
 
 const Topbar = (props) => {
-    const { expand, setExpand, project } = props;
+    const { expand, setExpand } = props;
+    const { project, setProject } = useContext(ProjectContext);
+    const { user, setUser } = useContext(UserContext);
+
+    const isFavorite = useMemo(
+        () => user.favorites.find((favorite) => favorite === project.id),
+        [project, user]
+    );
+
+    const moveToFavorite = () => {
+        const processing = async () => {
+            const projectsData = await getAllChildsByParentId(project.id);
+
+            const flist = user.privates.filter(
+                (item) => !projectsData.data.find((child) => child.id === item)
+            );
+
+            let nUser = {
+                ...user,
+                favorites: [
+                    ...user.favorites,
+                    ...projectsData.data.map((item) => item.id),
+                ],
+                privates: [...flist],
+            };
+
+            await updateUser({ ...nUser });
+
+            setProject({ ...project });
+            setUser({ ...nUser });
+
+            localStorage.setItem("currentUser", JSON.stringify({ ...nUser }));
+        };
+
+        processing();
+    };
+
+    const removeFromFavorite = () => {
+        const processing = async () => {
+            const projectsData = await getAllChildsByParentId(project.id);
+
+            const flist = user.favorites.filter(
+                (item) => !projectsData.data.find((child) => child.id === item)
+            );
+
+            let nUser = {
+                ...user,
+                privates: [
+                    ...user.privates,
+                    ...projectsData.data.map((item) => item.id),
+                ],
+                favorites: [...flist],
+            };
+
+            await updateUser({ ...nUser });
+
+            setProject({ ...project });
+            setUser({ ...nUser });
+
+            localStorage.setItem("currentUser", JSON.stringify({ ...nUser }));
+        };
+
+        processing();
+    };
+
     return (
         <div className={styledTopbar.topbar}>
             <div
@@ -60,7 +135,6 @@ const Topbar = (props) => {
                 )}
                 <div className={styledTopbar.title}>{project.name}</div>
             </div>
-            <div className="space-div"></div>
             <div className={styledTopbar.options}>
                 <div
                     className={styledTopbar.option}
@@ -79,11 +153,18 @@ const Topbar = (props) => {
                     <BiTime className="icon" />
                 </div>
                 <div className={styledTopbar.option}>
-                    <AiOutlineStar className="icon" />
-                    {/* <AiFillStar
+                    {isFavorite ? (
+                        <AiFillStar
                             className="icon"
+                            onClick={removeFromFavorite}
                             style={{ color: "yellow" }}
-                        /> */}
+                        />
+                    ) : (
+                        <AiOutlineStar
+                            className="icon"
+                            onClick={moveToFavorite}
+                        />
+                    )}
                 </div>
                 <div className={styledTopbar.option}>
                     <BiDotsHorizontalRounded className="icon" />

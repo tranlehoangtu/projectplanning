@@ -1,12 +1,14 @@
+// Reacts
+import React, { useState, useContext } from "react";
+
+// Mui
 import { Popover } from "@mui/material";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import {
-    getProjectById,
-    modifyProjectProps,
-} from "../../../Services/fetchProject";
+
+// Contexts
+import { ProjectContext } from "../../../../Context/ProjectContext";
 
 import cover from "./cover.module.css";
+import { modifyProjectProps } from "../../../../Services/fetchProject";
 
 const covers = [
     {
@@ -43,26 +45,20 @@ const covers = [
     },
 ];
 
-const Cover = (props) => {
-    const { projectId, handleCoverChanged } = props;
-
-    const [project, setProject] = useState(null);
+const Cover = () => {
+    const { project, setProject } = useContext(ProjectContext);
     const [anchorEl, setAnchorEl] = useState(null);
 
-    useEffect(() => {
-        const loading = async () => {
-            const currentProject = await getProjectById(projectId);
-
-            setProject(currentProject.data);
-        };
-
-        loading();
-    }, [projectId]);
-
     const handleClick = (image) => {
-        handleCoverChanged(image);
-        setProject({ ...project, background: image });
-        setAnchorEl(null);
+        modifyProjectProps(project.id, { ...project, background: image }).then(
+            () => {
+                setProject((prev) => ({
+                    ...prev,
+                    background: image,
+                }));
+                setAnchorEl(null);
+            }
+        );
     };
 
     const handleCoverChangeClick = (event) => {
@@ -74,14 +70,15 @@ const Cover = (props) => {
     };
 
     const handleRemove = () => {
-        modifyProjectProps(project.id, {
-            ...project,
-            background: "",
-        }).then((res) => {
-            setProject({ ...project, background: "" });
-        });
-
-        setAnchorEl(null);
+        modifyProjectProps(project.id, { ...project, background: "" }).then(
+            () => {
+                setProject((prev) => ({
+                    ...prev,
+                    background: "",
+                }));
+                setAnchorEl(null);
+            }
+        );
     };
 
     return (

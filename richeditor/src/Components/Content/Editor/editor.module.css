@@ -1,0 +1,53 @@
+.editor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.projectTitle {
+    width: 60%;
+    transition: all 0.5s ease;
+}
+
+.projectTitle:hover .changes {
+    opacity: 1;
+}
+
+.projectTitle .input {
+    width: 100%;
+
+    font-size: 48px;
+    font-weight: 600;
+
+    outline: none;
+    border: none;
+}
+
+.projectTitle .changes {
+    display: flex;
+
+    color: rgba(55, 53, 47, 0.65);
+    font-size: 14px;
+    transition: all 0.4s;
+    opacity: 0;
+
+    margin-top: 20px;
+}
+
+.changes .change {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 6px;
+    border-radius: 4px;
+
+    gap: 2px;
+    font-size: 12px;
+}
+
+.changes .change:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}

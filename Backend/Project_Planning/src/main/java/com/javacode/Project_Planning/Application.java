@@ -10,6 +10,17 @@ public class Application {
 	}
 
 //	@Bean
+//	CommandLineRunner run(UserService service) {
+//		return args -> {
+//			User user = service.findById("63710b446681ea3ff3d43839").get();
+//
+//			user.setFavorites(List.of("637b53c408d77355053eb513"));
+//			user.setPublics(List.of("637b53c408d77355053eb512"));
+//			service.save(user);
+//		};
+//	}
+
+//	@Bean
 //	CommandLineRunner run(ProjectService service) {
 //		return args -> {
 //

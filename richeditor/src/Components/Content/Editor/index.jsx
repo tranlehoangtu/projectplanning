@@ -1,6 +1,11 @@
-import React, { useState } from "react";
-import Cover from "../../Sidebar/Cover";
+// Reacts
+
+import React, { useContext, useState } from "react";
+
+// Components
+import Cover from "./Cover";
 import Avatar from "./Avatar";
+import Comments from "./Comments";
 
 // Icons
 import { BiMessageAltDetail } from "react-icons/bi";
@@ -8,50 +13,54 @@ import { BsEmojiSmile } from "react-icons/bs";
 
 // Styles
 import styledEditor from "./editor.module.css";
+import { ProjectContext } from "../../../Context/ProjectContext";
+import { modifyProjectProps } from "../../../Services/fetchProject";
 
 const Editor = (props) => {
-    const {
-        project,
-        expand,
-        handleCoverChanged,
-        handleAvatarChange,
-        handleAvatarAdd,
-    } = props;
+    const { project, setProject } = useContext(ProjectContext);
+    const { expand } = props;
     const [visible, setVisible] = useState();
 
     return (
         <div className={styledEditor.editor}>
-            <Cover
-                projectId={project.id}
-                handleCoverChanged={handleCoverChanged}
-            />
+            <Cover />
             <div
                 style={{
-                    padding: expand ? "0 340px" : "0 380px",
+                    // padding: expand ? "0 340px" : "0 380px",
+                    width: expand ? "70%" : "60%",
                 }}
                 className={styledEditor.projectTitle}
             >
                 <Avatar
                     visible={project.avatar.length > 0}
                     projectId={project.id}
-                    handleAvatarChange={handleAvatarChange}
                 />
                 <div className={styledEditor.changes}>
                     {project.avatar.length === 0 && (
                         <div
                             className={styledEditor.change}
-                            onClick={handleAvatarAdd}
+                            onClick={() =>
+                                modifyProjectProps(project.id, {
+                                    ...project,
+                                    avatar: [0, 0],
+                                }).then(() => {
+                                    setProject((prev) => ({
+                                        ...prev,
+                                        avatar: [0, 0],
+                                    }));
+                                })
+                            }
                         >
                             <div>
                                 <BsEmojiSmile
                                     className="icon"
-                                    style={{ fontSize: "26px" }}
+                                    style={{ fontSize: "20px" }}
                                 />
                             </div>
                             <div>Add Icon</div>
                         </div>
                     )}
-                    {!visible && (
+                    {project.comments.length === 0 && !visible && (
                         <div
                             className={styledEditor.change}
                             onClick={() => setVisible(true)}
@@ -59,38 +68,31 @@ const Editor = (props) => {
                             <div>
                                 <BiMessageAltDetail
                                     className="icon"
-                                    style={{ fontSize: "26px" }}
+                                    style={{ fontSize: "22px" }}
                                 />
                             </div>
                             <div>Add Comment</div>
                         </div>
                     )}
                 </div>
-                {/* <input
+                <input
                     className={styledEditor.input}
                     type="text"
                     value={project.name}
                     onChange={(e) => {
-                        setProjects((prev) => ({
+                        setProject((prev) => ({
                             ...prev,
-                            currentProject: {
-                                ...prev.currentProject,
-                                name: e.target.value,
-                            },
+                            name: e.target.value,
                         }));
+
                         document.title = e.target.value;
                     }}
                     spellCheck={false}
                     placeholder="Untitled"
                 />
-                <Comments
-                    projectId={project.id}
-                    username={datas.currentUser.fullname}
-                    updateComments={updateComments}
-                    visible={visible}
-                /> */}
+                <Comments visible={project.comments.length > 0 || visible} />
             </div>
-            <div>Editor</div>
+            <div style={{ height: "300px" }}>Editor</div>
             {/* <button onClick={handleSave}>Save</button> */}
         </div>
     );

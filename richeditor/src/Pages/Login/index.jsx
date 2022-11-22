@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import login from "./login.module.css";
 
 import { login as loginFunction } from "../../Services/fetchUser";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/UserContext";
 
 const Login = () => {
+    const { setUser } = useContext(UserContext);
     const [values, setValues] = useState(() => ({
         email: "",
         password: "",
@@ -22,22 +24,21 @@ const Login = () => {
             password: values.password,
         }).then((res) => {
             const data = res.data;
-
             if (data) {
                 localStorage.setItem(
                     "currentUser",
                     JSON.stringify({
-                        id: data.id,
-                        email: data.email,
-                        fullname: data.fullname,
-                        lastProject: data.lastProject,
+                        ...data,
                     })
                 );
-
+                setUser(data);
                 if (location.state?.from) {
                     navigate(location.state.from);
+                } else if (data.lastProject) {
+                    navigate(`/${data.lastProject}`);
+                } else {
+                    navigate("/");
                 }
-                navigate(`/${data.lastProject}`);
             } else {
                 setValues((prev) => ({
                     ...prev,

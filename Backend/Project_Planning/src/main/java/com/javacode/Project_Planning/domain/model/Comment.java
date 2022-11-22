@@ -16,6 +16,8 @@ public class Comment {
 
 	private Date createdAt = new Date();
 	private Date editedAt = new Date();
-	
+
+	private String parent;
+
 	private boolean resolved = false;
 }

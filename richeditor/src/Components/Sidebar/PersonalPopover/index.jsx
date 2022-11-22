@@ -5,12 +5,12 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import personalPopover from "./personalPopover.module.css";
 
 const PersonalPopover = (props) => {
-    const { name, email } = props;
+    const { user } = props;
 
     return (
         <div className={personalPopover.container}>
             <div className={personalPopover.emailContainer}>
-                <div className={personalPopover.email}>{email}</div>
+                <div className={personalPopover.email}>{user.email}</div>
                 <div className="space-div"></div>
                 <div>
                     <BiDotsHorizontalRounded
@@ -24,10 +24,10 @@ const PersonalPopover = (props) => {
             </div>
             <div className={personalPopover.accountContainer}>
                 <div className={personalPopover.avatar}>
-                    {email.charAt(0).toUpperCase()}
+                    {user.email.charAt(0).toUpperCase()}
                 </div>
                 <div className={personalPopover.account}>
-                    <div className={personalPopover.name}>{name}</div>
+                    <div className={personalPopover.name}>{user.email}</div>
                     <div className={personalPopover.type}>Personal Plan</div>
                 </div>
                 <div className="space-div"></div>

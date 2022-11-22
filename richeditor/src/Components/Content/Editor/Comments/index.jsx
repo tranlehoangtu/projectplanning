@@ -1,32 +1,48 @@
+// React
 import React, { useRef, useState } from "react";
 
-import { Button, Modal, Popover, Typography } from "@mui/material";
+// MUI
+import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 
+// Icons
 import {
     AiFillCheckCircle,
     AiOutlineEdit,
     AiOutlineSend,
 } from "react-icons/ai";
-import {
-    BsCheckLg,
-    BsPlusCircleDotted,
-    BsThreeDots,
-    BsTrash,
-} from "react-icons/bs";
-
+import { BsCheckLg, BsThreeDots, BsTrash } from "react-icons/bs";
 import { FaRedoAlt } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
-
 import { MdCancel } from "react-icons/md";
 
-import commentModule from "./comment.module.css";
+// Contexts
+import { ProjectContext } from "../../../../Context/ProjectContext";
+import { UserContext } from "../../../../Context/UserContext";
 
-import { Box } from "@mui/system";
-import { useEffect } from "react";
-import {
-    getProjectById,
-    modifyProjectProps,
-} from "../../../Services/fetchProject";
+// Services
+import { modifyProjectProps } from "../../../../Services/fetchProject";
+import { useContext } from "react";
+
+// Styles
+import commentModule from "./comment.module.css";
+import { BiReply } from "react-icons/bi";
+
+const bblSort = (arr) => {
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr.length - i - 1; j++) {
+            let jdate = new Date(arr[j].editedAt);
+            let jpdate = new Date(arr[j + 1].editedAt);
+
+            if (jdate.getTime() < jpdate.getTime()) {
+                // If the condition is true then swap them
+                var temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    return arr;
+};
 
 const convertTime = (date) => {
     const monthNames = [
@@ -107,17 +123,22 @@ const style = {
 
 const Comment = (props) => {
     const {
+        handleReply,
+        comments,
         comment,
         resolved,
         handleCommentChecked,
         handleCommentDelete,
         modifyComment,
+        user,
     } = props;
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [edit, setEdit] = useState(false);
     const [content, setContent] = useState(comment.content);
     const [modal, setModal] = useState(false);
+    const [reply, setReply] = useState(false);
+    const [inputRep, setInputRep] = useState("");
 
     const optionsRef = useRef(null);
     const inputRef = useRef(null);
@@ -151,6 +172,10 @@ const Comment = (props) => {
         setModal(false);
     };
 
+    const handleReplyClick = () => {
+        setReply(true);
+    };
+
     const open = Boolean(anchorEl);
     const id = open ? "simple-popover" : undefined;
 
@@ -169,36 +194,53 @@ const Comment = (props) => {
                             {getTimeDiff(comment.createdAt, comment.editedAt)}
                         </div>
                     </div>
-                    {/* <div className={commentModule.content}>
-                        {comment.content}
-                    </div> */}
                     <input
                         ref={inputRef}
                         type="text"
                         readOnly={edit ? false : true}
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                                setEdit(false);
+                                modifyComment({ ...comment, content: content });
+                            } else if (event.key === "Escape") {
+                                setEdit(false);
+                                setContent(comment.content);
+                            }
+                        }}
                         className={commentModule.content}
+                        spellCheck={false}
                     />
                 </div>
                 <div className={`${commentModule.options}`} ref={optionsRef}>
-                    <div className={`icon ${commentModule.option}`}>
-                        <BsPlusCircleDotted />
-                    </div>
-                    {!resolved ? (
+                    {comment.parent === "-1" && (
                         <div
+                            onClick={handleReplyClick}
                             className={`icon ${commentModule.option}`}
-                            onClick={handleCheck}
+                            style={{ fontSize: "22px" }}
                         >
-                            <BsCheckLg />
+                            <BiReply />
                         </div>
-                    ) : (
-                        <div
-                            className={`icon ${commentModule.option}`}
-                            onClick={handleCheck}
-                        >
-                            <FaRedoAlt />
-                        </div>
+                    )}
+                    {comment.parent === "-1" && (
+                        <>
+                            {!resolved ? (
+                                <div
+                                    className={`icon ${commentModule.option}`}
+                                    onClick={handleCheck}
+                                >
+                                    <BsCheckLg />
+                                </div>
+                            ) : (
+                                <div
+                                    className={`icon ${commentModule.option}`}
+                                    onClick={handleCheck}
+                                >
+                                    <FaRedoAlt />
+                                </div>
+                            )}
+                        </>
                     )}
                     <div
                         className={`icon ${commentModule.option}`}
@@ -226,6 +268,69 @@ const Comment = (props) => {
                     />
                 </div>
             )}
+            {/* Current Work */}
+            {reply && (
+                <div style={{ paddingLeft: "38px" }}>
+                    <div className={commentModule.textfield}>
+                        <div className={commentModule.name}>
+                            {user.fullname.substring(0, 1)}
+                        </div>
+                        <div className={commentModule.inputWrapper}>
+                            <input
+                                type="text"
+                                placeholder="Add a comment"
+                                value={inputRep}
+                                onChange={(e) => setInputRep(e.target.value)}
+                                onKeyDown={(event) => {
+                                    if (event.key === "Enter") {
+                                        handleReply(comment.id, inputRep);
+                                        setReply(false);
+                                    } else if (event.key === "Escape") {
+                                        setReply(false);
+                                        setInputRep("");
+                                    }
+                                }}
+                                className={commentModule.input}
+                                autoFocus={true}
+                            />
+                        </div>
+                    </div>
+                    <div className={commentModule.changes}>
+                        <MdCancel
+                            className={`icon ${commentModule.cancel}`}
+                            onClick={() => {
+                                setReply(false);
+                                setInputRep("");
+                            }}
+                        />
+                        <AiFillCheckCircle
+                            className={`icon ${commentModule.check}`}
+                            onClick={() => {
+                                setReply(false);
+                                handleReply(comment.id, inputRep);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <div style={{ paddingLeft: "38px" }}>
+                {comments
+                    .filter((item) => item.parent === comment.id)
+                    .map((childComment) => (
+                        <Comment
+                            handleReply={handleReply}
+                            user={user}
+                            comments={comments}
+                            comment={childComment}
+                            resolved={resolved}
+                            handleCommentChecked={handleCommentChecked}
+                            handleCommentDelete={handleCommentDelete}
+                            modifyComment={modifyComment}
+                            key={childComment.id}
+                        />
+                    ))}
+            </div>
             <Popover
                 id={id}
                 open={open}
@@ -298,57 +403,66 @@ const Comment = (props) => {
 };
 
 const Comments = (props) => {
-    const [loading, setLoading] = useState(true);
+    const { user } = useContext(UserContext);
+    const { project, setProject } = useContext(ProjectContext);
+
+    // const [loading, setLoading] = useState(true);
     const [input, setInput] = useState("");
-    const [project, setProject] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
 
-    const { projectId, username, updateComments, visible } = props;
+    const { visible } = props;
 
-    useEffect(() => {
-        const loading = async () => {
-            const currentProject = await getProjectById(projectId);
-
-            setProject(currentProject.data);
-            setLoading(false);
-        };
-
-        loading();
-    }, [projectId]);
-
-    const handleSend = () => {
+    const handleSend = (parent) => {
         let index = -1;
-
         project.comments.forEach((item) => {
             index = item.id > index ? item.id : index;
         });
-
         const nComment = {
             id: `${parseInt(index) + 1}`,
-            username: username,
+            username: user.fullname,
             content: input,
-
             createdAt: new Date(),
             editedAt: new Date(),
-
             resolved: false,
+            parent: parent,
         };
-
         const nProject = {
             ...project,
             comments: [...project.comments, nComment],
         };
-
-        modifyProjectProps(projectId, nProject).then(() => {
+        modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
             setInput("");
-            updateComments(nProject);
+        });
+    };
+
+    const handleReply = (parent, content) => {
+        let index = -1;
+        project.comments.forEach((item) => {
+            index = item.id > index ? item.id : index;
+        });
+        const nComment = {
+            id: `${parseInt(index) + 1}`,
+            username: user.fullname,
+            content: content,
+            createdAt: new Date(),
+            editedAt: new Date(),
+            resolved: false,
+            parent: parent,
+        };
+        const nProject = {
+            ...project,
+            comments: [...project.comments, nComment],
+        };
+        modifyProjectProps(project.id, nProject).then(() => {
+            setProject(nProject);
+            setInput("");
         });
     };
 
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
-            handleSend();
+            handleSend("-1");
         }
     };
 
@@ -365,7 +479,6 @@ const Comments = (props) => {
 
         modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
-            updateComments(nProject);
         });
     };
 
@@ -382,7 +495,6 @@ const Comments = (props) => {
 
         modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
-            updateComments(nProject);
         });
 
         setAnchorEl(null);
@@ -399,12 +511,13 @@ const Comments = (props) => {
     const handleCommentDelete = (id) => {
         const nProject = {
             ...project,
-            comments: project.comments.filter((item) => item.id !== id),
+            comments: project.comments.filter(
+                (item) => item.id !== id && item.parent !== id
+            ),
         };
 
         modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
-            updateComments(nProject);
         });
     };
 
@@ -419,7 +532,6 @@ const Comments = (props) => {
 
         modifyProjectProps(project.id, nProject).then(() => {
             setProject(nProject);
-            updateComments(nProject);
         });
     };
 
@@ -428,44 +540,24 @@ const Comments = (props) => {
 
     return (
         <>
-            {!loading && (
+            {true && (
                 <div className={commentModule.container}>
                     <div className={commentModule.comments}>
-                        {project.comments
-                            .filter(
-                                (projectItem) => projectItem.resolved === false
-                            )
-                            .map((item) => {
-                                return (
-                                    <Comment
-                                        key={item.id}
-                                        comment={item}
-                                        resolved={false}
-                                        handleCommentChecked={
-                                            handleCommentChecked
-                                        }
-                                        handleCommentDelete={
-                                            handleCommentDelete
-                                        }
-                                        modifyComment={modifyComment}
-                                    />
-                                );
-                            })}
                         {visible && (
                             <div className={commentModule.textfield}>
                                 <div className={commentModule.name}>
-                                    {username.substring(0, 1)}
+                                    {user.fullname.substring(0, 1)}
                                 </div>
                                 <div className={commentModule.inputWrapper}>
                                     <input
                                         type="text"
-                                        className={commentModule.input}
                                         placeholder="Add a comment"
                                         value={input}
                                         onChange={(e) =>
                                             setInput(e.target.value)
                                         }
                                         onKeyDown={handleKeyDown}
+                                        className={commentModule.input}
                                     />
                                 </div>
                                 <div>
@@ -476,14 +568,41 @@ const Comments = (props) => {
                                                 color: "#2383e2",
                                                 cursor: "pointer",
                                             }}
-                                            onClick={handleSend}
+                                            onClick={() => handleSend("-1")}
                                         />
                                     )}
                                 </div>
                             </div>
                         )}
+                        {bblSort(project.comments)
+                            .filter(
+                                (projectItem) =>
+                                    projectItem.resolved === false &&
+                                    projectItem.parent === "-1"
+                            )
+                            .map((item) => {
+                                return (
+                                    <Comment
+                                        handleReply={handleReply}
+                                        user={user}
+                                        key={item.id}
+                                        comment={item}
+                                        resolved={false}
+                                        handleCommentChecked={
+                                            handleCommentChecked
+                                        }
+                                        handleCommentDelete={
+                                            handleCommentDelete
+                                        }
+                                        modifyComment={modifyComment}
+                                        comments={project.comments}
+                                    />
+                                );
+                            })}
                         {project.comments.filter(
-                            (comment) => comment.resolved === true
+                            (comment) =>
+                                comment.resolved === true &&
+                                comment.parent === "-1"
                         ).length > 0 && (
                             <>
                                 <div
@@ -516,7 +635,7 @@ const Comments = (props) => {
                                     anchorEl={anchorEl}
                                     onClose={handleClose}
                                     anchorOrigin={{
-                                        vertical: "top",
+                                        vertical: "bottom",
                                         horizontal: "center",
                                     }}
                                     transformOrigin={{
@@ -533,24 +652,31 @@ const Comments = (props) => {
                                     <div
                                         className={`${commentModule.comments} ${commentModule.resolvedComments}`}
                                     >
-                                        {project.comments
+                                        {bblSort(project.comments)
                                             .filter(
-                                                (projectItem) =>
-                                                    projectItem.resolved ===
-                                                    true
+                                                (comment) =>
+                                                    comment.resolved === true &&
+                                                    comment.parent === "-1"
                                             )
-                                            .map((item) => {
-                                                return (
-                                                    <Comment
-                                                        key={item.id}
-                                                        comment={item}
-                                                        handleCommentChecked={
-                                                            handleCommentUnChecked
-                                                        }
-                                                        resolved={true}
-                                                    />
-                                                );
-                                            })}
+                                            .map((item) => (
+                                                <Comment
+                                                    handleReply={handleReply}
+                                                    user={user}
+                                                    key={item.id}
+                                                    comment={item}
+                                                    handleCommentChecked={
+                                                        handleCommentUnChecked
+                                                    }
+                                                    resolved={true}
+                                                    handleCommentDelete={
+                                                        handleCommentDelete
+                                                    }
+                                                    modifyComment={
+                                                        modifyComment
+                                                    }
+                                                    comments={project.comments}
+                                                />
+                                            ))}
                                     </div>
                                 </Popover>
                             </>

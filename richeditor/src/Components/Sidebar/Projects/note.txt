@@ -1,0 +1,4 @@
+- Chức năng cần hoàn thiện:
+ + Search
+ + Updates
+ + New Pages

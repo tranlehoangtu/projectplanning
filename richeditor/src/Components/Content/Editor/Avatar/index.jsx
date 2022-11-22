@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { Popover } from "@mui/material";
 
@@ -12,11 +12,15 @@ import { Box } from "@mui/system";
 import { useRef } from "react";
 
 // Services
-import { getProjectById } from "../../../../Services/fetchProject";
 import { getAllAvatar } from "../../../../Services/fetchAvatar";
+import { ProjectContext } from "../../../../Context/ProjectContext";
+import { modifyProjectProps } from "../../../../Services/fetchProject";
 
 const Avatar = (props) => {
-    const [project, setProject] = useState(null);
+    const { project, setProject } = useContext(ProjectContext);
+
+    const { visible } = props;
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [selected, setSelected] = useState(1);
     const [loading, setLoading] = useState(true);
@@ -25,26 +29,17 @@ const Avatar = (props) => {
 
     const inputRef = useRef(null);
 
-    const { visible, projectId, handleAvatarChange } = props;
-
     useEffect(() => {
         const loading = async () => {
-            const currentProject = await getProjectById(projectId);
-            if (currentProject.data.avatar.length === 0) {
-                setLoading(false);
-                setProject({ ...currentProject.data, avatar: [0, 0] });
-            } else {
-                setLoading(false);
-                setProject(currentProject.data);
-            }
-
             const currentAvatars = await getAllAvatar();
 
             setAvatars([...currentAvatars.data]);
             setSelected(currentAvatars.data[0].id);
+
+            setLoading(false);
         };
         loading();
-    }, [projectId]);
+    }, []);
 
     const handleClick = (e) => {
         setAnchorEl(e.target);
@@ -56,13 +51,11 @@ const Avatar = (props) => {
 
     const handleFocus = (e) => {
         const boxContainer = document.getElementById("box-container");
-
         boxContainer.style.border = "1px solid blue";
     };
 
     const handleBlur = () => {
         const boxContainer = document.getElementById("box-container");
-
         boxContainer.style.border = "1px solid transparent";
     };
 
@@ -71,21 +64,25 @@ const Avatar = (props) => {
     };
 
     const handleAvatarClick = (items) => {
-        handleAvatarChange(items);
-        setAnchorEl(null);
-        setProject((prev) => ({
-            ...prev,
-            avatar: [...items],
-        }));
+        modifyProjectProps(project.id, { ...project, avatar: [...items] }).then(
+            () => {
+                setProject((prev) => ({
+                    ...prev,
+                    avatar: [...items],
+                }));
+                setAnchorEl(null);
+            }
+        );
     };
 
     const handleRemove = () => {
-        handleAvatarChange([]);
-        setAnchorEl(null);
-        setProject((prev) => ({
-            ...prev,
-            avatar: [],
-        }));
+        modifyProjectProps(project.id, { ...project, avatar: [] }).then(() => {
+            setProject((prev) => ({
+                ...prev,
+                avatar: [],
+            }));
+            setAnchorEl(null);
+        });
     };
 
     const handleRandomClick = () => {
@@ -112,12 +109,15 @@ const Avatar = (props) => {
                 Math.floor(Math.random() * (lastMax - lastMin + 1)) + lastMin
             ];
 
-        setProject((prev) => ({
-            ...prev,
+        modifyProjectProps(project.id, {
+            ...project,
             avatar: [...lastChange],
-        }));
-
-        handleAvatarChange([...lastChange]);
+        }).then(() => {
+            setProject((prev) => ({
+                ...prev,
+                avatar: [...lastChange],
+            }));
+        });
     };
 
     const handleInputChange = (e) => {
