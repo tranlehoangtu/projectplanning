@@ -1,6 +1,7 @@
 // Reacts
-import React, { useContext } from "react";
-import { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
+
+// Mui
 
 //Icons
 import { AiFillStar, AiOutlineMessage, AiOutlineStar } from "react-icons/ai";
@@ -17,6 +18,7 @@ import { updateUser } from "../../../Services/fetchUser";
 
 // Styles
 import styledTopbar from "./topbar.module.css";
+import Share from "./Share";
 
 const getCurrentTime = (end) => {
     const monthNames = [
@@ -145,7 +147,7 @@ const Topbar = (props) => {
                 >
                     {getCurrentTime(project.editAt)}
                 </div>
-                <div className={`button ${styledTopbar.option}`}>Share</div>
+                <Share />
                 <div className={styledTopbar.option}>
                     <AiOutlineMessage className="icon" />
                 </div>

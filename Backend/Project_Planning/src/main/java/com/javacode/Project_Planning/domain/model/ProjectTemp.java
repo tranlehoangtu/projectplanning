@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "projects")
-public class Project {
+public class ProjectTemp {
 
 	@Id
 	private String id;

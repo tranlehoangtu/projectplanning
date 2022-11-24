@@ -1,0 +1,196 @@
+.button {
+    background-color: #1976d2;
+    color: #fff;
+    font-weight: 500;
+
+    font-size: 14px;
+    padding: 6px 20px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+}
+
+.button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.cancel {
+    background-color: inherit;
+    color: rgba(55, 53, 47, 0.65);
+    font-weight: 500;
+
+    font-size: 14px;
+    padding: 6px 20px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+}
+
+.cancel:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    display: flex;
+
+    flex-direction: column;
+    width: 470px;
+    min-height: 220px;
+}
+
+.container .notification {
+    width: 100%;
+    height: 100%;
+
+    padding: 12px;
+    font-weight: 500;
+    color: rgba(55, 53, 47, 0.65);
+}
+
+.notification .message {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.message .buttons {
+    width: 100%;
+
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.message .textarea {
+    flex: 1;
+    width: 100%;
+
+    padding: 10px 14px;
+    resize: none;
+    border-radius: 4px;
+}
+
+.message .textarea:focus {
+    outline: none !important;
+    box-shadow: rgb(35 131 226 / 57%) 0px 0px 0px 1px inset,
+        rgb(35 131 226 / 35%) 0px 0px 0px 2px !important;
+}
+
+.container .textfield {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 10px 12px;
+    border-bottom: 1px solid grey;
+}
+
+.textfield .input {
+    flex: 1;
+
+    cursor: pointer;
+    white-space: nowrap;
+    height: 30px;
+    border-radius: 3px;
+    background: rgba(55, 53, 47, 0.08);
+    color: rgba(55, 53, 47, 0.65);
+
+    outline: none;
+    border: none;
+
+    padding: 0 10px;
+}
+
+.inputWrapper {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    border-radius: 3px;
+    background: rgba(55, 53, 47, 0.08);
+    color: rgba(55, 53, 47, 0.65);
+}
+
+.inputWrapper .textWrapper {
+    flex: 1;
+
+    cursor: pointer;
+    /* height: 30px; */
+    border-radius: 3px;
+
+    background-color: transparent;
+
+    outline: none;
+    border: none;
+
+    padding: 10px;
+}
+
+.textWrapper .invitees {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-bottom: 6px;
+}
+
+.invitees .invitee {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    background-color: rgba(246, 192, 80, 0.26);
+    border-radius: 4px;
+    padding: 6px 8px;
+
+    font-size: 13px;
+}
+
+.textWrapper .text {
+    flex: 1;
+
+    width: 100%;
+    white-space: nowrap;
+    border-radius: 3px;
+
+    background-color: transparent;
+
+    outline: none;
+    border: none;
+}
+
+.inputWrapper .option {
+    background-color: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    padding: 10px;
+
+    height: 30px;
+    border-radius: 4px;
+}
+
+.inputWrapper .option:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}

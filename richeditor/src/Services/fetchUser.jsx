@@ -22,4 +22,15 @@ const getUserById = async (id) => {
     return await axios.get(`http://localhost:8080/api/v1/${id}`);
 };
 
-export { login, signup, changeLastProject, updateUser, getUserById };
+const getUserByEmail = async (email) => {
+    return await axios.get(`http://localhost:8080/api/v1/${email}/email`);
+};
+
+export {
+    login,
+    signup,
+    changeLastProject,
+    updateUser,
+    getUserById,
+    getUserByEmail,
+};

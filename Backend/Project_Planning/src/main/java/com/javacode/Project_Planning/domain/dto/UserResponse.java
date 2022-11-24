@@ -20,5 +20,7 @@ public class UserResponse {
 	private List<String> privates;
 	private List<String> publics;
 	
+	private String color;
+	
 	private String message;
 }

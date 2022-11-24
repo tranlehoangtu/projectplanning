@@ -6,23 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { convertToRaw, EditorState } from "draft-js";
 
 // Mui
-import { Modal, Popover } from "@mui/material";
-import { Box } from "@mui/system";
-
+import { Popover } from "@mui/material";
 // Components
 import PersonalPopover from "./PersonalPopover";
 import Projects from "./Projects";
 import Search from "./Modal/Search";
 
 // Icons
-import {
-    AiOutlineExpand,
-    AiOutlinePlus,
-    AiOutlineSearch,
-} from "react-icons/ai";
+import { AiOutlineExpand, AiOutlinePlus } from "react-icons/ai";
 import { IoMdSettings } from "react-icons/io";
 import { FaAngleDoubleLeft } from "react-icons/fa";
-import { HiOutlineClock } from "react-icons/hi";
 
 // Services
 import { updateUser } from "../../Services/fetchUser";
@@ -35,18 +28,7 @@ import sidebar from "./sidebar.module.css";
 // Contexts
 import { UserContext } from "../../Context/UserContext";
 import { ProjectContext } from "../../Context/ProjectContext";
-
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    // bgcolor: "#fff",
-    // width: 400,
-    // border: "2px solid #000",
-    // boxShadow: 24,
-    // p: 4,
-};
+import Updates from "./Updates";
 
 const Sidebar = (props) => {
     const { user, setUser } = useContext(UserContext);
@@ -57,9 +39,6 @@ const Sidebar = (props) => {
     const [loading, setLoading] = useState(true);
     const [anchorEls, setAnchorEls] = useState(() => ({
         personal: null,
-    }));
-    const [modals, setModals] = useState(() => ({
-        search: false,
     }));
 
     const [expands, setExpands] = useState(() => ({
@@ -95,21 +74,6 @@ const Sidebar = (props) => {
         setAnchorEls((prev) => ({
             ...prev,
             personal: null,
-        }));
-    };
-
-    // Search Modal
-    const handleSearchClose = () => {
-        setModals((prev) => ({
-            ...prev,
-            search: false,
-        }));
-    };
-
-    const handleSearchClick = () => {
-        setModals((prev) => ({
-            ...prev,
-            search: true,
         }));
     };
 
@@ -156,14 +120,15 @@ const Sidebar = (props) => {
                         }}
                     >
                         <div className={sidebar.personal} ref={personalRef}>
-                            <div className={sidebar.avatar}>
+                            <div
+                                className={sidebar.avatar}
+                                style={{ background: user.color }}
+                            >
                                 {user.email.charAt(0).toUpperCase()}
                             </div>
                             <div className={sidebar.info}>
                                 <div className={sidebar.username}>
-                                    {user.fullname} Lorem ipsum dolor, sit amet
-                                    consectetur adipisicing elit. Soluta,
-                                    blanditiis.
+                                    {user.fullname}
                                 </div>
                                 <div className={sidebar.email}>
                                     {user.email}
@@ -200,34 +165,8 @@ const Sidebar = (props) => {
                             </Popover>
                         </div>
                         <div className={sidebar.settings}>
-                            <div
-                                className={sidebar.setting}
-                                onClick={handleSearchClick}
-                            >
-                                <AiOutlineSearch
-                                    className="icon"
-                                    style={{ fontSize: "26px" }}
-                                />
-                                <div className={sidebar.name}>Search</div>
-                            </div>
-                            <Modal
-                                open={modals.search}
-                                onClose={handleSearchClose}
-                            >
-                                <Box sx={style}>
-                                    <Search user={user} />
-                                </Box>
-                            </Modal>
-                            <div
-                                className={sidebar.setting}
-                                // onClick={handleSearchModalOpen}
-                            >
-                                <HiOutlineClock
-                                    className="icon"
-                                    style={{ fontSize: "26px" }}
-                                />
-                                <div className={sidebar.name}>Updates</div>
-                            </div>
+                            <Search user={user} />
+                            <Updates user={user} />
                             <div
                                 className={sidebar.setting}
                                 // onClick={handleSearchModalOpen}

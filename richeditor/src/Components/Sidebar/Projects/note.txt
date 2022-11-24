@@ -2,3 +2,6 @@
  + Search
  + Updates
  + New Pages
+  
+ phu len 1 lop de lam z index
+ 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.javacode.Project_Planning.domain.dto.UserConfirm;
 import com.javacode.Project_Planning.domain.dto.UserLoginRequest;
 import com.javacode.Project_Planning.domain.dto.UserResponse;
 import com.javacode.Project_Planning.domain.model.User;
@@ -36,6 +37,20 @@ public class UserController {
 		return ResponseEntity.ok().body(user);
 	}
 
+	@GetMapping("/{email}/email")
+	public ResponseEntity<UserResponse> getUserByEmail(@PathVariable(value = "email") String email) {
+		Optional<User> optional = userService.findByEmail(email);
+
+		if(optional.isPresent()) {
+			UserResponse userResponse = new UserResponse();
+			BeanUtils.copyProperties(optional.get(), userResponse);
+			
+			return ResponseEntity.ok().body(userResponse);
+		}
+
+		return null;
+	}
+
 	@PostMapping("/login")
 	public ResponseEntity<UserResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
 		String email = userLoginRequest.getEmail();
@@ -52,13 +67,40 @@ public class UserController {
 		return ResponseEntity.ok().body(response);
 	}
 
+	@PostMapping("/signup")
+	public ResponseEntity<UserResponse> signup(@RequestBody UserConfirm userConfirm) {
+		Optional<User> optional = userService.findByEmail(userConfirm.getEmail());
+
+		if (optional.isPresent()) {
+			UserResponse userResponse = new UserResponse();
+			userResponse.setMessage("email");
+
+			return ResponseEntity.ok().body(userResponse);
+		} else if (!(userConfirm.getPassword().equals(userConfirm.getRepassword()))) {
+			UserResponse userResponse = new UserResponse();
+			userResponse.setMessage("password");
+
+			return ResponseEntity.ok().body(userResponse);
+		}
+
+		User user = new User();
+		BeanUtils.copyProperties(userConfirm, user);
+
+		user = userService.insert(user);
+
+		UserResponse userResponse = new UserResponse();
+		BeanUtils.copyProperties(user, userResponse);
+
+		return ResponseEntity.ok().body(userResponse);
+	}
+
 	@PutMapping("/update")
 	public void updateUser(@RequestBody User user) {
 		User foundUser = userService.findById(user.getId()).get();
 		String password = foundUser.getPassword();
 
 		user.setPassword(password);
-		
+
 		userService.save(user);
 	}
 

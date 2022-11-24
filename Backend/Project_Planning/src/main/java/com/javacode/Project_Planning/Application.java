@@ -8,22 +8,22 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-	
+
+
 //	@Bean
-//	CommandLineRunner run(ProjectService service) {
+//	CommandLineRunner run(UserService service, InviteRequestRepository repository) {
 //		return args -> {
-//			service.findByNameContaining("privates").forEach(item -> System.out.println(item.toString()));
-//			
+//			repository.findByFromUserAndStatus("637d89f1d38675656d73a766", "accept").forEach(item -> System.out.println(item.toString()));
+//		
 //		};
 //	}
-
+//	
 //	@Bean
 //	CommandLineRunner run(UserService service) {
 //		return args -> {
-//			User user = service.findById("63710b446681ea3ff3d43839").get();
-//
-//			user.setFavorites(List.of("637b53c408d77355053eb513"));
-//			user.setPublics(List.of("637b53c408d77355053eb512"));
+//			User user = service.findById("637d89fad38675656d73a767").get();
+//			user.setColor("lightgoldenrodyellow");
+//			
 //			service.save(user);
 //		};
 //	}

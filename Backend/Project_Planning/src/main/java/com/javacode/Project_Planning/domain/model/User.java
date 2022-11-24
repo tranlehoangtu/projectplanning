@@ -27,4 +27,6 @@ public class User {
 	private List<String> favorites = new ArrayList<>();
 	private List<String> privates = new ArrayList<>();
 	private List<String> publics = new ArrayList<>();
+	
+	private String color;
 }
