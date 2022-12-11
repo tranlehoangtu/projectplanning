@@ -13,8 +13,8 @@ public class Application {
 //	@Bean
 //	CommandLineRunner run(UserService service, InviteRequestRepository repository) {
 //		return args -> {
-//			repository.findByFromUserAndStatus("637d89f1d38675656d73a766", "accept").forEach(item -> System.out.println(item.toString()));
-//		
+//			
+//			
 //		};
 //	}
 //	

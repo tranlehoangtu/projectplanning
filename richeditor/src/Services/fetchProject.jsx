@@ -49,6 +49,12 @@ const modifyProjectProps = async (id, project) => {
     });
 };
 
+const updateProject = async (project) => {
+    return await axios.put(`http://localhost:8080/api/v1/project/update`, {
+        ...project,
+    });
+};
+
 export {
     getProjectById,
     getProjectsByParentId,
@@ -58,4 +64,5 @@ export {
     saveProject,
     deleteProject,
     modifyProjectProps,
+    updateProject,
 };

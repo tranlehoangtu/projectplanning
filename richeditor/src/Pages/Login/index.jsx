@@ -69,6 +69,7 @@ const Login = () => {
                         </div>
                         <div className={login.textfieldInput}>
                             <input
+                                autoFocus
                                 type="email"
                                 value={values.email}
                                 onChange={(event) => {

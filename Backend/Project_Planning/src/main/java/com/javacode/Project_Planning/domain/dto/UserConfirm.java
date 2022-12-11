@@ -12,4 +12,6 @@ public class UserConfirm {
 	private String password;
 	private String repassword;
 	private String fullname;
+
+	private String color; 
 }

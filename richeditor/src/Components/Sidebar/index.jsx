@@ -1,21 +1,17 @@
 // Reacts
-import React, { useState, useEffect, useContext, useRef, useMemo } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 // DraftJs
 import { convertToRaw, EditorState } from "draft-js";
 
-// Mui
-import { Popover } from "@mui/material";
 // Components
-import PersonalPopover from "./PersonalPopover";
 import Projects from "./Projects";
 import Search from "./Modal/Search";
+import Personal from "./Personal";
 
 // Icons
-import { AiOutlineExpand, AiOutlinePlus } from "react-icons/ai";
-import { IoMdSettings } from "react-icons/io";
-import { FaAngleDoubleLeft } from "react-icons/fa";
+import { AiOutlinePlus } from "react-icons/ai";
 
 // Services
 import { updateUser } from "../../Services/fetchUser";
@@ -29,6 +25,7 @@ import sidebar from "./sidebar.module.css";
 import { UserContext } from "../../Context/UserContext";
 import { ProjectContext } from "../../Context/ProjectContext";
 import Updates from "./Updates";
+import SettingnMember from "./Modal/SettingnMember";
 
 const Sidebar = (props) => {
     const { user, setUser } = useContext(UserContext);
@@ -37,9 +34,6 @@ const Sidebar = (props) => {
     const { expand, setExpand } = props;
 
     const [loading, setLoading] = useState(true);
-    const [anchorEls, setAnchorEls] = useState(() => ({
-        personal: null,
-    }));
 
     const [expands, setExpands] = useState(() => ({
         favorites: true,
@@ -47,12 +41,6 @@ const Sidebar = (props) => {
         publics: true,
     }));
 
-    const opens = useMemo(
-        () => ({ personal: Boolean(anchorEls.personal) }),
-        [anchorEls]
-    );
-
-    const personalRef = useRef(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -62,20 +50,6 @@ const Sidebar = (props) => {
         };
         loading();
     }, []);
-
-    const handlePersonalClick = (event) => {
-        setAnchorEls((prev) => ({
-            ...prev,
-            personal: personalRef.current,
-        }));
-    };
-
-    const handlePersonalClose = () => {
-        setAnchorEls((prev) => ({
-            ...prev,
-            personal: null,
-        }));
-    };
 
     const handlePlusClick = (type) => {
         createProject({
@@ -99,7 +73,7 @@ const Sidebar = (props) => {
             navigate(`/${res.data.id}`);
         });
     };
-
+    console.log("render");
     let temp = 0;
     // currentWork
     return (
@@ -119,82 +93,16 @@ const Sidebar = (props) => {
                                 : "translateX(-240px)",
                         }}
                     >
-                        <div className={sidebar.personal} ref={personalRef}>
-                            <div
-                                className={sidebar.avatar}
-                                style={{ background: user.color }}
-                            >
-                                {user.email.charAt(0).toUpperCase()}
-                            </div>
-                            <div className={sidebar.info}>
-                                <div className={sidebar.username}>
-                                    {user.fullname}
-                                </div>
-                                <div className={sidebar.email}>
-                                    {user.email}
-                                </div>
-                            </div>
-                            <div>
-                                <AiOutlineExpand
-                                    className={`icon`}
-                                    style={{ fontSize: "24px" }}
-                                    onClick={handlePersonalClick}
-                                />
-                            </div>
-                            <div>
-                                <FaAngleDoubleLeft
-                                    onClick={() => setExpand(false)}
-                                    className={`icon`}
-                                    style={{ fontSize: "24px" }}
-                                />
-                            </div>
-                            <Popover
-                                open={opens.personal}
-                                anchorEl={anchorEls.personal}
-                                onClose={handlePersonalClose}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "center",
-                                }}
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "center",
-                                }}
-                            >
-                                <PersonalPopover user={user} />
-                            </Popover>
-                        </div>
+                        <Personal expand={expand} setExpand={setExpand} />
                         <div className={sidebar.settings}>
                             <Search user={user} />
-                            <Updates user={user} />
-                            <div
-                                className={sidebar.setting}
-                                // onClick={handleSearchModalOpen}
-                            >
-                                <IoMdSettings
-                                    className="icon"
-                                    style={{ fontSize: "26px" }}
-                                />
-                                <div className={sidebar.name}>
-                                    Settings & Members
-                                </div>
-                            </div>
-                            {/* <Modal
-                                open={modals.search}
-                                onClose={handleSearchModalClose}
-                            >
-                                <>
-                                    <Search />
-                                </>
-                            </Modal>
-                            <Update /> */}
-                            {/* <div className={sidebar.setting}>
-                                <AiOutlineSetting
-                                    className="icon"
-                                    style={{ fontSize: "26px" }}
-                                />
-                                <span>Groups & Members</span>
-                            </div> */}
+                            <Updates
+                                user={user}
+                                setUser={setUser}
+                                project={project}
+                                setProject={setProject}
+                            />
+                            <SettingnMember project={project} user={user} />
                         </div>
                         <div className={sidebar.types}>
                             <div className={sidebar.type}>
@@ -310,16 +218,6 @@ const Sidebar = (props) => {
                                         Publics
                                     </div>
                                     <div className="space-div"></div>
-                                    <div
-                                        onClick={() =>
-                                            handlePlusClick("publics")
-                                        }
-                                    >
-                                        <AiOutlinePlus
-                                            className="icon"
-                                            style={{ fontSize: "24px" }}
-                                        />
-                                    </div>
                                 </div>
                                 {expands.publics &&
                                     user.publics.map((item) => (

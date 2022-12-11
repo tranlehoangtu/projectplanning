@@ -33,7 +33,7 @@ public class UserController {
 	public ResponseEntity<User> getUserById(@PathVariable(value = "id") String id) {
 		User user = userService.findById(id).get();
 		user.setPassword("");
-
+		System.out.println(user.toString());
 		return ResponseEntity.ok().body(user);
 	}
 
@@ -98,7 +98,7 @@ public class UserController {
 	public void updateUser(@RequestBody User user) {
 		User foundUser = userService.findById(user.getId()).get();
 		String password = foundUser.getPassword();
-
+		
 		user.setPassword(password);
 
 		userService.save(user);

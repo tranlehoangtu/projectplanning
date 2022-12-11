@@ -34,7 +34,6 @@ public class ProjectController {
 	public ResponseEntity<Project> getProjectById(@PathVariable("id") String id) {
 
 		if (service.findById(id).isEmpty()) {
-			System.out.println("empty");
 			return ResponseEntity.ok().body(null);
 		}
 
@@ -44,12 +43,13 @@ public class ProjectController {
 	@GetMapping("/project")
 	public ResponseEntity<List<Project>> getProjectsByParentId(@RequestParam("type") String type,
 			@RequestParam("parent-id") String id) {
+
 		if (type.equals("single")) {
 			List<Project> result = service.findByParent(id);
 			return ResponseEntity.ok().body(result);
 		}
-		
-		if(type.equals("tree")) {
+
+		if (type.equals("tree")) {
 			List<Project> result = new ArrayList<>();
 
 			getChilds(getRoot(id), result);
@@ -58,17 +58,12 @@ public class ProjectController {
 
 			return ResponseEntity.ok().body(result);
 		}
-		
+
 		// all
 		List<Project> result = new ArrayList<>();
-		
 		return ResponseEntity.ok().body(getChilds(id, result));
-	}
 
-//	@GetMapping("/project/name")
-//	public ResponseEntity<List<Project>> getProjectsByNameContaining(@RequestParam("name") String name) {
-//		return ResponseEntity.ok().body(service.findByNameContaining(name));
-//	}
+	}
 
 	@GetMapping("/project/name")
 	public ResponseEntity<List<Project>> getProjectsByNameContaining(@RequestParam("name") String name) {
@@ -105,6 +100,12 @@ public class ProjectController {
 		service.save(project);
 
 		return "Success";
+	}
+
+	@PutMapping("/project/update")
+	public ResponseEntity<Project> updateProject(@RequestBody Project project) {
+
+		return ResponseEntity.ok().body(service.save(project));
 	}
 
 	@DeleteMapping("/project/delete/{id}")

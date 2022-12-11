@@ -45,8 +45,11 @@ const Search = (props) => {
             ];
             let tempProjects = [];
             for (var i = 0; i < projectsId.length; i++) {
-                const fetchProject = await getProjectById(projectsId[i]);
-                tempProjects = [...tempProjects, fetchProject.data];
+                const fetchProjectData = await getProjectById(projectsId[i]);
+                const fetchProject = fetchProjectData.data;
+                if (fetchProject) {
+                    tempProjects = [...tempProjects, fetchProject];
+                }
             }
 
             setValues((prev) => ({
@@ -85,256 +88,116 @@ const Search = (props) => {
                 />
                 <div className={sidebar.name}>Search</div>
             </div>
-            <Modal open={modal} onClose={handleSearchClose}>
-                <Box sx={style}>
-                    <div className={search.container}>
-                        <div className={search.inputContainer}>
-                            <div>
-                                <BiSearch className={`icon`} />
-                            </div>
-                            <div className={search.input}>
-                                <input
-                                    type="text"
-                                    value={values.text}
-                                    onChange={(event) =>
-                                        setValues((prev) => ({
-                                            ...prev,
-                                            text: event.target.value,
-                                        }))
-                                    }
-                                    spellCheck={false}
-                                    placeholder="Search Here"
-                                    autoFocus
-                                />
-                            </div>
-                            <div
-                                className={search.times}
-                                style={{
-                                    opacity: values.text.length > 0 ? 1 : 0,
-                                }}
-                            >
-                                <FaRegTimesCircle
-                                    className={`icon`}
-                                    onClick={() =>
-                                        setValues((prev) => ({
-                                            ...prev,
-                                            text: "",
-                                        }))
-                                    }
-                                />
-                            </div>
-                        </div>
-                        {!loading && (
-                            <div className={search.options}>
-                                <div className={search.option}>
-                                    <div className={search.optionName}>
-                                        Best Match
-                                    </div>
-                                    {values.projects
-                                        .filter((item) => {
-                                            return (
-                                                item.name
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        values.text.toLowerCase()
-                                                    ) && values.text.length > 0
-                                            );
-                                        })
-                                        .map((item) => (
-                                            <div key={item.id}>
-                                                <div
-                                                    className={search.project}
-                                                    onClick={() =>
-                                                        handleProjectClick(
-                                                            item.id
-                                                        )
-                                                    }
-                                                >
-                                                    {item.avatar.length > 0 ? (
-                                                        <div
-                                                            style={{
-                                                                background: `url(/Images/logos/emojis.png) ${
-                                                                    1.6949 *
-                                                                    item
-                                                                        .avatar[0]
-                                                                }% ${
-                                                                    1.6949 *
-                                                                    item
-                                                                        .avatar[1]
-                                                                }% / 5900% 5900%`,
-
-                                                                width: "16px",
-                                                                height: "16px",
-                                                            }}
-                                                        ></div>
-                                                    ) : (
-                                                        <BiFileBlank />
-                                                    )}
-                                                    <div
-                                                        className={
-                                                            search.projectName
-                                                        }
-                                                    >
-                                                        {item.name}
-                                                    </div>
-                                                    <div className="space-div"></div>
-                                                    {/* <div className={search.editTime}>
-                                            2d ago
-                                        </div> */}
-                                                </div>
-                                            </div>
-                                        ))}
+            {modal && (
+                <Modal open={modal} onClose={handleSearchClose}>
+                    <Box sx={style}>
+                        <div className={search.container}>
+                            <div className={search.inputContainer}>
+                                <div>
+                                    <BiSearch className={`icon`} />
+                                </div>
+                                <div className={search.input}>
+                                    <input
+                                        type="text"
+                                        value={values.text}
+                                        onChange={(event) =>
+                                            setValues((prev) => ({
+                                                ...prev,
+                                                text: event.target.value,
+                                            }))
+                                        }
+                                        spellCheck={false}
+                                        placeholder="Search Here"
+                                        autoFocus
+                                    />
+                                </div>
+                                <div
+                                    className={search.times}
+                                    style={{
+                                        opacity: values.text.length > 0 ? 1 : 0,
+                                    }}
+                                >
+                                    <FaRegTimesCircle
+                                        className={`icon`}
+                                        onClick={() =>
+                                            setValues((prev) => ({
+                                                ...prev,
+                                                text: "",
+                                            }))
+                                        }
+                                    />
                                 </div>
                             </div>
-                        )}
-                    </div>
-                </Box>
-            </Modal>
+                            {!loading && (
+                                <div className={search.options}>
+                                    <div className={search.option}>
+                                        <div className={search.optionName}>
+                                            Best Match
+                                        </div>
+                                        {values.projects
+                                            .filter((item) => {
+                                                return (
+                                                    item.name
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            values.text.toLowerCase()
+                                                        ) &&
+                                                    values.text.length > 0
+                                                );
+                                            })
+                                            .map((item) => (
+                                                <div key={item.id}>
+                                                    <div
+                                                        className={
+                                                            search.project
+                                                        }
+                                                        onClick={() =>
+                                                            handleProjectClick(
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        {item.avatar.length >
+                                                        0 ? (
+                                                            <div
+                                                                style={{
+                                                                    background: `url(/Images/logos/emojis.png) ${
+                                                                        1.6949 *
+                                                                        item
+                                                                            .avatar[0]
+                                                                    }% ${
+                                                                        1.6949 *
+                                                                        item
+                                                                            .avatar[1]
+                                                                    }% / 5900% 5900%`,
+
+                                                                    width: "16px",
+                                                                    height: "16px",
+                                                                }}
+                                                            ></div>
+                                                        ) : (
+                                                            <BiFileBlank />
+                                                        )}
+                                                        <div
+                                                            className={
+                                                                search.projectName
+                                                            }
+                                                        >
+                                                            {item.name}
+                                                        </div>
+                                                        <div className="space-div"></div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </Box>
+                </Modal>
+            )}
         </>
     );
 };
 
 export default Search;
-
-// {
-//     /* <div className={search.options}>
-//                 <div className={search.option}>
-//                     <div className={search.optionName}>Today</div>
-//                     <div className={search.projects}>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div className={search.option}>
-//                     <div className={search.optionName}>Yesterday</div>
-//                     <div className={search.projects}>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div className={search.option}>
-//                     <div className={search.optionName}>Past Week</div>
-//                     <div className={search.projects}>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div className={search.option}>
-//                     <div className={search.optionName}>Past 30 Days</div>
-//                     <div className={search.projects}>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div className={search.option}>
-//                     <div className={search.optionName}>Past 30 Days</div>
-//                     <div className={search.projects}>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div className={search.option}>
-//                     <div className={search.optionName}>Past 30 Days</div>
-//                     <div className={search.projects}>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                         <div className={search.project}>
-//                             <div className={search.avatar}></div>
-//                             <div className={search.projectName}>Untitled</div>
-//                             <div className="space-div"></div>
-//                             <div className={search.editTime}>2d ago</div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div> */
-// }

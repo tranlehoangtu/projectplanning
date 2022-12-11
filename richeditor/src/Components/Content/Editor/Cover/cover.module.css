@@ -5,6 +5,20 @@
     position: relative;
 }
 
+.container .over {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: transparent;
+
+    z-index: 100;
+}
+
 .container .imageContainer {
     position: relative;
 

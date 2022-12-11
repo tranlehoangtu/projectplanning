@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Popover } from "@mui/material";
 
@@ -13,13 +13,10 @@ import { useRef } from "react";
 
 // Services
 import { getAllAvatar } from "../../../../Services/fetchAvatar";
-import { ProjectContext } from "../../../../Context/ProjectContext";
 import { modifyProjectProps } from "../../../../Services/fetchProject";
 
 const Avatar = (props) => {
-    const { project, setProject } = useContext(ProjectContext);
-
-    const { visible } = props;
+    const { visible, project, setProject, user } = props;
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [selected, setSelected] = useState(1);
@@ -124,6 +121,19 @@ const Avatar = (props) => {
         setValue(e.target.value);
     };
 
+    const isValid = () => {
+        let temp = false;
+
+        temp = temp
+            ? temp
+            : Boolean(project.fullaccess.find((item) => item === user.id));
+        temp = temp
+            ? temp
+            : Boolean(project.canEdits.find((item) => item === user.id));
+        temp = temp ? temp : user.id === project.userId;
+        return temp;
+    };
+
     return (
         <>
             {!loading && (
@@ -136,7 +146,11 @@ const Avatar = (props) => {
                 >
                     <div
                         className={avatar.containerA}
-                        style={{ opacity: visible ? 1 : 0 }}
+                        style={{
+                            opacity: visible ? 1 : 0,
+                            userSelect: !isValid() && "none",
+                            pointerEvents: !isValid() && "none",
+                        }}
                     >
                         <div
                             style={{

@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 2px;
+}
+
+.quoteBlock {
+    border-left: 5px solid #4ca8de;
+    color: #555;
+    font-size: 1.2em;
+    margin: 0;
+    padding: 10px 0 10px 20px;
+    background-color: #e2f2ff;
+}
+.red {
+    color: red;
+}
+
+.header3 {
+    font-size: 1.3rem;
+    margin: 28px 0;
+
+    font-family: "Georgia", serif;
+}
+
+.atomic {
+    height: 200px;
+}
+
+.atomic img {
+    height: 100%;
+}
+
+.caption {
+    display: block;
+    position: relative;
+    font-style: normal;
+    padding: 10px 0;
+    font-family: Hoefler Text, Georgia, serif;
+    margin: 0 0 20px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    line-height: 1.2em;
+    text-align: center;
+}
+
+.unstyled {
+    margin: 20px 0;
+}
+
+.unor {
+    margin-bottom: 10px;
+}
+.oor {
+    margin-bottom: 10px;
+}

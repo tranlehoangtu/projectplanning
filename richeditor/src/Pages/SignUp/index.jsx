@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 
+const colors = ["lightgreen", "lightblue", "lightcoral", "lightseagreen"];
+
 const SignUp = () => {
     const [values, setValues] = useState(() => ({
         data: { email: "", password: "", repassword: "", fullname: "" },
@@ -78,6 +80,7 @@ const SignUp = () => {
                 password: values.data.password,
                 repassword: values.data.repassword,
                 fullname: values.data.fullname,
+                color: colors[Math.floor(Math.random() * 3) + 1],
             }).then((res) => {
                 const data = res.data;
                 if (data.id) {
@@ -181,6 +184,7 @@ const SignUp = () => {
                         </div>
                         <div className={signup.textfieldInput}>
                             <input
+                                autoFocus
                                 type="email"
                                 value={values.data.email}
                                 onChange={(event) => {

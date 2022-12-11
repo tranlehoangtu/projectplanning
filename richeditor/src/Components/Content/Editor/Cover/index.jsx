@@ -45,7 +45,9 @@ const covers = [
     },
 ];
 
-const Cover = () => {
+const Cover = (props) => {
+    const { user } = props;
+
     const { project, setProject } = useContext(ProjectContext);
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -81,6 +83,7 @@ const Cover = () => {
         );
     };
 
+    //
     return (
         <>
             {project && (
@@ -175,6 +178,18 @@ const Cover = () => {
                             </div>
                         </Popover>
                     </div>
+
+                    {Boolean(
+                        project.canEdits.find((item) => item === user.id)
+                    ) ||
+                    Boolean(
+                        project.fullaccess.find((item) => item === user.id)
+                    ) ||
+                    user.id === project.userId ? (
+                        <></>
+                    ) : (
+                        <div className={cover.over}></div>
+                    )}
                 </div>
             )}
         </>

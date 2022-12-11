@@ -26,13 +26,14 @@ public class Project {
 	private String parent;
 
 	private String background;
+	
 	private List<Integer> avatar = new ArrayList<>();
 	private List<Comment> comments = new ArrayList<>();
-	
-	private List<String> fullaccess;
-	private List<String> canEdits;
-	private List<String> canComments;
-	private List<String> canView;
+
+	private List<String> fullaccess = new ArrayList<>();
+	private List<String> canEdits = new ArrayList<>();
+	private List<String> canComments = new ArrayList<>();
+	private List<String> canView = new ArrayList<>();
 
 	private State state;
 

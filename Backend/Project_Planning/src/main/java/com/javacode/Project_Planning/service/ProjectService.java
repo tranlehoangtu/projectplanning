@@ -55,5 +55,29 @@ public class ProjectService {
 		Criteria regex = Criteria.where("name").regex(".*" + name + ".*", "i");
 		return mongoOperations.find(new Query().addCriteria(regex), Project.class);
 	}
+	
+	public List<Project> getChilds(String id, List<Project> result) {
+		List<Project> projects = projectRepository.findByParent(id);
+
+		if (projects.size() > 0) {
+			projects.forEach(item -> result.add(item));
+			projects.forEach(item -> getChilds(item.getId(), result));
+		}
+
+		return result;
+	}
+
+	public String getRoot(String id) {
+		String result = "";
+		Project project = projectRepository.findById(id).get();
+
+		result = project.getId();
+
+		if (!project.getParent().equals("0")) {
+			result = getRoot(project.getParent());
+		}
+
+		return result;
+	}
 
 }

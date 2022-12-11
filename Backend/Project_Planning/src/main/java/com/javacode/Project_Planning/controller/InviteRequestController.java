@@ -2,6 +2,7 @@ package com.javacode.Project_Planning.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
@@ -42,20 +43,46 @@ public class InviteRequestController {
 
 		List<InviteResponse> result = new ArrayList<>();
 
-		if (type.equals("to"))
+		if (type.equals("to")) {
 			result = insertRequest(service.findByToUserAndStatus(id, "pending"));
+		}
 
-		if (type.equals("from"))
+		if (type.equals("from")) {
 			result = combineList(insertRequest(service.findByFromUserAndStatus(id, "accept")),
 					insertRequest(service.findByFromUserAndStatus(id, "refuse")));
+		}
 
 		return ResponseEntity.ok().body(result);
-
 	}
 
 	@PostMapping(value = "/invite")
 	public ResponseEntity<List<InviteRequest>> invite(@RequestBody List<InviteRequest> invites) {
+
 		List<InviteRequest> requests = new ArrayList<>();
+
+		if (invites.size() > 0) {
+			InviteRequest firstRequest = invites.get(0);
+
+			User user = userService.findById(firstRequest.getFromUser()).get();
+			user.getFavorites();
+
+			for (int i = 0; i < user.getPrivates().size(); i++) {
+				if (user.getPrivates().get(i).equals(firstRequest.getProjectId())) {
+					user.getPublics().add(user.getPrivates().get(i));
+					user.getPrivates().remove(i);
+				}
+			}
+
+			for (int i = 0; i < user.getFavorites().size(); i++) {
+				if (user.getFavorites().get(i).equals(firstRequest.getProjectId())) {
+					user.getPublics().add(user.getFavorites().get(i));
+					user.getFavorites().remove(i);
+				}
+			}
+
+			userService.save(user);
+		}
+
 		invites.forEach(item -> {
 			requests.add(service.insert(item));
 		});
@@ -64,22 +91,80 @@ public class InviteRequestController {
 	}
 
 	@PutMapping(value = "/invite/update")
-	public void update(@RequestBody InviteResponse invite) {
+	public ResponseEntity<InviteResponse> update(@RequestBody InviteResponse invite) {
 
-		InviteRequest inviteRequest = new InviteRequest();
-		BeanUtils.copyProperties(invite, inviteRequest);
+		if (invite.getStatus().equals("accept")) {
 
-		inviteRequest.setFromUser(invite.getFromUser().getId());
-		inviteRequest.setToUser(invite.getToUser().getId());
+			Project project = invite.getProject();
 
-		inviteRequest.setProjectId(invite.getProject().getId());
+			List<Project> projects = new ArrayList<>();
+			String root = projectService.getRoot(project.getId());
 
-		service.save(inviteRequest);
+			projectService.getChilds(root, projects);
+			projects.add(project);
+
+			User fromUser = userService.findById(invite.getFromUser().getId()).get();
+			User toUser = userService.findById(invite.getToUser().getId()).get();
+
+			toUser.getPublics().add(project.getId());
+
+			switch (invite.getType()) {
+			case "Full access":
+				for (int i = 0; i < projects.size(); i++) {
+					projects.get(i).getFullaccess().add(fromUser.getId());
+					projects.get(i).getFullaccess().add(toUser.getId());
+
+					projectService.save(projects.get(i));
+				}
+				break;
+
+			case "Can edit":
+				for (int i = 0; i < projects.size(); i++) {
+					projects.get(i).getCanEdits().add(toUser.getId());
+					projects.get(i).getCanEdits().add(fromUser.getId());
+					projectService.save(projects.get(i));
+				}
+
+				break;
+
+			case "Can comment":
+				for (int i = 0; i < projects.size(); i++) {
+					projects.get(i).getCanComments().add(fromUser.getId());
+					projects.get(i).getCanComments().add(toUser.getId());
+					projectService.save(projects.get(i));
+				}
+				break;
+
+			case "Can view":
+				for (int i = 0; i < projects.size(); i++) {
+					projects.get(i).getCanView().add(fromUser.getId());
+					projects.get(i).getCanView().add(toUser.getId());
+					projectService.save(projects.get(i));
+				}
+				break;
+
+			default:
+				break;
+			}
+
+			UserResponse toResponse = new UserResponse();
+			BeanUtils.copyProperties(toUser, toResponse);
+
+			invite.setProject(project);
+			invite.setToUser(toResponse);
+
+		}
+
+		InviteRequest request = service.findById(invite.getId()).get();
+		request.setStatus(invite.getStatus());
+		service.save(request);
+
+		return ResponseEntity.ok().body(invite);
 	}
 
 	@DeleteMapping(value = "/invite/delete/{id}")
 	public void delete(@PathVariable("id") String id) {
-		service.deleteById(id);
+		service.findById(id).ifPresent(request -> service.deleteById(id));
 	}
 
 	private List<InviteResponse> insertRequest(List<InviteRequest> requests) {
@@ -87,26 +172,30 @@ public class InviteRequestController {
 
 		requests.forEach(item -> {
 
-			Project project = projectService.findById(item.getProjectId()).get();
+			Optional<Project> optional = projectService.findById(item.getProjectId());
 
-			InviteResponse response = new InviteResponse();
-			UserResponse fromResponse = new UserResponse();
-			UserResponse toResponse = new UserResponse();
+			if (optional.isPresent()) {
+				Project project = optional.get();
 
-			User fromUser = userService.findById(item.getFromUser()).get();
-			User toUser = userService.findById(item.getToUser()).get();
+				InviteResponse response = new InviteResponse();
+				UserResponse fromResponse = new UserResponse();
+				UserResponse toResponse = new UserResponse();
 
-			BeanUtils.copyProperties(fromUser, fromResponse);
-			BeanUtils.copyProperties(toUser, toResponse);
-			BeanUtils.copyProperties(item, response);
+				User fromUser = userService.findById(item.getFromUser()).get();
+				User toUser = userService.findById(item.getToUser()).get();
 
-			response.setFromUser(fromResponse);
-			response.setToUser(toResponse);
-			response.setProject(project);
+				BeanUtils.copyProperties(fromUser, fromResponse);
+				BeanUtils.copyProperties(toUser, toResponse);
+				BeanUtils.copyProperties(item, response);
 
-			result.add(response);
+				response.setFromUser(fromResponse);
+				response.setToUser(toResponse);
+				response.setProject(project);
+
+				result.add(response);
+			}
 		});
-
+		
 		return result;
 	}
 

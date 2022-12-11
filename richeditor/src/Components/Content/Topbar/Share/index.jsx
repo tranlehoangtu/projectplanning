@@ -2,7 +2,14 @@
 import React, { useState, useContext } from "react";
 
 // Mui
-import { Menu, MenuItem, Popover, styled } from "@mui/material";
+import {
+    Alert,
+    Menu,
+    MenuItem,
+    Popover,
+    Snackbar,
+    styled,
+} from "@mui/material";
 
 // icons
 import { AiOutlineCaretDown } from "react-icons/ai";
@@ -18,8 +25,9 @@ import { UserContext } from "../../../../Context/UserContext";
 import { ProjectContext } from "../../../../Context/ProjectContext";
 
 // Apis
-import { getUserByEmail } from "../../../../Services/fetchUser";
+import { getUserByEmail, updateUser } from "../../../../Services/fetchUser";
 import { inviteRequests } from "../../../../Services/InviteApi";
+import { getAllTreeByParentId } from "../../../../Services/fetchProject";
 
 const StyledMenuItem = styled(MenuItem)(() => ({
     fontSize: "13px",
@@ -28,8 +36,8 @@ const StyledMenuItem = styled(MenuItem)(() => ({
 }));
 
 const Share = () => {
-    const { user } = useContext(UserContext);
-    const { project } = useContext(ProjectContext);
+    const { user, setUser } = useContext(UserContext);
+    const { project, setProject } = useContext(ProjectContext);
 
     const [edit, setEdit] = useState(false);
     const [values, setValues] = useState(() => ({
@@ -40,6 +48,16 @@ const Share = () => {
         message: "Allow me to invite you :))",
     }));
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setOpenSnackbar(false);
+    };
+
     const handleTextChange = (e) => {
         setValues((prev) => ({
             ...prev,
@@ -49,18 +67,59 @@ const Share = () => {
 
     const handleInvite = (e) => {
         e.preventDefault();
-        const requests = values.invitees.map((item) => ({
-            projectId: project.id,
-            message: values.message,
-            fromUser: user.id,
-            toUser: item.id,
-            type: values.option,
-            status: "pending",
-        }));
 
-        inviteRequests(requests).then((res) => {
-            handleClose();
-        });
+        const processing = async () => {
+            if (values.invitees.length > 0) {
+                const requests = values.invitees.map((item) => ({
+                    projectId: project.id,
+                    message: values.message,
+                    fromUser: user.id,
+                    toUser: item.id,
+                    type: values.option,
+                    status: "pending",
+                }));
+
+                await inviteRequests(requests);
+
+                let nUser = null;
+                const projectsData = await getAllTreeByParentId(project.id);
+                const projects = projectsData.data;
+
+                if (
+                    user.publics.find((publicItem) => publicItem === project.id)
+                ) {
+                    nUser = { ...user };
+                } else {
+                    const nPrivates = user.privates.filter(
+                        (privateItem) =>
+                            !projects.find((item) => item.id === privateItem)
+                    );
+                    const nFavorites = user.favorites.filter(
+                        (favorite) =>
+                            !projects.find((item) => item.id === favorite)
+                    );
+
+                    const projectsId = projects.map((item) => item.id);
+                    nUser = {
+                        ...user,
+                        privates: nPrivates,
+                        favorites: nFavorites,
+                        publics: [...user.publics, ...projectsId],
+                    };
+                }
+
+                setUser(nUser);
+                await updateUser(nUser);
+                localStorage.setItem("currentUser", JSON.stringify(nUser));
+                setProject(project);
+
+                handleClose();
+            } else {
+                handleClose();
+            }
+        };
+
+        processing();
     };
 
     const handleKeyDown = (e) => {
@@ -107,7 +166,14 @@ const Share = () => {
     const optionOpen = Boolean(optionEl);
 
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+        if (
+            project.userId === user.id ||
+            project.fullaccess.find((item) => item === user.id)
+        ) {
+            setAnchorEl(event.currentTarget);
+        } else {
+            setOpenSnackbar(true);
+        }
     };
 
     const handleClose = () => {
@@ -392,6 +458,26 @@ const Share = () => {
                     </div>
                 </div>
             </Popover>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity="error"
+                    sx={{
+                        width: "100%",
+                        background: "#d32f2f",
+                        color: "#fff",
+                        svg: {
+                            color: "#fff",
+                        },
+                    }}
+                >
+                    You don't have any permission to share this project
+                </Alert>
+            </Snackbar>
         </>
     );
 };

@@ -17,8 +17,9 @@ import {
     getAllTreeByParentId,
     getProjectById,
     getProjectsByParentId,
+    updateProject,
 } from "../../../Services/fetchProject";
-import { updateUser } from "../../../Services/fetchUser";
+import { getUserById, updateUser } from "../../../Services/fetchUser";
 
 // Icons
 import { BiFileBlank } from "react-icons/bi";
@@ -368,12 +369,11 @@ const Projects = (props) => {
         const processing = async () => {
             let nUser = null;
 
-            const childs = await getAllTreeByParentId(cProject.id);
+            const childsData = await getAllChilds(cProject.id);
+            const childs = [...childsData.data, cProject];
 
             const nlist = user[type].filter(
-                (item) =>
-                    !childs.data.find((child) => item === child.id) &&
-                    !(item === cProject.id)
+                (item) => !childs.find((child) => child.id === item)
             );
 
             nUser = {
@@ -386,6 +386,8 @@ const Projects = (props) => {
                 nUser.privates.length +
                 nUser.publics.length +
                 nUser.favorites.length;
+
+            await updateProject(removeUserFromProject(cProject));
 
             if (count === 0) {
                 nUser = {
@@ -416,6 +418,7 @@ const Projects = (props) => {
                     nUser = { ...nUser, lastProject: nUser.favorites[0] };
                     destination = `/${nUser.favorites[0]}`;
                 }
+
                 await updateUser({ ...nUser });
 
                 setProject({ ...project });
@@ -429,7 +432,6 @@ const Projects = (props) => {
                 navigate(destination);
             } else {
                 await updateUser({ ...nUser });
-
                 setProject({ ...project });
                 setUser({ ...nUser });
 
@@ -440,96 +442,136 @@ const Projects = (props) => {
             }
         };
 
+        const removeUserFromProject = (cProject) => {
+            return {
+                ...cProject,
+                fullaccess: cProject.fullaccess.filter(
+                    (access) => access !== user.id
+                ),
+                canEdits: cProject.canEdits.filter((edit) => edit !== user.id),
+                canComments: cProject.canComments.filter(
+                    (comment) => comment !== user.id
+                ),
+                canView: cProject.canView.filter((view) => view !== user.id),
+            };
+        };
+
         processing();
     };
 
     const handleDelete = (cProject) => {
         const processing = async () => {
-            let nUser = null;
+            const childsData = await getAllChilds(cProject.id);
+            const childs = [...childsData.data, cProject];
 
-            const childs = await getAllChilds(cProject.id);
-            const nlist = user[type].filter(
-                (item) =>
-                    !childs.data.find((child) => item === child.id) &&
-                    !(item === cProject.id)
-            );
+            let users = [user.id];
 
-            nUser = {
-                ...user,
-                [type]: [...nlist],
-            };
+            childs.forEach((item) => {
+                users = [
+                    ...users,
+                    ...item.fullaccess.filter(
+                        (access) =>
+                            !users.find((userItem) => userItem === access)
+                    ),
+                ];
 
-            let count = 0;
-            count +=
-                nUser.privates.length +
-                nUser.publics.length +
-                nUser.favorites.length;
+                users = [
+                    ...users,
+                    ...item.canEdits.filter(
+                        (access) =>
+                            !users.find((userItem) => userItem === access)
+                    ),
+                ];
 
-            if (count === 0) {
-                nUser = {
-                    ...nUser,
-                    lastProject: "",
-                };
-                deleteProject(cProject.id);
-                for (var i = 0; i < childs.data.length; i++) {
-                    await deleteProject(childs.data[i].id);
-                }
-                await updateUser({ ...nUser });
+                users = [
+                    ...users,
+                    ...item.canComments.filter(
+                        (access) =>
+                            !users.find((userItem) => userItem === access)
+                    ),
+                ];
 
-                setProject({ ...project });
-                setUser({ ...nUser });
+                users = [
+                    ...users,
+                    ...item.canView.filter(
+                        (access) =>
+                            !users.find((userItem) => userItem === access)
+                    ),
+                ];
+            });
 
-                localStorage.setItem(
-                    "currentUser",
-                    JSON.stringify({ ...nUser })
-                );
+            let destination = "";
 
-                navigate("/");
-            } else if (cProject.id === project.id) {
-                let destination = "";
+            for (var i = 0; i < users.length; i++) {
+                let fetchUserData = null;
 
-                if (nUser.privates.length > 0) {
-                    nUser = { ...nUser, lastProject: nUser.privates[0] };
-                    destination = `/${nUser.privates[0]}`;
-                } else if (nUser.publics.length > 0) {
-                    nUser = { ...nUser, lastProject: nUser.privates[0] };
-                    destination = `/${nUser.privates[0]}`;
+                if (users[i] === user.id) {
+                    fetchUserData = user;
                 } else {
-                    nUser = { ...nUser, lastProject: nUser.favorites[0] };
-                    destination = `/${nUser.favorites[0]}`;
-                }
-                deleteProject(cProject.id);
-                for (var j = 0; j < childs.data.length; j++) {
-                    await deleteProject(childs.data[j].id);
+                    const fetchedUser = await getUserById(users[i]);
+                    fetchUserData = fetchedUser.data;
                 }
 
-                await updateUser({ ...nUser });
-
-                setProject({ ...project });
-                setUser({ ...nUser });
-
-                localStorage.setItem(
-                    "currentUser",
-                    JSON.stringify({ ...nUser })
+                const nlist = fetchUserData[type].filter(
+                    (item) => !childs.find((child) => child.id === item)
                 );
 
-                navigate(destination);
-            } else {
-                deleteProject(cProject.id);
-                for (var k = 0; k < childs.data.length; k++) {
-                    await deleteProject(childs.data[k].id);
+                fetchUserData = {
+                    ...fetchUserData,
+                    [type]: nlist,
+                };
+
+                let count = 0;
+                count +=
+                    fetchUserData.privates.length +
+                    fetchUserData.publics.length +
+                    fetchUserData.favorites.length;
+
+                if (count === 0) {
+                    fetchUserData = {
+                        ...fetchUserData,
+                        lastProject: "",
+                    };
+
+                    destination = "/";
+                } else if (cProject.id === project.id) {
+                    if (fetchUserData.privates.length > 0) {
+                        fetchUserData = {
+                            ...fetchUserData,
+                            lastProject: fetchUserData.privates[0],
+                        };
+                        destination = `/${fetchUserData.privates[0]}`;
+                    } else if (fetchUserData.publics.length > 0) {
+                        fetchUserData = {
+                            ...fetchUserData,
+                            lastProject: fetchUserData.publics[0],
+                        };
+                        destination = `/${fetchUserData.publics[0]}`;
+                    } else {
+                        fetchUserData = {
+                            ...fetchUserData,
+                            lastProject: fetchUserData.favorites[0],
+                        };
+                        destination = `/${fetchUserData.favorites[0]}`;
+                    }
                 }
+                await updateUser({ ...fetchUserData });
 
-                await updateUser({ ...nUser });
-
-                setProject({ ...project });
-                setUser({ ...nUser });
-
-                localStorage.setItem(
-                    "currentUser",
-                    JSON.stringify({ ...nUser })
-                );
+                if (fetchUserData.id === user.id) {
+                    setProject({ ...project });
+                    setUser({ ...fetchUserData });
+                    localStorage.setItem(
+                        "currentUser",
+                        JSON.stringify({ ...fetchUserData })
+                    );
+                }
             }
+
+            for (var t = 0; t < childs.length; t++) {
+                await deleteProject(childs[t].id);
+            }
+
+            navigate(destination);
         };
 
         processing();
