@@ -1,7 +1,0 @@
-- Chức năng cần hoàn thiện:
- + Search
- + Updates
- + New Pages
-  
- phu len 1 lop de lam z index
- 

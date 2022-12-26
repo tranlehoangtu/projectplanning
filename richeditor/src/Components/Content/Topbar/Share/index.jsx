@@ -49,7 +49,6 @@ const Share = () => {
     }));
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
-
     const handleSnackbarClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
@@ -122,7 +121,7 @@ const Share = () => {
         processing();
     };
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = async (e) => {
         if (e.key === "Enter") {
             if (
                 user.email === values.email ||
@@ -133,14 +132,34 @@ const Share = () => {
                     error: "User cannot be duplicated",
                 }));
             } else {
-                getUserByEmail(values.email).then((res) => {
+                await getUserByEmail(values.email).then((res) => {
                     if (res.data) {
-                        setValues((prev) => ({
-                            ...prev,
-                            invitees: [...prev.invitees, res.data],
-                            error: "",
-                            email: "",
-                        }));
+                        const isNotValid =
+                            project.fullaccess.find(
+                                (item) => item === res.data.id
+                            ) ||
+                            project.canEdits.find(
+                                (item) => item === res.data.id
+                            ) ||
+                            project.canComments.find(
+                                (item) => item === res.data.id
+                            ) ||
+                            project.canView.find(
+                                (item) => item === res.data.id
+                            );
+                        if (isNotValid) {
+                            setValues((prev) => ({
+                                ...prev,
+                                error: "User already in project",
+                            }));
+                        } else {
+                            setValues((prev) => ({
+                                ...prev,
+                                invitees: [...prev.invitees, res.data],
+                                error: "",
+                                email: "",
+                            }));
+                        }
                     } else {
                         setValues((prev) => ({
                             ...prev,

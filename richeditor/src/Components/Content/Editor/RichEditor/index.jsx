@@ -99,7 +99,7 @@ const myKeyBindingFn = (e) => {
 };
 
 const RichEditor = (props) => {
-    // const { handleSave } = props;
+    const { handleSave, isChangeable } = props;
 
     // Save button
 
@@ -168,6 +168,14 @@ const RichEditor = (props) => {
                     RichUtils.toggleBlockType(editorState, "caption")
                 );
                 break;
+            case "save":
+                handleSave(editorState);
+                break;
+            case "load":
+                setEditorState(
+                    EditorState.createWithContent(convertFromRaw(project.state))
+                );
+                break;
             default:
                 break;
         }
@@ -181,7 +189,11 @@ const RichEditor = (props) => {
     };
 
     return (
-        <div className={editorStyles.editor} onClick={focus}>
+        <div
+            className={editorStyles.editor}
+            onClick={focus}
+            style={{ pointerEvents: !Boolean(isChangeable) && "none" }}
+        >
             <Editor
                 editorKey="RichEditor"
                 editorState={editorState}

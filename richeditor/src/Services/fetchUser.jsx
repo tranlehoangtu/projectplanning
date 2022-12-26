@@ -26,6 +26,14 @@ const getUserByEmail = async (email) => {
     return await axios.get(`http://localhost:8080/api/v1/${email}/email`);
 };
 
+const getAllUsers = async (email) => {
+    return await axios.get(`http://localhost:8080/api/v1/users`);
+};
+
+const deleteUser = async (id) => {
+    return await axios.delete(`http://localhost:8080/api/v1/${id}`);
+};
+
 export {
     login,
     signup,
@@ -33,4 +41,6 @@ export {
     updateUser,
     getUserById,
     getUserByEmail,
+    getAllUsers,
+    deleteUser,
 };

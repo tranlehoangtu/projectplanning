@@ -26,6 +26,7 @@ import { UserContext } from "../../Context/UserContext";
 import { ProjectContext } from "../../Context/ProjectContext";
 import Updates from "./Updates";
 import SettingnMember from "./Modal/SettingnMember";
+import HowToUse from "./HowToUse";
 
 const Sidebar = (props) => {
     const { user, setUser } = useContext(UserContext);
@@ -73,7 +74,6 @@ const Sidebar = (props) => {
             navigate(`/${res.data.id}`);
         });
     };
-    console.log("render");
     let temp = 0;
     // currentWork
     return (
@@ -234,6 +234,8 @@ const Sidebar = (props) => {
                                     ))}
                             </div>
                         </div>
+                        <div style={{ flex: 1 }}></div>
+                        <HowToUse />
                     </div>
                 </div>
             )}

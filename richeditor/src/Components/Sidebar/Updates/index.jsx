@@ -71,7 +71,7 @@ const Inbox = (props) => {
             });
 
             setUser(toUser);
-            updateUser(toUser);
+            await updateUser(toUser);
 
             localStorage.setItem("currentUser", JSON.stringify(toUser));
 
@@ -184,8 +184,8 @@ const Invite = (props) => {
         if (loading) process();
     }, [loading, user.id]);
 
-    const handleRemove = (deleteItem) => {
-        deleteInviteRequest(deleteItem.id).then((res) => {
+    const handleRemove = async (deleteItem) => {
+        await deleteInviteRequest(deleteItem.id).then((res) => {
             setNotifications(
                 notifications.filter((item) => item.id !== deleteItem.id)
             );

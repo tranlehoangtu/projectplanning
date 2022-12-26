@@ -58,10 +58,16 @@ public class UserService {
 
 		Optional<User> optUser = userRepository.findByEmail(email);
 		
-		if (optUser.isPresent() && passwordEncoder.matches(password, optUser.get().getPassword())) 
+		if (optUser.isPresent() && passwordEncoder.matches(password, optUser.get().getPassword()) && !optUser.get().isBlock()) 
 			return optUser;
 
+		
+		
 		return Optional.empty();
+	}
+
+	public void deleteById(String id) {
+		userRepository.deleteById(id);
 	}
 
 }

@@ -5,7 +5,7 @@ import React, { useContext, useMemo } from "react";
 
 //Icons
 import { AiFillStar, AiOutlineMessage, AiOutlineStar } from "react-icons/ai";
-import { BiTime, BiDotsHorizontalRounded } from "react-icons/bi";
+import { BiTime } from "react-icons/bi";
 import { FaBars, FaAngleDoubleRight } from "react-icons/fa";
 
 // Contexts
@@ -19,6 +19,7 @@ import { updateUser } from "../../../Services/fetchUser";
 // Styles
 import styledTopbar from "./topbar.module.css";
 import Share from "./Share";
+import Admin from "./Admin";
 
 const getCurrentTime = (end) => {
     const monthNames = [
@@ -42,7 +43,7 @@ const getCurrentTime = (end) => {
 };
 
 const Topbar = (props) => {
-    const { expand, setExpand } = props;
+    const { expand, setExpand, upload, setUpload } = props;
     const { project, setProject } = useContext(ProjectContext);
     const { user, setUser } = useContext(UserContext);
 
@@ -151,7 +152,12 @@ const Topbar = (props) => {
                 <div className={styledTopbar.option}>
                     <AiOutlineMessage className="icon" />
                 </div>
-                <div className={styledTopbar.option}>
+                <div
+                    className={styledTopbar.option}
+                    onClick={() => {
+                        setUpload(!upload);
+                    }}
+                >
                     <BiTime className="icon" />
                 </div>
                 <div className={styledTopbar.option}>
@@ -168,9 +174,7 @@ const Topbar = (props) => {
                         />
                     )}
                 </div>
-                <div className={styledTopbar.option}>
-                    <BiDotsHorizontalRounded className="icon" />
-                </div>
+                <Admin user={user} />
             </div>
         </div>
     );

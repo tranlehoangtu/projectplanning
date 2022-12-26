@@ -125,6 +125,11 @@ const Editor = (props) => {
         await updateProject(nProject);
     };
 
+    const isChangeable =
+        project.fullaccess.find((item) => item === user.id) ||
+        project.canEdits.find((item) => item === user.id) ||
+        project.userId === user.id;
+
     return (
         <div className={styledEditor.editor}>
             <div className={styledEditor.container}>
@@ -202,7 +207,10 @@ const Editor = (props) => {
                         paddingBottom: "10px",
                     }}
                 >
-                    <RichEditor handleSave={handleSave} />
+                    <RichEditor
+                        handleSave={handleSave}
+                        isChangeable={isChangeable}
+                    />
                 </div>
             </div>
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>

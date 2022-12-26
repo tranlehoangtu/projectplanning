@@ -26,7 +26,7 @@ public class Project {
 	private String parent;
 
 	private String background;
-	
+
 	private List<Integer> avatar = new ArrayList<>();
 	private List<Comment> comments = new ArrayList<>();
 
@@ -34,6 +34,8 @@ public class Project {
 	private List<String> canEdits = new ArrayList<>();
 	private List<String> canComments = new ArrayList<>();
 	private List<String> canView = new ArrayList<>();
+	private List<Image> images = new ArrayList<>();
+	private List<File> files = new ArrayList<>();
 
 	private State state;
 

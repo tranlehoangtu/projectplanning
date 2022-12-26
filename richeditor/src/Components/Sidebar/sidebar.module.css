@@ -150,3 +150,32 @@ color: rgba(55, 53, 47, 0.65); */
 
     font-weight: 500;
 }
+
+.iconCon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    border-radius: 50%;
+
+    width: 30px;
+    height: 30px;
+}
+
+.iconCon .icon {
+    display: block;
+}
+
+.iconCon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.conCon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+}

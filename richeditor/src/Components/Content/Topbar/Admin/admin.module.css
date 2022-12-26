@@ -1,0 +1,52 @@
+.table {
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-top: 10px;
+}
+
+.thead th {
+    border: 1px solid grey;
+}
+
+.thead th {
+    padding-left: 10px;
+}
+
+.tbody td {
+    padding: 10px;
+
+    border: 1px solid grey;
+}
+
+.options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.moves {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconCon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    border-radius: 50%;
+}
+
+.iconCon .icon {
+    display: block;
+}
+
+.iconCon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}

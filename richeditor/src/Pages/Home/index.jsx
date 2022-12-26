@@ -13,6 +13,7 @@ import { ProjectContext } from "../../Context/ProjectContext";
 // Components
 import Content from "../../Components/Content";
 import Sidebar from "../../Components/Sidebar";
+import Upload from "../../Components/Upload";
 import Error from "../Error";
 
 // Styles
@@ -29,7 +30,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [expand, setExpand] = useState(true);
     const [error, setError] = useState(false);
-
+    const [upload, setUpload] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -46,7 +47,15 @@ const Home = () => {
 
             if (pathname === "/") {
                 // if we do have last project
-                if (currentUser.lastProject) {
+                const pp = [
+                    ...currentUser.favorites,
+                    ...currentUser.publics,
+                    ...currentUser.privates,
+                ];
+                if (
+                    currentUser.lastProject &&
+                    pp.find((item) => item === currentUser.lastProject)
+                ) {
                     navigate(`/${currentUser.lastProject}`);
                 }
                 // else user first time log on or last project is being delete
@@ -70,7 +79,7 @@ const Home = () => {
                         "currentUser",
                         JSON.stringify(currentUser)
                     );
-                    updateUser(currentUser);
+                    await updateUser(currentUser);
                     navigate(`/${currentProject.id}`);
                 }
             } else {
@@ -124,7 +133,13 @@ const Home = () => {
                     ) : (
                         <div className={styledHome.container}>
                             <Sidebar expand={expand} setExpand={setExpand} />
-                            <Content expand={expand} setExpand={setExpand} />
+                            <Content
+                                expand={expand}
+                                setExpand={setExpand}
+                                upload={upload}
+                                setUpload={setUpload}
+                            />
+                            <Upload upload={upload} setUpload={setUpload} />
                         </div>
                     )}
                 </>

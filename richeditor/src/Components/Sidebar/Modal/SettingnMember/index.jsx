@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 // Mui
-import { Modal, Popover } from "@mui/material";
+import { Button, Modal, Popover, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 // icons
@@ -21,8 +21,11 @@ import sidebar from "../../sidebar.module.css";
 import styled from "./settingnMember.module.css";
 
 // Service Api
-import { getUserById } from "../../../../Services/fetchUser";
-import { getProjectById } from "../../../../Services/fetchProject";
+import { getUserById, updateUser } from "../../../../Services/fetchUser";
+import {
+    getProjectById,
+    updateProject,
+} from "../../../../Services/fetchProject";
 import { useNavigate } from "react-router-dom";
 
 const style = {
@@ -30,7 +33,7 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    minWidth: 400,
+    minWidth: 672,
     minHeight: 300,
     bgcolor: "#fff",
     border: "2px solid #000",
@@ -39,69 +42,6 @@ const style = {
     overflow: "hidden",
     fontFamily:
         'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
-};
-
-const Roles = (props) => {
-    const { role } = props;
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? "simple-popover" : undefined;
-
-    const handleRoleChange = () => {
-        console.log("Hello World");
-    };
-
-    return (
-        <div>
-            <div onClick={handleClick}>{role}</div>
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                }}
-            >
-                <div className={styled.popCon}>
-                    <div
-                        className={styled.popOption}
-                        onClick={handleRoleChange}
-                    >
-                        Full access
-                    </div>
-                    <div
-                        className={styled.popOption}
-                        onClick={handleRoleChange}
-                    >
-                        Can edit
-                    </div>
-                    <div
-                        className={styled.popOption}
-                        onClick={handleRoleChange}
-                    >
-                        Can comment
-                    </div>
-                    <div
-                        className={styled.popOption}
-                        onClick={handleRoleChange}
-                    >
-                        Can view
-                    </div>
-                </div>
-            </Popover>
-        </div>
-    );
 };
 
 const Groups = (props) => {
@@ -343,14 +283,108 @@ const Groups = (props) => {
     );
 };
 
+const Roles = (props) => {
+    const { role, handleChangeRole, id, edit } = props;
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+
+    const handleChange = (nRole) => {
+        handleChangeRole(nRole, id);
+        setAnchorEl(null);
+    };
+
+    return (
+        <div>
+            <div
+                onClick={handleClick}
+                style={{
+                    pointerEvents: !edit && "none",
+                }}
+            >
+                {role}
+            </div>
+            <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                }}
+            >
+                <div className={styled.popCon}>
+                    <div
+                        className={styled.popOption}
+                        onClick={() => handleChange("Full Access")}
+                    >
+                        Full access
+                    </div>
+                    <div
+                        className={styled.popOption}
+                        onClick={() => handleChange("Can Edit")}
+                    >
+                        Can edit
+                    </div>
+                    <div
+                        className={styled.popOption}
+                        onClick={() => handleChange("Can Comment")}
+                    >
+                        Can comment
+                    </div>
+                    <div
+                        className={styled.popOption}
+                        onClick={() => handleChange("Can View ")}
+                    >
+                        Can view
+                    </div>
+                </div>
+            </Popover>
+        </div>
+    );
+};
+
+const styleModal = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "#fff",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    gap: "10px",
+};
+
 const Members = (props) => {
-    const { project } = props;
+    const { project, isEditable } = props;
 
     const [values, setValues] = useState(() => ({
         users: [],
+        backup: [],
+        removes: [],
     }));
 
     const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [modal, setModal] = useState(false);
+
+    const handleOpen = () => setModal(true);
+    const handleClose = () => setModal(false);
 
     const [pages, setPages] = useState(() => ({
         rowPerPage: 5,
@@ -361,30 +395,32 @@ const Members = (props) => {
         const loading = async () => {
             let users = [];
 
+            const currentProject = await getProjectById(project.id);
+
             users = [
                 ...users,
-                ...project.fullaccess.map((item) => ({
+                ...currentProject.data.fullaccess.map((item) => ({
                     user: item,
                     role: "Full Access",
                 })),
             ];
             users = [
                 ...users,
-                ...project.canComments.map((item) => ({
+                ...currentProject.data.canComments.map((item) => ({
                     user: item,
                     role: "Can Comment",
                 })),
             ];
             users = [
                 ...users,
-                ...project.canView.map((item) => ({
+                ...currentProject.data.canView.map((item) => ({
                     user: item,
                     role: "Can View",
                 })),
             ];
             users = [
                 ...users,
-                ...project.canEdits.map((item) => ({
+                ...currentProject.data.canEdits.map((item) => ({
                     user: item,
                     role: "Can Edit",
                 })),
@@ -392,9 +428,14 @@ const Members = (props) => {
 
             users =
                 users.length === 0
-                    ? [{ user: project.userId, role: "Full Access" }]
+                    ? [
+                          {
+                              user: currentProject.data.userId,
+                              role: "Full Access",
+                          },
+                      ]
                     : users.map((item) =>
-                          item.user === project.userId
+                          item.user === currentProject.data.userId
                               ? { ...item, role: "Full Access" }
                               : item
                       );
@@ -404,6 +445,8 @@ const Members = (props) => {
 
                 return isNotValid ? acc : [...acc, curr];
             }, []);
+
+            console.log(users);
 
             let realUsers = [];
             for (var i = 0; i < users.length; i++) {
@@ -417,19 +460,12 @@ const Members = (props) => {
             setValues((prev) => ({
                 ...prev,
                 users: realUsers,
+                backup: realUsers,
             }));
             setIsLoading(false);
         };
         if (isLoading) loading();
-    }, [
-        project.canComments,
-        project.fullaccess,
-        project.canEdits,
-        project.canView,
-        project.userId,
-        values,
-        isLoading,
-    ]);
+    }, [project.id, values, isLoading]);
 
     const handleSelect = (e) => {
         const nRowPerPage = e.target.value;
@@ -444,13 +480,109 @@ const Members = (props) => {
     const numsOfUsers = values.users.length;
     const maxRow = Math.ceil(numsOfUsers / pages.rowPerPage);
 
+    const handleChangeRole = (nRole, id) => {
+        setIsSaving(true);
+
+        const nUsers = values.users.map((item) => {
+            if (item.id === id) return { ...item, role: nRole };
+            return item;
+        });
+
+        setValues((prev) => ({ ...prev, users: nUsers }));
+    };
+
+    const handleSave = async () => {
+        if (values.removes.length > 0) {
+            console.log("Here");
+
+            var currentProject = project;
+            const fullaccess = project.fullaccess.filter(
+                (item) => !values.removes.find((remove) => remove === item)
+            );
+            const canEdits = project.canEdits.filter(
+                (item) => !values.removes.find((remove) => remove === item)
+            );
+            const canComments = project.canComments.filter(
+                (item) => !values.removes.find((remove) => remove === item)
+            );
+            const canView = project.canView.filter(
+                (item) => !values.removes.find((remove) => remove === item)
+            );
+            currentProject = {
+                ...currentProject,
+                fullaccess,
+                canComments,
+                canEdits,
+                canView,
+            };
+            for (var i = 0; i < values.removes.length; i++) {
+                const dUser = await getUserById(values.removes[i]);
+                let tUser = dUser.data;
+                tUser = {
+                    ...tUser,
+                    lastProject:
+                        project.id === tUser.lastProject
+                            ? ""
+                            : tUser.lastProject,
+                    publics: tUser.publics.filter(
+                        (item) => item !== project.id
+                    ),
+                };
+                await updateUser(tUser);
+            }
+            await updateProject(currentProject);
+            setIsLoading(true);
+            setIsSaving(false);
+            setModal(false);
+        }
+        console.log(project);
+    };
+
+    const handleCancel = () => {
+        setIsSaving(false);
+
+        setValues((prev) => ({
+            ...prev,
+            users: prev.backup,
+        }));
+    };
+
+    const handleRemove = (e, id) => {
+        if (!isSaving) setIsSaving(true);
+
+        if (e.target.checked) {
+            setValues((prev) => ({
+                ...prev,
+                removes: [...prev.removes, id],
+            }));
+        } else
+            setValues((prev) => ({
+                ...prev,
+                removes: prev.removes.filter((item) => item !== id),
+            }));
+    };
+
     return (
-        <div>
+        <div style={{ pointerEvents: !isEditable && "none" }}>
             <div className={styled.setting}>
+                <h5 style={{ color: "red", marginLeft: "10px" }}>
+                    Only project creator can change
+                </h5>
                 <div style={{ flex: 1 }}></div>
-                <div className={styled.iconCon}>
-                    <BsFilter className={styled.icon} />
-                </div>
+                {isSaving ? (
+                    <div className={styled.buttons}>
+                        <div className={styled.button} onClick={handleOpen}>
+                            Save
+                        </div>
+                        <div className={styled.button} onClick={handleCancel}>
+                            Cancel
+                        </div>
+                    </div>
+                ) : (
+                    <div className={styled.iconCon}>
+                        <BsFilter className={styled.icon} />
+                    </div>
+                )}
             </div>
             <div className={styled.tableCon}>
                 <table className={styled.table}>
@@ -474,10 +606,24 @@ const Members = (props) => {
                                     <td>{item.email}</td>
                                     <td>{item.fullname}</td>
                                     <td>
-                                        <Roles role={item.role} />
+                                        <Roles
+                                            role={item.role}
+                                            handleChangeRole={handleChangeRole}
+                                            id={item.id}
+                                            edit={item.id !== project.userId}
+                                        />
                                     </td>
                                     <td align="center">
-                                        <input type="checkbox" name="" id="" />
+                                        {item.id !== project.userId && (
+                                            <input
+                                                type="checkbox"
+                                                name=""
+                                                id=""
+                                                onChange={(e) =>
+                                                    handleRemove(e, item.id)
+                                                }
+                                            />
+                                        )}
                                     </td>
                                 </tr>
                             ))}
@@ -561,6 +707,35 @@ const Members = (props) => {
                     </div>
                 </div>
             </div>
+            <Modal
+                open={modal}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={styleModal}>
+                    <div style={{ marginBottom: "20px" }}>
+                        <Typography>
+                            Are you sure to remove change member?
+                        </Typography>
+                    </div>
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        sx={{ width: "100%" }}
+                        onClick={handleSave}
+                    >
+                        Change
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        sx={{ width: "100%" }}
+                        onClick={() => setModal(false)}
+                    >
+                        Cancel
+                    </Button>
+                </Box>
+            </Modal>
         </div>
     );
 };
@@ -568,6 +743,8 @@ const Members = (props) => {
 const MemberModal = (props) => {
     const { open, handleClose, project, user } = props;
     const [selected, setSelected] = useState(0);
+
+    const isEditable = user.id === project.userId;
 
     return (
         <Modal
@@ -597,7 +774,9 @@ const MemberModal = (props) => {
                         )}
                     </div>
                 </div>
-                {selected === 0 && <Members project={project} />}
+                {selected === 0 && (
+                    <Members project={project} isEditable={isEditable} />
+                )}
 
                 {selected === 1 && (
                     <Groups user={user} handleClose={handleClose} />

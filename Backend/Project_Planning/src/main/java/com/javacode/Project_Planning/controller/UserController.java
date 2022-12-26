@@ -1,10 +1,13 @@
 package com.javacode.Project_Planning.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +36,6 @@ public class UserController {
 	public ResponseEntity<User> getUserById(@PathVariable(value = "id") String id) {
 		User user = userService.findById(id).get();
 		user.setPassword("");
-		System.out.println(user.toString());
 		return ResponseEntity.ok().body(user);
 	}
 
@@ -41,10 +43,10 @@ public class UserController {
 	public ResponseEntity<UserResponse> getUserByEmail(@PathVariable(value = "email") String email) {
 		Optional<User> optional = userService.findByEmail(email);
 
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			UserResponse userResponse = new UserResponse();
 			BeanUtils.copyProperties(optional.get(), userResponse);
-			
+
 			return ResponseEntity.ok().body(userResponse);
 		}
 
@@ -98,10 +100,26 @@ public class UserController {
 	public void updateUser(@RequestBody User user) {
 		User foundUser = userService.findById(user.getId()).get();
 		String password = foundUser.getPassword();
-		
+
 		user.setPassword(password);
 
 		userService.save(user);
+	}
+
+	@GetMapping("/users")
+	public ResponseEntity<List<User>> getUsers() {
+
+		List<User> users = userService.findAll();
+
+		return ResponseEntity.ok().body(users.stream().map(item -> {
+			item.setPassword(null);
+			return item;
+		}).collect(Collectors.toList()));
+	}
+
+	@DeleteMapping("/{id}")
+	public void deleteUser(@PathVariable(value = "id") String id) {
+		userService.deleteById(id);
 	}
 
 }

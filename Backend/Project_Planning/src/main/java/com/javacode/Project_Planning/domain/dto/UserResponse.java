@@ -21,6 +21,8 @@ public class UserResponse {
 	private List<String> publics;
 	
 	private String color;
-	
 	private String message;
+	
+	private boolean isAdmin;
+	private boolean isBlock;
 }

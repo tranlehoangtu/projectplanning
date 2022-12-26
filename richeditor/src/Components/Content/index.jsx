@@ -8,11 +8,16 @@ import Editor from "./Editor";
 import styledContent from "./content.module.css";
 
 const Content = (props) => {
-    const { expand, setExpand } = props;
+    const { expand, setExpand, upload, setUpload } = props;
 
     return (
         <div className={styledContent.contentContainer}>
-            <Topbar expand={expand} setExpand={setExpand} />
+            <Topbar
+                expand={expand}
+                setExpand={setExpand}
+                upload={upload}
+                setUpload={setUpload}
+            />
             <Editor expand={expand} />
         </div>
     );
